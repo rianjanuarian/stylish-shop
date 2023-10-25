@@ -15,13 +15,13 @@ route.get("/", (req, res) => {
 });
 
 route.use("/brands",brandRoutes)
-route.use(".brandProducts",brandProductRoutes)
-route.use("./categories",categoriesRoutes)
-route.use("./categoriesProducts",categoriesProductRoutes)
-route.use("./products",productRoutes)
-route.use("./users",userRoutes)
-route.use("./couriers",courierRoutes)
-route.use("./reviews",reviewRoutes)
-route.use("./transactions",transactionRoutes)
+route.use("/brandProducts",brandProductRoutes)
+route.use("/categories",categoriesRoutes)
+route.use("/categoriesProducts",categoriesProductRoutes)
+route.use("/products",productRoutes)
+route.use("/users",userRoutes)
+route.use("/couriers",courierRoutes)
+route.use("/reviews",reviewRoutes)
+route.use("/transactions",transactionRoutes)
 
 module.exports = route;
