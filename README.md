@@ -9,9 +9,9 @@
 
  npx sequelize-cli model:generate --name category --attributes name:string
 
- npx sequelize-cli model:generate --name brandproduct --attributes products_id:integer, brands_id:integer
+ npx sequelize-cli model:generate --name brandproduct --attributes productId:integer,brandId:integer
 
- npx sequelize-cli model:generate --name categoryproduct --attributes products_id:integer,categories_id:integer
+ npx sequelize-cli model:generate --name categoryproduct --attributes productId:integer,categoryId:integer
 
 npx sequelize-cli model:generate --name user --attributes uid:string,name:string,email:string,password:string,image:string,address:string,role:enum,gender:enum,birthday:date,phone_number:string
 

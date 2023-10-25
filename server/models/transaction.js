@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   transaction.init({
     user_id: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER,
-    status: DataTypes.ENUM
+    status: DataTypes.ENUM('pending','approve','reject'),
   }, {
     sequelize,
     modelName: 'transaction',
