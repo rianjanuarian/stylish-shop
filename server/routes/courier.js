@@ -1,9 +1,9 @@
 const courierRoutes = require("express").Router();
-const BrandControllers = require("../controllers/CourierController");
+const CourierControllers = require("../controllers/CourierController");
 
-courierRoutes.get("/", BrandControllers.getCouriers);
-courierRoutes.post("/create", BrandControllers.create);
-courierRoutes.put("/update/:id", BrandControllers.update);
-courierRoutes.delete("/delete/:id", BrandControllers.delete);
+courierRoutes.get("/", CourierControllers.getCouriers);
+courierRoutes.post("/create", CourierControllers.create);
+courierRoutes.put("/update/:id", CourierControllers.update);
+courierRoutes.delete("/delete/:id", CourierControllers.delete);
 
 module.exports = courierRoutes;
