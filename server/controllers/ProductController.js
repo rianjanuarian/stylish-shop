@@ -4,7 +4,6 @@ class ProductControllers {
     try {
         const result = await product.findAll({
             include: [category,brand],
-          
         })
         res.json(result)
     } catch (error) {
@@ -30,7 +29,7 @@ class ProductControllers {
             image: imageName
         })
       
-     const  productCategories = await categoryproduct.create({
+        const productCategories = await categoryproduct.create({
             productId : +products.id,
             categoryId : +categories.id
         })
@@ -46,7 +45,17 @@ class ProductControllers {
     }
   }
 
-  static async delete(req, res) {}
+  static async delete(req, res) {
+    try {
+        const id = +req.params.id
+        let result = await product.destroy({
+            where: {id},
+        })
+        res.json({message:"delete success"})
+    } catch (error) {
+        res.json(error)
+    }
+  }
   
   static async update(req,res){}
 
