@@ -1,5 +1,5 @@
 const courierRoutes = require("express").Router();
-const BrandControllers = require("../controllers/CourierController");
+const CourierControllers = require("../controllers/CourierController");
 
 // courierRoutes.get("/", BrandControllers.getCouriers);
 // courierRoutes.post("/create", BrandControllers.create);
