@@ -1,5 +1,8 @@
 # stylish-shop
-```
+
+## Script Command
+
+```bash
  npx sequelize-cli model:generate --name product --attributes name:string,price:integer,description:string,stock:integer,image:string
 -----------------------------------------------------------------------------------------
  npx sequelize-cli model:generate --name brand --attributes name:string,image:string
