@@ -7,6 +7,7 @@ const categoriesProductRoutes = require("./categoriesproduct");
 const courierRoutes = require("./courier");
 const reviewRoutes = require("./review");
 const transactionRoutes = require("./transaction");
+const errorMiddleware = require('./error');
 
 const route = require("express").Router();
 
@@ -23,5 +24,6 @@ route.use("/users", userRoutes);
 route.use("/couriers", courierRoutes);
 route.use("/reviews", reviewRoutes);
 route.use("/transactions", transactionRoutes);
+route.use(errorMiddleware);
 
 module.exports = route;

@@ -1,14 +1,16 @@
+const createError = require("../middlewares/createError")
 const {product,category,brand, categoryproduct, brandproduct} = require("../models")
+
 const { Op } = require('sequelize');
 class ProductControllers {
-  static async getData(req, res) {
+  static async getData(req, res, next) {
     try {
         const result = await product.findAll({
             include: [category,brand],
         })
         res.json(result)
     } catch (error) {
-        res.json(error)
+        next(error)
     }
   }
 
@@ -36,7 +38,7 @@ class ProductControllers {
 
         res.json({message:"success"})
     } catch (error) {
-        res.json(error)
+        next(error)
     }
   }
 
@@ -48,7 +50,7 @@ class ProductControllers {
         })
         res.json({message:"delete success"})
     } catch (error) {
-        res.json(error)
+        next(error)
     }
   }
   
