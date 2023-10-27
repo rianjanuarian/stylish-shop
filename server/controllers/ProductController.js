@@ -1,4 +1,5 @@
 const {product,category,brand, categoryproduct, brandproduct} = require("../models")
+const { Op } = require('sequelize');
 class ProductControllers {
   static async getData(req, res) {
     try {
@@ -21,13 +22,7 @@ class ProductControllers {
             stock,
             image
         })
-        // const categories = await category.create({
-        //     name: categoryName
-        // })
-        // const brands = await brand.create({
-        //     name: brandName,
-        //     image: imageName
-        // })
+
       
         const productCategories = await categoryproduct.create({
             productId : +products.id,
@@ -103,6 +98,56 @@ class ProductControllers {
         const id = +req.params.id
         let result = await brand.findByPk(id,{
             include:[product]
+        })
+        res.json(result)
+    } catch (error) {
+        res.json(error)
+    }
+  }
+
+  static async getProductsBySearch(req,res){
+    try {
+        const {name} = req.query
+       let result = await product.findAll({
+           include: [category,brand],
+           where : {
+            name:{
+                [Op.iLike]: `%${name}%`
+            }
+           }
+        })
+     res.json(result)
+      
+    } catch (error) {
+        res.json(error)
+    }
+  }
+  static async getProductsBycategorySearch(req,res){
+    try {
+        const {categories} = req.query
+        let result = await category.findAll({
+            include: [product],
+            where : {
+                name:{
+                    [Op.iLike]: `%${categories}%`
+                }
+            }
+        })
+        res.json(result)
+    } catch (error) {
+        res.json(error)
+    }
+  }
+  static async getProductsBybrandSearch(req,res){
+    try {
+        const {brands} = req.query
+        let result = await brand.findAll({
+            include: [product],
+            where : {
+                name:{
+                    [Op.iLike]: `%${brands}%`
+                }
+            }
         })
         res.json(result)
     } catch (error) {
