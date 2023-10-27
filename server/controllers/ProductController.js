@@ -2,6 +2,7 @@ const createError = require("../middlewares/createError")
 const {product,category,brand, categoryproduct, brandproduct} = require("../models")
 
 const { Op } = require('sequelize');
+
 class ProductControllers {
   static async getData(req, res, next) {
     try {
