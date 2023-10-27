@@ -11,7 +11,7 @@ userRoutes.get("/logout", UserControllers.logout);
 
 // userRoutes.post("/login", UserControllers.login);
 // userRoutes.post("/register", UserControllers.register);
->>>>>>>>> Temporary merge branch 2
+
 
 // userRoutes.get("/", UserControllers.getData);
 // userRoutes.post("/create", UserControllers.create);

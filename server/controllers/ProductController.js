@@ -17,13 +17,14 @@ class ProductControllers {
 
   static async create(req, res) {
     try {
-        let {name,price,description,stock,image,categoryId,brandId} = req.body
+        let {name,price,description,stock,image,color,categoryId,brandId} = req.body
         const products = await product.create({
             name,
             price,
             description,
             stock,
-            image
+            image,
+            color
         })
 
       

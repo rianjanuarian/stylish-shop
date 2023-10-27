@@ -18,13 +18,54 @@ module.exports = (sequelize, DataTypes) => {
   }
   product.init(
     {
-      name: DataTypes.STRING,
-      price: DataTypes.INTEGER,
-      description: DataTypes.STRING,
-      stock: DataTypes.INTEGER,
-      image: DataTypes.STRING,
+      name:{
+        type:DataTypes.STRING,
+        validate:{
+          notEmpty:{
+            msg: "Product name cannot be empty"
+          }
+        }
+      },
+      price: {
+        type:DataTypes.STRING,
+        validate:{
+          notEmpty:{
+            msg: "Product price cannot be empty"
+          }
+        }
+      },
+      description: {
+        type:DataTypes.STRING,
+        validate:{
+          notEmpty:{
+            msg: "Product description cannot be empty"
+          }
+        }
+      },
+      stock: {
+        type:DataTypes.INTEGER,
+        validate:{
+          notEmpty:{
+            msg: "Product stock cannot be empty"
+          }
+        }
+      },
+      image:DataTypes.STRING,
+      color:{
+        type:DataTypes.STRING,
+        validate:{
+          notEmpty:{
+            msg: "Product color cannot be empty"
+          }
+        }
+      },
     },
     {
+      hooks: {
+        beforeCreate: (product, options) => {
+          product.image = product.image || "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png";
+        }
+      },
       sequelize,
       modelName: "product",
     }
