@@ -13,7 +13,7 @@ class ProductControllers {
 
   static async create(req, res) {
     try {
-        let {name,price,description,stock,image,categoryName,brandName,imageName} = req.body
+        let {name,price,description,stock,image,categoryId,brandId} = req.body
         const products = await product.create({
             name,
             price,
@@ -29,15 +29,15 @@ class ProductControllers {
         //     image: imageName
         // })
       
-        // const productCategories = await categoryproduct.create({
-        //     productId : +products.id,
-        //     categoryId : +categories.id
-        // })
+        const productCategories = await categoryproduct.create({
+            productId : +products.id,
+            categoryId : +categoryId
+        })
 
-        // const productBrands = await brandproduct.create({
-        //     productId : +products.id,
-        //     brandId : +brands.id
-        // })
+        const productBrands = await brandproduct.create({
+            productId : +products.id,
+            brandId : +brandId
+        })
 
         res.json({message:"success"})
     } catch (error) {
@@ -90,6 +90,18 @@ class ProductControllers {
     try {
         const id = +req.params.id
         let result = await category.findByPk(id,{
+            include:[product]
+        })
+        res.json(result)
+    } catch (error) {
+        res.json(error)
+    }
+  }
+
+  static async getProductsByBrands(req,res){
+    try {
+        const id = +req.params.id
+        let result = await brand.findByPk(id,{
             include:[product]
         })
         res.json(result)

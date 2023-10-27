@@ -7,4 +7,6 @@ productRoutes.post("/create", ProductControllers.create);
 productRoutes.delete("/delete/:id", ProductControllers.delete);
 productRoutes.put("/update/:id", ProductControllers.update);
 productRoutes.get("/category/:id", ProductControllers.getProductsByCategories);
+productRoutes.get("/brand/:id", ProductControllers.getProductsByBrands);
+
 module.exports = productRoutes;
