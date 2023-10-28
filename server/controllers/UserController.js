@@ -30,6 +30,7 @@ class UserController {
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
+      const pattern = /^(?=\S{8,}$)/;
       const isEmailExist = await user.findOne({
         where: {
           email: email,
@@ -39,6 +40,12 @@ class UserController {
       if (isEmailExist) {
         return next(
           createError(409, "User with the same email already exists!")
+        );
+      }
+
+      if (!pattern.test(password)) {
+        return next(
+          createError(400, "Password must be at least 8 characters!")
         );
       }
 
@@ -70,8 +77,8 @@ class UserController {
       if (yuser) {
         if (await decryptPassword(req.body.password, yuser.password)) {
           const access_token = await encodeTokenUsingJwt(yuser);
-          res.setHeader("access_token", `${access_token}`);
-          res.status(200).json(yuser);
+          // res.setHeader("access_token", access_token);
+          res.status(200).json({ message: "User signed in!", access_token });
         } else {
           next(createError(401, "Password is incorrect!"));
         }
