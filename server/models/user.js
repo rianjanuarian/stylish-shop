@@ -20,18 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         unique: true,
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Name cannot be empty",
-          },
-          notEmpty: {
-            msg: "Name cannot be empty",
-          },
-        },
-      },
+      name: DataTypes.STRING,
       email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -56,6 +45,11 @@ module.exports = (sequelize, DataTypes) => {
           },
           notEmpty: {
             msg: "Password cannot be empty",
+          },
+          isAtLeastEightCharacters(value) {
+            if (value.length < 8) {
+              throw new Error("Password must be at least 8 characters long");
+            }
           },
         },
       },
