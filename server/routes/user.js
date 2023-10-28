@@ -1,18 +1,14 @@
 const userRoutes = require("express").Router();
+const { verifyUser } = require("../middlewares/verifyRole");
 const UserControllers = require("../controllers/UserController");
 
-
-// userRoutes.post("/login", UserControllers.login);
-// userRoutes.post("/register", UserControllers.register);
-
+//User Auth
 userRoutes.post("/login", UserControllers.login);
+// userRoutes.post("/google-sign-in", UserControllers.signInWithGoogle);
 userRoutes.post("/register", UserControllers.register);
 userRoutes.get("/logout", UserControllers.logout);
 
-// userRoutes.post("/login", UserControllers.login);
-// userRoutes.post("/register", UserControllers.register);
-
-
+//User Data
 // userRoutes.get("/", UserControllers.getData);
 // userRoutes.post("/create", UserControllers.create);
 // userRoutes.put("/update/:id", UserControllers.update);
