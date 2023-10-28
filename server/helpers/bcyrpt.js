@@ -11,7 +11,7 @@ const encryptPassword = async (data) => {
 
 const decryptPassword = async (data, hashPwd) => {
   try {
-    return await bcrypt.compare(String(data), hashPwd);
+    return await bcrypt.compareSync(String(data), hashPwd);
   } catch (e) {
     throw e;
   }
