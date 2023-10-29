@@ -1,32 +1,13 @@
-const { decryptPassword } = require("../helpers/bcyrpt");
-const { encodeTokenUsingJwt } = require("../helpers/jsonwebtoken");
+const { decryptPassword, encryptPassword } = require("../helpers/bcyrpt");
+const {
+  encodeTokenUsingJwt,
+  decodeTokenUsingJwt,
+} = require("../helpers/jsonwebtoken");
 const createError = require("../middlewares/createError");
 const { user } = require("../models");
 const admin = require("firebase-admin");
 
 class UserController {
-  // static async register(req, res, next) {
-  //   try {
-  //     const isEmailExist = await user.findOne({
-  //       where: {
-  //         email: req.body.email,
-  //       },
-  //     });
-
-  //     if (isEmailExist) {
-  //       return next(
-  //         createError(409, "User with the same email already exists!")
-  //       );
-  //     }
-
-  //     const response = await user.create(req.body);
-
-  //     res.status(201).json({ message: "User has been created!", response });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
-
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
@@ -53,6 +34,7 @@ class UserController {
         email: email,
         password: password,
       });
+
       const firebaseUID = userRecord.uid;
       const response = await user.create({
         name: name,
@@ -127,6 +109,36 @@ class UserController {
   //     next(error);
   //   }
   // }
+
+  static async changePassword(req, res, next) {
+    try {
+      // DecodeToken
+      const access_token = req.headers.access_token;
+      const decodeToken = await decodeTokenUsingJwt(access_token);
+      const yuser = decodeToken;
+      // End DecodeToken
+      const { oldPassword, newPassword, confirmPassword } = req.body;
+      if (await decryptPassword(oldPassword, yuser.password)) {
+        if (newPassword === confirmPassword) {
+          await user.update(
+            { password: await encryptPassword(newPassword) },
+            {
+              where: {
+                uid: yuser.uid,
+              },
+            }
+          );
+          next(createError(200, "Password has been changed!"));
+        } else {
+          next(createError(400, "Password not match!"));
+        }
+      } else {
+        next(createError(400, "Old password not match!"));
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
 
   static async logout(req, res, next) {
     delete req.headers["access_token"];
