@@ -1,15 +1,15 @@
 const { courier } = require("../models");
 
 class CourierController {
-  static async getCouriers(req, res) {
+  static async getCouriers(req, res, next) {
     try {
       const couriers = await courier.findAll();
       res.json(couriers);
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      next(err);
     }
   }
-  static async create(req, res) {
+  static async create(req, res, next) {
     try {
       const { name, phone, address } = req.body;
       const courier = await courier.create({
@@ -19,11 +19,11 @@ class CourierController {
       });
       res.json(courier);
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      next(err);
     }
   }
 
-  static async update(req, res) {
+  static async update(req, res, next) {
     try {
       const { id } = req.params;
       const { name, phone, address } = req.body;
@@ -33,17 +33,17 @@ class CourierController {
       );
       res.json(courier);
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      next(err);
     }
   }
 
-  static async delete(req, res) {
+  static async delete(req, res, next) {
     try {
       const { id } = req.params;
       const courier = await courier.destroy({ where: { id } });
       res.json(courier);
     } catch (err) {
-      res.status(500).json({ message: err.message });
+      next(err);
     }
   }
 }

@@ -3,7 +3,7 @@ const SALT_ROUND = parseInt(process.env.SALT_ROUND);
 
 const encryptPassword = async (data) => {
   try {
-    return await bcrypt.hashSync(String(data), SALT_ROUND);
+    return await bcrypt.hash(String(data), SALT_ROUND);
   } catch (e) {
     throw e;
   }
@@ -11,7 +11,7 @@ const encryptPassword = async (data) => {
 
 const decryptPassword = async (data, hashPwd) => {
   try {
-    return await bcrypt.compareSync(String(data), hashPwd);
+    return await bcrypt.compare(String(data), hashPwd);
   } catch (e) {
     throw e;
   }
