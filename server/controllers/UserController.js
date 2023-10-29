@@ -49,6 +49,48 @@ class UserController {
     }
   }
 
+  static async createAdmin(req, res, next) {
+    try {
+      const { name, email, password } = req.body;
+      const pattern = /^(?=\S{8,}$)/;
+      const isEmailExist = await user.findOne({
+        where: {
+          email: email,
+        },
+      });
+
+      if (isEmailExist) {
+        return next(
+          createError(409, "User with the same email already exists!")
+        );
+      }
+
+      if (!pattern.test(password)) {
+        return next(
+          createError(400, "Password must be at least 8 characters!")
+        );
+      }
+
+      const userRecord = await admin.auth().createUser({
+        email: email,
+        password: password,
+      });
+
+      const firebaseUID = userRecord.uid;
+      const response = await user.create({
+        name: name,
+        email: email,
+        role: "admin",
+        password: password,
+        uid: firebaseUID,
+      });
+
+      res.status(201).json({ message: "Admin has been created!", response });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async login(req, res, next) {
     try {
       const yuser = await user.findOne({
@@ -128,7 +170,7 @@ class UserController {
               },
             }
           );
-          next(createError(200, "Password has been changed!"));
+          res.status(200).json({ message: "Password has been changed!" });
         } else {
           next(createError(400, "Password not match!"));
         }
