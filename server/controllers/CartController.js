@@ -1,5 +1,5 @@
 const createError = require("../middlewares/createError");
-const { cart,user,product } = require("../models");
+const { cart, user, product } = require("../models");
 
 class CartController {
   static async create(req, res, next) {
@@ -19,9 +19,10 @@ class CartController {
   static async update(req, res, next) {
     try {
       const id = +req.params.id;
-      const { userId, qty, total_price } = req.body;
+      const { productId, userId, qty, total_price } = req.body;
       let result = await cart.update(
         {
+          productId,
           userId,
           qty,
           total_price,
@@ -37,31 +38,30 @@ class CartController {
       next(error);
     }
   }
-  static async delete(req,res,next){
+  static async delete(req, res, next) {
     try {
-        const id = +req.params.id
-        let result = await cart.destroy({where:{id}})
-        if(result === 1){
-            res.status(200).json({message:'Deleted Successfully'})
-        } else {
-            next(createError(400, "Cart cannot deleted"));
-        }
+      const id = +req.params.id;
+      let result = await cart.destroy({ where: { id } });
+      if (result === 1) {
+        res.status(200).json({ message: "Deleted Successfully" });
+      } else {
+        next(createError(400, "Cart cannot deleted"));
+      }
     } catch (error) {
-        next(error)
+      next(error);
     }
   }
 
-  static async getByCart(req,res,next){
+  static async getByCart(req, res, next) {
     try {
+      const id = +req.params.id;
+      let result = await user.findByPk(id, {
+        include: [product],
+      });
 
-        const id = +req.params.id
-        let result = await user.findByPk(id,{
-            include:[cart] 
-        })
-      
-        res.status(200).json(result);
+      res.status(200).json(result);
     } catch (error) {
-        next(error)
+      next(error);
     }
   }
 }

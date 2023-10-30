@@ -12,9 +12,9 @@ class CategorysControllers {
 
   static async create(req, res, next) {
     try {
-      const { name, image } = req.body;
-      const category = await category.create({ name, image });
-      res.status(200).json(category);
+      const { name } = req.body;
+      const categories = await category.create({ name });
+      res.status(200).json(categories);
     } catch (err) {
       next(err);
     }
@@ -23,12 +23,13 @@ class CategorysControllers {
   static async update(req, res, next) {
     try {
       const { id } = req.params;
-      const { name, image } = req.body;
-      const category = await category.update(
-        { name, image },
-        { where: { id } }
-      );
-      res.status(200).json(category);
+      const { name } = req.body;
+      const categories = await category.update({ name }, { where: { id } });
+      if (categories[0] === 1) {
+        res.status(200).json({ message: "Category has been updated!" });
+      } else {
+        res.status(404).json({ message: "Category not found!" });
+      }
     } catch (err) {
       next(err);
     }
@@ -37,8 +38,12 @@ class CategorysControllers {
   static async delete(req, res, next) {
     try {
       const { id } = req.params;
-      const category = await category.destroy({ where: { id } });
-      res.status(200).json(category);
+      const categories = await category.destroy({ where: { id } });
+      if (categories === 1) {
+        res.status(200).json({ message: "Category has been deleted!" });
+      } else {
+        res.status(404).json({ message: "Category not found!" });
+      }
     } catch (err) {
       next(err);
     }
