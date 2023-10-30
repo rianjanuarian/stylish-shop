@@ -6,6 +6,7 @@ const userRoutes = require("./user");
 const categoriesProductRoutes = require("./categoriesproduct");
 const courierRoutes = require("./courier");
 const reviewRoutes = require("./review");
+const cartRoutes = require("./cart")
 const transactionRoutes = require("./transaction");
 const errorMiddleware = require('./error');
 
@@ -24,6 +25,7 @@ route.use("/users", userRoutes);
 route.use("/couriers", courierRoutes);
 route.use("/reviews", reviewRoutes);
 route.use("/transactions", transactionRoutes);
+route.use("/carts",cartRoutes)
 route.use(errorMiddleware);
 
 module.exports = route;
