@@ -6,11 +6,12 @@ const UserControllers = require("../controllers/UserController");
 userRoutes.post("/login", UserControllers.login);
 // userRoutes.post("/google-sign-in", UserControllers.signInWithGoogle);
 userRoutes.post("/register", UserControllers.register);
+userRoutes.post("/create_admin", UserControllers.createAdmin);
 userRoutes.get("/logout", UserControllers.logout);
 
 //User Data
 userRoutes.put("/change_password", verifyUser, UserControllers.changePassword);
-userRoutes.post("/create_admin", UserControllers.createAdmin);
+userRoutes.put("/update", verifyUser, UserControllers.update);
 // userRoutes.get("/", UserControllers.getData);
 // userRoutes.post("/create", UserControllers.create);
 // userRoutes.put("/update/:id", UserControllers.update);
