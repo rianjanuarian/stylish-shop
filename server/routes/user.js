@@ -3,9 +3,14 @@ const { verifyUser, verifyAdmin } = require("../middlewares/verifyRole");
 const UserControllers = require("../controllers/UserController");
 
 //User Auth
+userRoutes.post("/register_with_email", UserControllers.registerWithEmail);
+userRoutes.post("/register_with_google", UserControllers.registerWithGoogle);
+userRoutes.post("/login_with_email", UserControllers.loginWithEmail);
+userRoutes.post("/login_with_google", UserControllers.loginWithGoogle);
+
+userRoutes.post("/register", UserControllers.register);
 userRoutes.post("/login", UserControllers.login);
 // userRoutes.post("/google-sign-in", UserControllers.signInWithGoogle);
-userRoutes.post("/register", UserControllers.register);
 userRoutes.post("/create_admin", UserControllers.createAdmin);
 userRoutes.get("/logout", UserControllers.logout);
 
