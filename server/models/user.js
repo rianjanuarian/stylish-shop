@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const { encryptPassword } = require("../helpers/bcyrpt");
+
 module.exports = (sequelize, DataTypes) => {
   class user extends Model {
     /**
@@ -14,8 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       user.belongsToMany(models.product, {
         through: models.cart,
       });
-
-      
     }
   }
   user.init(
@@ -42,35 +40,16 @@ module.exports = (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
-        validate: {
-          notNull: {
-            msg: "Password cannot be empty",
-          },
-          notEmpty: {
-            msg: "Password cannot be empty",
-          },
-          isAtLeastEightCharacters(value) {
-            if (value.length < 8) {
-              throw new Error("Password must be at least 8 characters long");
-            }
-          },
-        },
+        allowNull: true,
       },
       image: DataTypes.STRING,
       address: DataTypes.STRING,
-      role: DataTypes.ENUM("admin", "user"),
+      role: { type: DataTypes.ENUM("admin", "user"), defaultValue: "user" },
       gender: DataTypes.ENUM("man", "woman"),
       birthday: DataTypes.DATE,
       phone_number: DataTypes.STRING,
     },
     {
-      hooks: {
-        beforeCreate: async (user, options) => {
-          user.password = await encryptPassword(user.password);
-          user.role = user.role || "user";
-        },
-      },
       sequelize,
       modelName: "user",
     }

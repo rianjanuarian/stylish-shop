@@ -1,20 +1,12 @@
 const jwt = require("jsonwebtoken");
-const PRIVATE_KEY = process.env.PRIVATE_KEY || 'pejantan';
+const PRIVATE_KEY = process.env.PRIVATE_KEY || "pejantan";
 
-const encodeTokenUsingJwt = async (token) => {
-  try {
-    return jwt.sign(token.toJSON(), PRIVATE_KEY, { expiresIn: "1h" });
-  } catch (error) {
-    throw error;
-  }
+const encodeTokenUsingJwt = (token) => {
+  return jwt.sign(token.toJSON(), PRIVATE_KEY);
 };
 
-const decodeTokenUsingJwt = async (token, cb) => {
-  try {
-    return jwt.verify(token, PRIVATE_KEY, cb);
-  } catch (error) {
-    throw error;
-  }
+const decodeTokenUsingJwt = (token, cb) => {
+  return jwt.verify(token, PRIVATE_KEY, cb);
 };
 
 module.exports = {

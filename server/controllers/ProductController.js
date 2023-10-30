@@ -15,7 +15,7 @@ class ProductControllers {
       const result = await product.findAll({
         include: [category, brand],
       });
-      res.json(result);
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
@@ -23,36 +23,23 @@ class ProductControllers {
 
   static async create(req, res, next) {
     try {
-      let {
-        name,
-        price,
-        description,
-        stock,
-        image,
-        color,
-        categoryId,
-        brandId,
-      } = req.body;
-      const products = await product.create({
-        name,
-        price,
-        description,
-        stock,
-        image,
-        color,
+      let { categoryId, brandId, ...otherDetails } = req.body;
+
+      const product = await product.create({
+        ...otherDetails,
       });
 
-      const productCategories = await categoryproduct.create({
-        productId: +products.id,
-        categoryId: +categoryId,
+      await categoryproduct.create({
+        productId: parseInt(product.id),
+        categoryId: parseInt(categoryId),
       });
 
-      const productBrands = await brandproduct.create({
-        productId: +products.id,
-        brandId: +brandId,
+      await brandproduct.create({
+        productId: parseInt(product.id),
+        brandId: parseInt(brandId),
       });
 
-      res.json({ message: "success" });
+      res.status(201).json({ message: "Success adding new product!" });
     } catch (error) {
       next(error);
     }
@@ -60,11 +47,15 @@ class ProductControllers {
 
   static async delete(req, res, next) {
     try {
-      const id = +req.params.id;
+      const id = parseInt(req.params.id);
       let result = await product.destroy({
         where: { id },
       });
-      res.json({ message: "delete success" });
+      if (result === 1) {
+        res
+          .status(200)
+          .json({ message: "Product has been deleted successfully!" });
+      }
     } catch (error) {
       next(error);
     }
@@ -72,21 +63,14 @@ class ProductControllers {
 
   static async update(req, res, next) {
     try {
-      const id = +req.params.id;
-      const { name, price, description, stock, image } = req.body;
-      let result = await product.update(
-        {
-          name,
-          price,
-          description,
-          stock,
-          image,
-        },
-        {
-          where: { id },
-        }
-      );
-      res.json(result);
+      const id = parseInt(req.params.id);
+      let result = await product.update(req.body, {
+        where: { id },
+      });
+
+      if (result[0] === 1) {
+        res.status(200).json(result);
+      }
     } catch (error) {
       next(error);
     }
@@ -94,11 +78,16 @@ class ProductControllers {
 
   static async detail(req, res, next) {
     try {
-      const id = +req.params.id;
+      const id = parseInt(req.params.id);
       let result = await product.findByPk(id, {
         include: [category, brand],
       });
-      res.json(result);
+
+      if (!result) {
+        return next(createError(404, "Product not found!"));
+      }
+
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
@@ -106,11 +95,16 @@ class ProductControllers {
 
   static async getProductsByCategories(req, res, next) {
     try {
-      const id = +req.params.id;
+      const id = parseInt(req.params.id);
       let result = await category.findByPk(id, {
         include: [product],
       });
-      res.json(result);
+
+      if (!result) {
+        return next(createError(404, "Products not found!"));
+      }
+
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
@@ -118,11 +112,16 @@ class ProductControllers {
 
   static async getProductsByBrands(req, res, next) {
     try {
-      const id = +req.params.id;
+      const id = parseInt(req.params.id);
       let result = await brand.findByPk(id, {
         include: [product],
       });
-      res.json(result);
+
+      if (!result) {
+        return next(createError(404, "Products not found!"));
+      }
+
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
@@ -131,6 +130,7 @@ class ProductControllers {
   static async getProductsBySearch(req, res, next) {
     try {
       const { name } = req.query;
+
       let result = await product.findAll({
         include: [category, brand],
         where: {
@@ -139,7 +139,8 @@ class ProductControllers {
           },
         },
       });
-      res.json(result);
+
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
@@ -155,7 +156,8 @@ class ProductControllers {
           },
         },
       });
-      res.json(result);
+
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
@@ -171,7 +173,8 @@ class ProductControllers {
           },
         },
       });
-      res.json(result);
+
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
