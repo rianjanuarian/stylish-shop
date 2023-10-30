@@ -3,9 +3,9 @@ const { cart,user,product } = require("../models");
 class CartController {
   static async create(req, res, next) {
     try {
-      const { productsId, userId, qty, total_price } = req.body;
+      const { productId, userId, qty, total_price } = req.body;
       let result = await cart.create({
-        productsId,
+        productId,
         userId,
         qty,
         total_price,
@@ -52,12 +52,12 @@ class CartController {
 
   static async getByCart(req,res,next){
     try {
-        const id = +req.params.id
 
-        let result = await cart.findByPk(id,{
-            include:[user,product] 
+        const id = +req.params.id
+        let result = await user.findByPk(id,{
+            include:[cart] 
         })
-        res.json(result)
+        res.status(200).json(result);
     } catch (error) {
         next(error)
     }
