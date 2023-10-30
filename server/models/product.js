@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         through: models.categoryproduct,
       });
       product.belongsToMany(models.brand, { through: models.brandproduct });
+      
     }
   }
   product.init(

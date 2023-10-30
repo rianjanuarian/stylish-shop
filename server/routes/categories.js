@@ -6,4 +6,5 @@ const CategoriesControllers = require("../controllers/CategoriesControllers");
 // categoriesRoutes.put("/update/:id", CategoriesControllers.update);
 // categoriesRoutes.delete("/delete/:id", CategoriesControllers.delete);
 
+
 module.exports = categoriesRoutes;
