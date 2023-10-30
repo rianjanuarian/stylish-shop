@@ -5,11 +5,11 @@ const port = process.env.PORT || 3000;
 const routes = require("./routes/index.js");
 //Firebase
 const admin = require("firebase-admin");
-const serviceAccount = require(`${process.env.SERVICE_ACCOUNT_KEY}`);
+const serviceAccount = require("./helpers/stylishshop-562a7-firebase-adminsdk-dap1r-fae3f7b89d.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.DATABASE_URL,
+  databaseURL: "https://stylishshop-562a7.firebaseio.com",
 });
 
 const cors = require("cors");
