@@ -1,5 +1,7 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class transaction extends Model {
     /**
@@ -14,17 +16,14 @@ module.exports = (sequelize, DataTypes) => {
       transaction.belongsTo(models.product, { foreignKey: "productId" });
     }
   }
-  transaction.init(
-    {
-      userId: DataTypes.INTEGER,
-      productId: DataTypes.INTEGER,
-      courierId: DataTypes.INTEGER,
-      status: DataTypes.ENUM("pending", "approve", "reject"),
-    },
-    {
-      sequelize,
-      modelName: "transaction",
-    }
-  );
+  transaction.init({
+    userId: DataTypes.INTEGER,
+    productId: DataTypes.INTEGER,
+    midtranstoken: DataTypes.STRING,
+    status: DataTypes.ENUM('pending','reject','approve')
+  }, {
+    sequelize,
+    modelName: 'transaction',
+  });
   return transaction;
 };

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const PRIVATE_KEY = 'pejantan';
+const PRIVATE_KEY = process.env.PRIVATE_KEY || 'pejantan';
 
 const encodeTokenUsingJwt = async (token) => {
   try {
