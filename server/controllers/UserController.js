@@ -1,13 +1,19 @@
 const { decryptPassword, encryptPassword } = require("../helpers/bcyrpt");
-const {
-  encodeTokenUsingJwt,
-  decodeTokenUsingJwt,
-} = require("../helpers/jsonwebtoken");
+const { encodeTokenUsingJwt } = require("../helpers/jsonwebtoken");
 const createError = require("../middlewares/createError");
 const { user } = require("../models");
 const admin = require("firebase-admin");
 
 class UserController {
+  static async getUser(req, res, next) {
+    try {
+      const response = await user.findAll();
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
@@ -140,19 +146,15 @@ class UserController {
 
   static async changePassword(req, res, next) {
     try {
-      // DecodeToken
-      const access_token = req.headers.access_token;
-      const decodeToken = await decodeTokenUsingJwt(access_token);
-      const yuser = decodeToken;
-      // End DecodeToken
+      const passwords = req.user.password;
       const { oldPassword, newPassword, confirmPassword } = req.body;
-      if (await decryptPassword(oldPassword, yuser.password)) {
+      if (await decryptPassword(oldPassword, passwords)) {
         if (newPassword === confirmPassword) {
           await user.update(
             { password: await encryptPassword(newPassword) },
             {
               where: {
-                uid: yuser.uid,
+                uid: req.user.uid,
               },
             }
           );
@@ -170,15 +172,11 @@ class UserController {
 
   static async update(req, res, next) {
     try {
-      // DecodeToken
-      const access_token = req.headers.access_token;
-      const decodeToken = await decodeTokenUsingJwt(access_token);
-      const yuser = decodeToken;
-      // End DecodeToken
+      const uid = req.user.uid;
       const { name, address, gender, image, birthday, phone_number } = req.body;
       const response = await user.update(
         {
-          name: name || yuser.name,
+          name: name,
           address: address,
           gender: gender,
           image: image,
@@ -187,14 +185,84 @@ class UserController {
         },
         {
           where: {
-            uid: yuser.uid,
+            uid: uid,
           },
         }
       );
       if (response[0] === 1) {
         res.status(200).json({ message: "User has been updated!" });
       } else {
-        next(createError(400, "USer cannot be updated!"));
+        next(createError(400, "User cannot be updated!"));
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async updateAdmin(req, res, next) {
+    const id = req.params.id;
+    try {
+      const uid = await user.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      const { name, email, address, gender, image, birthday, phone_number } =
+        req.body;
+      const firebaseUID = uid.uid;
+
+      const userRecord = await admin.auth().updateUser(firebaseUID, {
+        email: email,
+      });
+
+      if (userRecord.email !== email) {
+        next(createError(400, "Email cannot be updated!"));
+      }
+
+      const response = await user.update(
+        {
+          name: name,
+          email: email,
+          address: address,
+          gender: gender,
+          image: image,
+          birthday: birthday,
+          phone_number: phone_number,
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+      if (response[0] === 1) {
+        res.status(200).json({ message: "User has been updated!" });
+      } else {
+        next(createError(400, "User cannot be updated!"));
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async delete(req, res, next) {
+    try {
+      const uid = await user.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+      const id = req.params.id;
+      await admin.auth().deleteUser(uid.uid);
+      const response = await user.destroy({
+        where: {
+          id: id,
+        },
+      });
+      if (response === 1) {
+        res.status(200).json({ message: "User has been deleted!" });
+      } else {
+        next(createError(400, "User cannot be deleted!"));
       }
     } catch (error) {
       next(error);

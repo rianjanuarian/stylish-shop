@@ -12,6 +12,9 @@ userRoutes.get("/logout", UserControllers.logout);
 //User Data
 userRoutes.put("/change_password", verifyUser, UserControllers.changePassword);
 userRoutes.put("/update", verifyUser, UserControllers.update);
+userRoutes.get("/", verifyAdmin, UserControllers.getUser);
+userRoutes.delete("/delete/:id", verifyAdmin, UserControllers.delete);
+userRoutes.put("/update/:id", verifyAdmin, UserControllers.updateAdmin);
 // userRoutes.get("/", UserControllers.getData);
 // userRoutes.post("/create", UserControllers.create);
 // userRoutes.put("/update/:id", UserControllers.update);
