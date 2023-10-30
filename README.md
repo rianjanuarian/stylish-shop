@@ -21,7 +21,7 @@ npx sequelize-cli model:generate --name courier --attributes name:string,price:i
 
 npx sequelize-cli model:generate --name review --attributes user_id:integer,products_id:integer,review:string
 
-npx sequelize-cli model:generate --name cart --attributes userId:integer,productsId:integer,qty:integer,total_price:integer
+npx sequelize-cli model:generate --name cart --attributes userId:integer,productId:integer,qty:integer,total_price:integer
 
 
 

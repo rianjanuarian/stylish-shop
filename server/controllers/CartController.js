@@ -1,5 +1,6 @@
 const createError = require("../middlewares/createError");
 const { cart,user,product } = require("../models");
+
 class CartController {
   static async create(req, res, next) {
     try {
@@ -57,6 +58,7 @@ class CartController {
         let result = await user.findByPk(id,{
             include:[cart] 
         })
+      
         res.status(200).json(result);
     } catch (error) {
         next(error)

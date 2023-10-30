@@ -6,7 +6,7 @@ const { verifyUser } = require("../middlewares/verifyRole");
 cartRoutes.post('/create',CartController.create);
 cartRoutes.put('/update/:id',CartController.update);
 cartRoutes.delete('/delete/:id', CartController.delete);
-cartRoutes.get('/cart/:id', CartController.getByCart);
+cartRoutes.get('/user/:id', CartController.getByCart);
 
 
 
