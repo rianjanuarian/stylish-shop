@@ -52,7 +52,6 @@ class UserController {
   static async createAdmin(req, res, next) {
     try {
       const { name, email, password } = req.body;
-      const pattern = /^(?=\S{8,}$)/;
       const isEmailExist = await user.findOne({
         where: {
           email: email,
@@ -65,24 +64,11 @@ class UserController {
         );
       }
 
-      if (!pattern.test(password)) {
-        return next(
-          createError(400, "Password must be at least 8 characters!")
-        );
-      }
-
-      const userRecord = await admin.auth().createUser({
-        email: email,
-        password: password,
-      });
-
-      const firebaseUID = userRecord.uid;
       const response = await user.create({
         name: name,
         email: email,
         role: "admin",
         password: password,
-        uid: firebaseUID,
       });
 
       res.status(201).json({ message: "Admin has been created!", response });
@@ -101,7 +87,7 @@ class UserController {
       if (yuser) {
         if (await decryptPassword(req.body.password, yuser.password)) {
           const access_token = await encodeTokenUsingJwt(yuser);
-          // res.setHeader("access_token", access_token);
+          res.setHeader("access_token", access_token);
           res.status(200).json({ message: "User signed in!", access_token });
         } else {
           next(createError(401, "Password is incorrect!"));
@@ -176,6 +162,39 @@ class UserController {
         }
       } else {
         next(createError(400, "Old password not match!"));
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async update(req, res, next) {
+    try {
+      // DecodeToken
+      const access_token = req.headers.access_token;
+      const decodeToken = await decodeTokenUsingJwt(access_token);
+      const yuser = decodeToken;
+      // End DecodeToken
+      const { name, address, gender, image, birthday, phone_number } = req.body;
+      const response = await user.update(
+        {
+          name: name || yuser.name,
+          address: address,
+          gender: gender,
+          image: image,
+          birthday: birthday,
+          phone_number: phone_number,
+        },
+        {
+          where: {
+            uid: yuser.uid,
+          },
+        }
+      );
+      if (response[0] === 1) {
+        res.status(200).json({ message: "User has been updated!" });
+      } else {
+        next(createError(400, "USer cannot be updated!"));
       }
     } catch (error) {
       next(error);
