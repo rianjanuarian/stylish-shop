@@ -6,36 +6,44 @@ class BrandControllers {
       const brands = await brand.findAll();
       res.status(200).json(brands);
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 
   static async create(req, res, next) {
     try {
       const { name, image } = req.body;
-      const brand = await brand.create({ name, image });
-      res.status(200).json(brand);
+      const brands = await brand.create({ name, image });
+      res.status(200).json(brands);
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
   static async update(req, res, next) {
     try {
       const { id } = req.params;
       const { name, image } = req.body;
-      const brand = await brand.update({ name, image }, { where: { id } });
-      res.status(200).json(brand);
+      const brands = await brand.update({ name, image }, { where: { id } });
+      if (brands[0] === 1) {
+        res.status(200).json({ message: "Brand has been updated!" });
+      } else {
+        res.status(404).json({ message: "Brand not found!" });
+      }
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
   static async delete(req, res, next) {
     try {
       const { id } = req.params;
-      const brand = await brand.destroy({ where: { id } });
-      res.status(200).json(brand);
+      const brands = await brand.destroy({ where: { id } });
+      if (brands === 1) {
+        res.status(200).json({ message: "Brand has been deleted!" });
+      } else {
+        res.status(404).json({ message: "Brand not found!" });
+      }
     } catch (err) {
-      next(err)
+      next(err);
     }
   }
 }
