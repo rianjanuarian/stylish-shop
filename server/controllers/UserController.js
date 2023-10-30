@@ -140,19 +140,15 @@ class UserController {
 
   static async changePassword(req, res, next) {
     try {
-      // DecodeToken
-      const access_token = req.headers.access_token;
-      const decodeToken = await decodeTokenUsingJwt(access_token);
-      const yuser = decodeToken;
-      // End DecodeToken
+      const passwords = req.user.password;
       const { oldPassword, newPassword, confirmPassword } = req.body;
-      if (await decryptPassword(oldPassword, yuser.password)) {
+      if (await decryptPassword(oldPassword, passwords)) {
         if (newPassword === confirmPassword) {
           await user.update(
             { password: await encryptPassword(newPassword) },
             {
               where: {
-                uid: yuser.uid,
+                uid: req.user.uid,
               },
             }
           );
@@ -170,11 +166,7 @@ class UserController {
 
   static async update(req, res, next) {
     try {
-      // DecodeToken
-      const access_token = req.headers.access_token;
-      const decodeToken = await decodeTokenUsingJwt(access_token);
-      const yuser = decodeToken;
-      // End DecodeToken
+      const uid = req.user.uid;
       const { name, address, gender, image, birthday, phone_number } = req.body;
       const response = await user.update(
         {
@@ -187,14 +179,14 @@ class UserController {
         },
         {
           where: {
-            uid: yuser.uid,
+            uid: uid,
           },
         }
       );
       if (response[0] === 1) {
         res.status(200).json({ message: "User has been updated!" });
       } else {
-        next(createError(400, "USer cannot be updated!"));
+        next(createError(400, "User cannot be updated!"));
       }
     } catch (error) {
       next(error);
