@@ -12,12 +12,12 @@ class CourierController {
   static async create(req, res, next) {
     try {
       const { name, phone, address } = req.body;
-      const courier = await courier.create({
+      const couriers = await courier.create({
         name,
         phone,
         address,
       });
-      res.json(courier);
+      res.status(201).json({ message: "Courier has been created!", couriers });
     } catch (err) {
       next(err);
     }
@@ -26,12 +26,11 @@ class CourierController {
   static async update(req, res, next) {
     try {
       const { id } = req.params;
-      const { name, phone, address } = req.body;
-      const courier = await courier.update(
-        { name, phone, address },
-        { where: { id } }
-      );
-      res.json(courier);
+      const { name, price } = req.body;
+      const couriers = await courier.update({ name, price }, { where: { id } });
+      couriers[0] === 1
+        ? res.status(200).json({ message: "Courier has been updated!" })
+        : res.status(404).json({ message: "Courier not found!" });
     } catch (err) {
       next(err);
     }
@@ -40,8 +39,10 @@ class CourierController {
   static async delete(req, res, next) {
     try {
       const { id } = req.params;
-      const courier = await courier.destroy({ where: { id } });
-      res.json(courier);
+      const couriers = await courier.destroy({ where: { id } });
+      couriers === 1
+        ? res.status(200).json({ message: "Courier has been deleted!" })
+        : res.status(404).json({ message: "Courier not found!" });
     } catch (err) {
       next(err);
     }
