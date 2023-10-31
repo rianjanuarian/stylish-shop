@@ -1,16 +1,24 @@
 const createError = require("../middlewares/createError");
 const { cart, user, product } = require("../models");
 
-//ini harus bkin ulang :") tpi ngantuk
 class CartController {
   static async create(req, res, next) {
     try {
-      const { productId, userId, qty, total_price } = req.body;
+      const { productId } = req.body;
+      const userId = req.user.dataValues.id;
+
+      const currentProduct = await product.findByPk(productId);
+
+      if (!currentProduct) {
+        return next(createError(404, "Product not found!"));
+      }
+
+      const total_price = currentProduct.dataValues.price;
+
       let result = await cart.create({
         productId,
         userId,
-        qty, 
-        total_price, // salah aku, hrusnya g ada total_price disni tpi di transaction saja, dsni hrus math aja di fe, krna harga blom pasti bsa berubah klo qty berubah
+        total_price,
       });
       res.status(201).json(result);
     } catch (error) {
@@ -18,13 +26,13 @@ class CartController {
     }
   }
 
-  static async getProductsByUserId(req, res, next) { //bsok lah aku bkin
+  static async getProductsByUserId(req, res, next) {
     try {
-      const userId = req.user.id;
+      const userId = req.user.dataValues.id;
       const products = await cart.findAll({
         where: {
-          userId
-        }, 
+          userId,
+        },
       });
       res.status(200).json(products);
     } catch (error) {
@@ -32,39 +40,36 @@ class CartController {
     }
   }
 
-  static async getProductForTransaction(req, res, next) { //bsok aku kerjain jg
+  static async update(req, res, next) {
     try {
-      const userId = req.user.id;
-      const products = await cart.findAll({
-        where: {
-          userId
-        }, 
-      }); 
-      //blom fix
-      return products;
-    } catch (error) {
-      next(error);
-    }
-  }
+      const id = parseInt(req.params.id);
+      const { qty } = req.body;
 
-  static async update(req, res, next) { //y diupdate hrusnya cuma qty y lain g bsa
-    try {
-      const id = +req.params.id;
-      const { productId, userId, qty, total_price } = req.body;
-      let result = await cart.update(
-        {
-          productId,
-          userId,
-          qty,
-          total_price,
-        },
-        { where: { id } }
-      );
-      if (result[0] === 1) {
-        res.status(201).json({ message: "cart successfully updated" });
-      } else {
-        next(createError(400, "Cart cannot created"));
+      const currentCart = await cart.findByPk(id);
+      const userId = req.user.dataValues.id;
+
+      if (!currentCart) {
+        return next(createError(404, "Cart not found!"));
       }
+
+      if (userId !== currentCart.userId) {
+        return next(
+          createError(401, "You are not authorized to update this cart!")
+        );
+      }
+
+      const currentProduct = await product.findByPk(
+        currentCart.dataValues.productId
+      );
+
+      const total_price = currentProduct.price * qty;
+
+      await currentCart.update({
+        qty,
+        total_price,
+      });
+
+      res.status(201).json({ message: "cart successfully updated" });
     } catch (error) {
       next(error);
     }
@@ -72,26 +77,23 @@ class CartController {
 
   static async delete(req, res, next) {
     try {
-      const id = +req.params.id;
-      let result = await cart.destroy({ where: { id } });
-      if (result === 1) {
-        res.status(200).json({ message: "Deleted Successfully" });
-      } else {
-        next(createError(400, "Cart cannot deleted"));
+      const id = parseInt(req.params.id);
+      const userId = req.user.dataValues.id;
+      let currentCart = await cart.findByPk(id);
+
+      if (!currentCart) {
+        return next(createError(404, "Cart not found!"));
       }
-    } catch (error) {
-      next(error);
-    }
-  }
 
-  static async getByCart(req, res, next) { //what is dis?
-    try {
-      const id = +req.params.id;
-      let result = await user.findByPk(id, {
-        include: [product],
-      });
+      if (currentCart.userId !== userId) {
+        return next(
+          createError(401, "You are not authorized to delete this cart!")
+        );
+      }
 
-      res.status(200).json(result);
+      await currentCart.destroy();
+
+      res.status(200).json({ message: "Deleted Successfully" });
     } catch (error) {
       next(error);
     }
