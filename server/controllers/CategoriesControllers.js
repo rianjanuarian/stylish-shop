@@ -14,7 +14,9 @@ class CategorysControllers {
     try {
       const { name } = req.body;
       const categories = await category.create({ name });
-      res.status(200).json(categories);
+      res
+        .status(201)
+        .json({ message: "Category has been created!", categories });
     } catch (err) {
       next(err);
     }
@@ -25,11 +27,9 @@ class CategorysControllers {
       const { id } = req.params;
       const { name } = req.body;
       const categories = await category.update({ name }, { where: { id } });
-      if (categories[0] === 1) {
-        res.status(200).json({ message: "Category has been updated!" });
-      } else {
-        res.status(404).json({ message: "Category not found!" });
-      }
+      categories[0] === 1
+        ? res.status(200).json({ message: "Category has been updated!" })
+        : res.status(404).json({ message: "Category not found!" });
     } catch (err) {
       next(err);
     }
@@ -39,11 +39,9 @@ class CategorysControllers {
     try {
       const { id } = req.params;
       const categories = await category.destroy({ where: { id } });
-      if (categories === 1) {
-        res.status(200).json({ message: "Category has been deleted!" });
-      } else {
-        res.status(404).json({ message: "Category not found!" });
-      }
+      categories === 1
+        ? res.status(200).json({ message: "Category has been deleted!" })
+        : res.status(404).json({ message: "Category not found!" });
     } catch (err) {
       next(err);
     }

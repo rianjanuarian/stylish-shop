@@ -1,8 +1,9 @@
 const brandRoutes = require("express").Router();
+const { verifyAdmin } = require("../middlewares/verifyRole");
 const BrandControllers = require("../controllers/BrandController");
 
 brandRoutes.get("/", BrandControllers.getBrands);
-brandRoutes.post("/create", BrandControllers.create);
-brandRoutes.put("/update/:id", BrandControllers.update);
-brandRoutes.delete("/delete/:id", BrandControllers.delete);
+brandRoutes.post("/create", verifyAdmin, BrandControllers.create);
+brandRoutes.put("/update/:id", verifyAdmin, BrandControllers.update);
+brandRoutes.delete("/delete/:id", verifyAdmin, BrandControllers.delete);
 module.exports = brandRoutes;

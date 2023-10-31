@@ -1,6 +1,5 @@
 const productRoutes = require("express").Router();
 const ProductControllers = require("../controllers/ProductController");
-const { verifyUser } = require("../middlewares/verifyRole");
 
 productRoutes.get("/", ProductControllers.getData);
 productRoutes.get("/detail/:id", ProductControllers.detail);
