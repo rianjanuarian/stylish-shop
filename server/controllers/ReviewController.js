@@ -36,8 +36,14 @@ class ReviewControllers {
 
   static async createReview(req, res, next) {
     try {
-      const review = await review.create(req.body);
-      res.status(201).json(review);
+      const user_id = req.user.dataValues.id;
+      const products_id = parseInt(req.params.productId);
+      const newReview = await review.create({
+        review: req.body.review,
+        user_id,
+        products_id,
+      });
+      res.status(201).json(newReview);
     } catch (error) {
       next(error);
     }
@@ -45,14 +51,24 @@ class ReviewControllers {
 
   static async updateReview(req, res, next) {
     try {
+      const user_id = req.user.dataValues.id;
       const id = parseInt(req.params.id);
-      const response = await review.update(req.body, {
-        where: {
-          id,
-        },
+      const currentReview = await review.findByPk(id);
+
+      if (!currentReview) {
+        return next(createError(404, "Review not found!"));
+      }
+
+      if (user_id !== currentReview.user_id) {
+        return next(createError(401, "You are not the owner of this review!"));
+      }
+
+      const response = await currentReview.update({
+        review: req.body.review,
       });
-      if (response[0] === 1) {
-        res.status(200).json({ msg: "success updated review" });
+
+      if (response.dataValues) {
+        res.status(200).json({ message: "success updated review" });
       }
     } catch (error) {
       next(error);
@@ -62,16 +78,22 @@ class ReviewControllers {
   static async deleteReview(req, res, next) {
     try {
       const id = parseInt(req.params.id);
-      const response = await review.destroy({
-        where: {
-          id,
-        },
-      });
-      if (response === 1) {
-        res.status(200).json({ msg: "success deleted review" });
+      const user_id = req.user.dataValues.id;
+      const currentReview = await review.findByPk(id);
+
+      if (!currentReview) {
+        return next(createError(404, "Review not found!"));
       }
+
+      if(user_id !== currentReview.user_id) {
+        return next(createError(401, "You are not the owner of this review!"));
+      }
+
+      await currentReview.destroy();
+
+      res.status(200).json({ message: "success deleted review" });
     } catch (error) {
-        next(error);
+      next(error);
     }
   }
 }
