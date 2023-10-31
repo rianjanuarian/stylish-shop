@@ -11,6 +11,7 @@ userRoutes.post("/login_with_google", UserControllers.loginWithGoogle);
 //Admin Only
 userRoutes.get("/", verifyAdmin, UserControllers.getUser);
 userRoutes.post("/login_admin", UserControllers.loginAdmin);
+userRoutes.put("/change_password_admin", verifyAdmin, UserControllers.changePassword);
 userRoutes.post("/create_admin", verifyAdmin, UserControllers.createAdmin);
 userRoutes.put("/update_admin/:id", verifyAdmin, UserControllers.updateAdminV2);
 userRoutes.delete("/delete_account/:id", verifyAdmin, UserControllers.deleteAccount);
