@@ -217,43 +217,31 @@ class UserController {
     }
   }
 
-  // static async signInWithGoogle(req, res, next) {
-  //   try {
-  //     const { idToken } = req.body;
+  static async signInWithGoogle(req, res, next) {
+    // masih abu" untuk penggunaan ini, tpi kata si GPT seperti ini sih penalaranku.
+    const { idToken } = req.body;
 
-  //     const decodedToken = await admin.auth().verifyIdToken(idToken);
-  //     const { uid } = decodedToken;
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      const uid = decodedToken.uid;
 
-  //     // Check if the user already exists in your PostgreSQL database
-  //     const existingUser = await user.findOne({
-  //       where: {
-  //         uid: uid,
-  //       },
-  //     });
+      // Get User Data from Google Sign In
+      const googleUserData = await admin.auth().getUser(uid);
 
-  //     if (!existingUser) {
-  //       // User doesn't exist in the database; you can create a new user entry or handle as needed.
-  //       // For example, you might want to store additional user information.
+      // Save User Data to Postgres
+      const saveUser = await user.create({
+        uid: uid,
+        name: googleUserData.displayName,
+        email: googleUserData.email,
+      });
 
-  //       // Create a new user entry in your database and associate it with the Firebase UID.
-  //       const newUser = await user.create({
-  //         uid: uid,
-  //         // Other user data if needed
-  //       });
-
-  //       // Return the new user's data or access token.
-  //       res
-  //         .status(201)
-  //         .json({ message: "User has been created!", user: newUser });
-  //     } else {
-  //       // Return existing user data or access token.
-  //       const access_token = await encodeTokenUsingJwt(existingUser);
-  //       res.status(200).json({ message: "User signed in!", access_token });
-  //     }
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
+      res.status(200).json({
+        message: "Successfully authenticated",
+      });
+    } catch (error) {
+      next(createError(401), { error: "Authentication failed" });
+    }
+  }
 
   // updated
   static async changePassword(req, res, next) {

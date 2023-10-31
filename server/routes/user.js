@@ -10,7 +10,7 @@ userRoutes.post("/login_with_google", UserControllers.loginWithGoogle);
 
 userRoutes.post("/register", UserControllers.register);
 userRoutes.post("/login", UserControllers.login);
-// userRoutes.post("/google-sign-in", UserControllers.signInWithGoogle);
+userRoutes.post("/google_sign_in", UserControllers.signInWithGoogle);
 userRoutes.post("/create_admin", UserControllers.createAdmin);
 userRoutes.get("/logout", UserControllers.logout);
 
@@ -20,9 +20,5 @@ userRoutes.put("/update", verifyUser, UserControllers.update);
 userRoutes.get("/", verifyAdmin, UserControllers.getUser);
 userRoutes.delete("/delete/:id", verifyAdmin, UserControllers.delete);
 userRoutes.put("/update/:id", verifyAdmin, UserControllers.updateAdmin);
-// userRoutes.get("/", UserControllers.getData);
-// userRoutes.post("/create", UserControllers.create);
-// userRoutes.put("/update/:id", UserControllers.update);
-// userRoutes.delete("/delete/:id", UserControllers.delete);
 
 module.exports = userRoutes;
