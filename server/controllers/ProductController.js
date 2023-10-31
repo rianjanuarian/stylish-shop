@@ -51,11 +51,12 @@ class ProductControllers {
       let result = await product.destroy({
         where: { id },
       });
-      if (result === 1) {
-        res
-          .status(200)
-          .json({ message: "Product has been deleted successfully!" });
-      }
+
+      result === 1
+        ? res
+            .status(200)
+            .json({ message: "Product has been deleted successfully!" })
+        : next(createError(400, "Product cannot be deleted!"));
     } catch (error) {
       next(error);
     }
@@ -68,9 +69,11 @@ class ProductControllers {
         where: { id },
       });
 
-      if (result[0] === 1) {
-        res.status(200).json(result);
-      }
+      result[0] === 1
+        ? res
+            .status(200)
+            .json({ message: "Product has been updated successfully!" })
+        : next(createError(400, "Product cannot be updated!"));
     } catch (error) {
       next(error);
     }
