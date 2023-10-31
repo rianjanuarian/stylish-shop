@@ -3,7 +3,8 @@ import DashboardHeader from '../../components/DashboardHeader';
 
 import all_orders from '../../constants/orders';
 import {calculateRange, sliceData} from '../../utils/table-pagination';
-
+import sidebar_menu from '../../constants/sidebar-menu';
+import SideBar from '../../components/Sidebar/Sidebar';
 import '../styles.css';
 import DoneIcon from '../../assets/icons/done.svg';
 import CancelIcon from '../../assets/icons/cancel.svg';
@@ -43,7 +44,9 @@ function Orders () {
     }
 
     return(
-        
+        <div className='dashboard-container'>
+        <SideBar menu={sidebar_menu} />
+        <div className='dashboard-body'>
         <div className='dashboard-content'>
               
             <DashboardHeader
@@ -133,6 +136,8 @@ function Orders () {
                     </div>
                 }
             </div>
+        </div>
+        </div>
         </div>
     )
 }
