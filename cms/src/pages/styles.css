@@ -4,6 +4,19 @@
     flex-direction: column;
     overflow: auto;
 }
+.rows{
+display: flex;
+}
+.rows-btn{
+   margin-right: 10px;
+   width: 10%;
+   padding: 10px;
+   background-color: #3498db;
+   color: #fff;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+}
 .dashboard-content-container {
     margin: 1em;
     background-color: white;

@@ -1,8 +1,8 @@
-import DashboardIcon from '../assets/icons/dashboard.svg';
-import ShippingIcon from '../assets/icons/shipping.svg';
-import ProductIcon from '../assets/icons/product.svg';
+import DashboardIcon from '../assets/icons/apps.svg';
+import ShippingIcon from '../assets/icons/crown.svg';
+import ProductIcon from '../assets/icons/truck-side.svg';
 import UserIcon from '../assets/icons/user.svg';
-
+import Users from '../assets/icons/users.svg'
 const sidebar_menu = [
     {
         id: 1,
@@ -24,16 +24,17 @@ const sidebar_menu = [
     },
     {
         id: 4,
-        icon: UserIcon,
-        path: '/profile',
-        title: 'My account',
+        icon: Users,
+        path: '/user',
+        title: 'User',
     },
     {
         id: 5,
         icon: UserIcon,
-        path: '/user',
-        title: 'User',
-    }
+        path: '/profile',
+        title: 'My account',
+    },
+  
 ]
 
 export default sidebar_menu;
