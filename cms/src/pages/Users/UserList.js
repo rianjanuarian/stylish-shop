@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DashboardHeader from "../../components/DashboardHeader";
-
+import { Link } from "react-router-dom";
 import all_orders from "../../constants/orders";
 import { calculateRange, sliceData } from "../../utils/table-pagination";
 import sidebar_menu from "../../constants/sidebar-menu";
@@ -52,9 +52,7 @@ const UserList = () => {
 
           <div className="dashboard-content-container">
             <div className="rows">
-              <button className="rows-btn" type="button">
-                Add User
-              </button>
+            <Link to={'/addUser'} className="rows-btn" type="button">Add User</Link>
             </div>
 
             <div className="dashboard-content-header">

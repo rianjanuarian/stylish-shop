@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import DashboardHeader from "../../components/DashboardHeader";
-
+import { Link } from "react-router-dom";
 import all_orders from "../../constants/orders";
 import { calculateRange, sliceData } from "../../utils/table-pagination";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
+import "./product.css"
 import DoneIcon from "../../assets/icons/done.svg";
 import CancelIcon from "../../assets/icons/cancel.svg";
 import RefundedIcon from "../../assets/icons/refunded.svg";
@@ -42,6 +43,8 @@ const Product = () => {
     setOrders(sliceData(all_orders, new_page, 5));
   };
 
+  
+
   return (
     <div className="dashboard-container">
       <SideBar menu={sidebar_menu} />
@@ -51,16 +54,14 @@ const Product = () => {
 
           <div className="dashboard-content-container">
             <div className="rows">
-              <button className="rows-btn" type="button">
-                Add Category
-              </button>
+                <Link to={'/addProduct'} className="rows-btn" type="button">Add Product</Link>
 
-              <button className="rows-btn" type="button">
+              <Link to={'/addBrand'} className="rows-btn" type="button">
                 Add Brand
-              </button>
-              <button className="rows-btn" type="button">
-                Add Product
-              </button>
+              </Link>
+              <Link to={'/addCategory'} className="rows-btn" type="button">
+                Add Category
+              </Link>
             </div>
 
             <div className="dashboard-content-header">
