@@ -53,7 +53,11 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
-      image: DataTypes.STRING,
+      image: {
+        type: DataTypes.STRING,
+        defaultValue:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png",
+      },
       color: {
         type: DataTypes.STRING,
         validate: {
@@ -64,13 +68,6 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      hooks: {
-        beforeCreate: (product, options) => {
-          product.image =
-            product.image ||
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png";
-        },
-      },
       sequelize,
       modelName: "product",
     }

@@ -1,3 +1,4 @@
+const createError = require("../middlewares/createError");
 const { brand } = require("../models");
 
 class BrandControllers {
@@ -12,32 +13,44 @@ class BrandControllers {
 
   static async create(req, res, next) {
     try {
-      const { name, image } = req.body;
-      const brands = await brand.create({ name, image });
-      res.status(201).json({ message: "Brand has been created!", brands });
+      const newBrand = await brand.create(req.body);
+      res.status(201).json({ message: "Brand has been created!", newBrand });
     } catch (err) {
       next(err);
     }
   }
+
   static async update(req, res, next) {
     try {
-      const { id } = req.params;
-      const { name, image } = req.body;
-      const brands = await brand.update({ name, image }, { where: { id } });
-      brands[0] === 1
+      const id = parseInt(req.params.id);
+
+      const currentBrand = await brand.findByPk(id);
+
+      if (!currentBrand) {
+        return next(createError(404, "Brand does not exist!"));
+      }
+
+      const response = await currentBrand.update(req.body);
+
+      response.dataValues
         ? res.status(200).json({ message: "Brand has been updated!" })
-        : res.status(404).json({ message: "Brand not found!" });
+        : next(createError(400, "Brand has not been updated!"));
     } catch (err) {
       next(err);
     }
   }
+
   static async delete(req, res, next) {
     try {
-      const { id } = req.params;
-      const brands = await brand.destroy({ where: { id } });
-      brands === 1
-        ? res.status(200).json({ message: "Brand has been deleted!" })
-        : res.status(404).json({ message: "Brand not found!" });
+      const id = parseInt(req.params.id);
+      const currentBrand = await brand.findByPk(id);
+
+      if (!currentBrand) {
+        return next(createError(404, "Brand does not exist!"));
+      }
+
+      await currentBrand.destroy();
+      res.status(200).json({ message: "Brand has been deleted!" });
     } catch (err) {
       next(err);
     }
