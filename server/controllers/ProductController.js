@@ -25,17 +25,17 @@ class ProductControllers {
     try {
       let { categoryId, brandId, ...otherDetails } = req.body;
 
-      const product = await product.create({
+      const products = await product.create({
         ...otherDetails,
       });
 
       await categoryproduct.create({
-        productId: parseInt(product.id),
+        productId: parseInt(products.id),
         categoryId: parseInt(categoryId),
       });
 
       await brandproduct.create({
-        productId: parseInt(product.id),
+        productId: parseInt(products.id),
         brandId: parseInt(brandId),
       });
 
