@@ -19,9 +19,19 @@ const productSlice = createSlice({
     name:"products",
     initialState : productEntity.getInitialState(),
     extraReducers : {
+        
+        [getProducts.pending] : (state) => {
+           state.isLoading= true
+           
+        },
         [getProducts.fulfilled] : (state,action) => {
+            state.isLoading= false
             productEntity.setAll(state,action.payload)
         },
+        [getProducts.rejected] : (state,action) => {
+            state.isLoading= false
+            state.error = action.error.message
+         },
         [saveProducts.fulfilled] : (state,action) => {
             productEntity.addOne(state,action.payload)
         }

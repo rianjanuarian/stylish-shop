@@ -10,7 +10,7 @@ import "../styles.css";
 import { productSelectors, getProducts } from "../../features/productSlice";
 const Product = () => {
   const products = useSelector(productSelectors.selectAll);
-
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,15 +36,7 @@ const Product = () => {
             <div className="dashboard-content-header">
               <h2>Product List</h2>
 
-              {/* <div className="dashboard-content-search">
-                <input
-                  type="text"
-                  value={search}
-                  placeholder="Search.."
-                  className="dashboard-content-input"
-                  onChange={(e) => __handleSearch(e)}
-                />
-              </div> */}
+        
             </div>
 
             <table>
@@ -103,7 +95,7 @@ const Product = () => {
                     </tr>
                   ))}
                 </tbody>
-              ) : null}
+              ) : <h3>No data</h3>}
             </table>
           </div>
         </div>
