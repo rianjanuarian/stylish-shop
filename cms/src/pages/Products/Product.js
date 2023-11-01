@@ -1,49 +1,23 @@
 import React, { useState, useEffect } from "react";
 import DashboardHeader from "../../components/DashboardHeader";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import all_orders from "../../constants/orders";
-import { calculateRange, sliceData } from "../../utils/table-pagination";
+
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
-import "./product.css"
-import DoneIcon from "../../assets/icons/done.svg";
-import CancelIcon from "../../assets/icons/cancel.svg";
-import RefundedIcon from "../../assets/icons/refunded.svg";
+
+import { productSelectors, getProducts } from "../../features/productSlice";
 const Product = () => {
-  const [search, setSearch] = useState("");
-  const [orders, setOrders] = useState(all_orders);
-  const [page, setPage] = useState(1);
-  const [pagination, setPagination] = useState([]);
+  const products = useSelector(productSelectors.selectAll);
+  
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setPagination(calculateRange(all_orders, 5));
-    setOrders(sliceData(all_orders, page, 5));
-  }, []);
-
-  // Search
-  const __handleSearch = (event) => {
-    setSearch(event.target.value);
-    if (event.target.value !== "") {
-      let search_results = orders.filter(
-        (item) =>
-          item.first_name.toLowerCase().includes(search.toLowerCase()) ||
-          item.last_name.toLowerCase().includes(search.toLowerCase()) ||
-          item.product.toLowerCase().includes(search.toLowerCase())
-      );
-      setOrders(search_results);
-    } else {
-      __handleChangePage(1);
-    }
-  };
+    dispatch(getProducts());
+  }, [dispatch]);
 
   // Change Page
-  const __handleChangePage = (new_page) => {
-    setPage(new_page);
-    setOrders(sliceData(all_orders, new_page, 5));
-  };
-
-  
 
   return (
     <div className="dashboard-container">
@@ -54,117 +28,75 @@ const Product = () => {
 
           <div className="dashboard-content-container">
             <div className="rows">
-                <Link to={'/addProduct'} className="rows-btn" type="button">Add Product</Link>
-
-              <Link to={'/addBrand'} className="rows-btn" type="button">
-                Add Brand
-              </Link>
-              <Link to={'/addCategory'} className="rows-btn" type="button">
-                Add Category
+              <Link to={"/addProduct"} className="rows-btn" type="button">
+                Add Product
               </Link>
             </div>
 
             <div className="dashboard-content-header">
               <h2>Product List</h2>
 
-              <div className="dashboard-content-search">
-                <input
-                  type="text"
-                  value={search}
-                  placeholder="Search.."
-                  className="dashboard-content-input"
-                  onChange={(e) => __handleSearch(e)}
-                />
-              </div>
+        
             </div>
 
             <table>
               <thead>
-                <th>ID</th>
-                <th>DATE</th>
-                <th>STATUS</th>
-                <th>COSTUMER</th>
-                <th>PRODUCT</th>
-                <th>REVENUE</th>
+                <th>No.</th>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>DESCRIPTION</th>
+                <th>STOCK</th>
+                <th>IMAGE</th>
+                <th>COLOR</th>
+                <th>CATEGORIES</th>
+                <th>BRAND</th>
+                <th>ACTION</th>
               </thead>
 
-              {orders.length !== 0 ? (
+              {products.length !== 0 ? (
                 <tbody>
-                  {orders.map((order, index) => (
-                    <tr key={index}>
+                  {products.map((e, index) => (
+                    <tr key={e.id}>
                       <td>
-                        <span>{order.id}</span>
+                        <span>{index + 1}</span>
                       </td>
                       <td>
-                        <span>{order.date}</span>
+                        <span>{e.name}</span>
                       </td>
                       <td>
-                        <div>
-                          {order.status === "Paid" ? (
-                            <img
-                              src={DoneIcon}
-                              alt="paid-icon"
-                              className="dashboard-content-icon"
-                            />
-                          ) : order.status === "Canceled" ? (
-                            <img
-                              src={CancelIcon}
-                              alt="canceled-icon"
-                              className="dashboard-content-icon"
-                            />
-                          ) : order.status === "Refunded" ? (
-                            <img
-                              src={RefundedIcon}
-                              alt="refunded-icon"
-                              className="dashboard-content-icon"
-                            />
-                          ) : null}
-                          <span>{order.status}</span>
-                        </div>
+                        <span>${e.price}</span>
                       </td>
                       <td>
-                        <div>
-                          <img
-                            src={order.avatar}
-                            className="dashboard-content-avatar"
-                            alt={order.first_name + " " + order.last_name}
-                          />
-                          <span>
-                            {order.first_name} {order.last_name}
-                          </span>
-                        </div>
+                        <span>{e.description}</span>
                       </td>
                       <td>
-                        <span>{order.product}</span>
+                        <span>{e.stock}</span>
                       </td>
                       <td>
-                        <span>${order.price}</span>
+                        <span>{e.image}</span>
+                      </td>
+                      <td>
+                        {e.color === null ? (
+                          <span>No color</span>
+                        ) : (
+                          <span>{e.color}</span>
+                        )}
+                      </td>
+                      <td>
+                        {e.categories.map((el) => (
+                          <span>{el.name}</span>
+                        ))}
+                      </td>
+                      <td>
+                        {e.brands.map((el) => (
+                          <span>{el.name}</span>
+                        ))}
                       </td>
                     </tr>
                   ))}
                 </tbody>
-              ) : null}
+              ) : <h3>No data</h3>}
             </table>
-
-            {orders.length !== 0 ? (
-              <div className="dashboard-content-footer">
-                {pagination.map((item, index) => (
-                  <span
-                    key={index}
-                    className={
-                      item === page ? "active-pagination" : "pagination"
-                    }
-                    onClick={() => __handleChangePage(item)}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <div className="dashboard-content-footer">
-                <span className="empty-table">No data</span>
-              </div>
-            )}
           </div>
         </div>
       </div>
