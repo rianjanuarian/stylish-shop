@@ -272,15 +272,9 @@ class UserController {
 
       const adminAccount = await user.findByPk(id);
 
-      const uid = adminAccount.uid; // Get uid ~Indra Oki Sandy~
-
       if (!adminAccount) {
         return next(createError(404, "User not found!"));
       }
-
-      await admin.auth().updateUser(uid, {
-        email: req.body.email,
-      }); // Update data in firebase with new email ~Indra Oki Sandy~
 
       const response = await adminAccount.update(req.body);
 

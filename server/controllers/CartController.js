@@ -77,16 +77,9 @@ class CartController {
 
   static async delete(req, res, next) {
     try {
-      // const id = parseInt(req.params.id);
-      const productId = parseInt(req.params.id); //penggantian variable
+      const id = parseInt(req.params.id);
       const userId = req.user.dataValues.id;
-      // let currentCart = await cart.findByPk(id);
-      let currentCart = await cart.findOne({
-        where: {
-          productId,
-          userId,
-        },
-      }); //Penghapusan dari productId ~Indra Oki Sandy~
+      let currentCart = await cart.findByPk(id);
 
       if (!currentCart) {
         return next(createError(404, "Cart not found!"));
@@ -96,7 +89,7 @@ class CartController {
         return next(
           createError(401, "You are not authorized to delete this cart!")
         );
-      } //harusnya ini nggak usah sih, karena penghapusan dari productId, but don't know you thinking ~Indra Oki Sandy~
+      }
 
       await currentCart.destroy();
 

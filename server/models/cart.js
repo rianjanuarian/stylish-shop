@@ -17,12 +17,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   cart.init(
     {
-      // id: {
-      //   allowNull: false,
-      //   type: DataTypes.INTEGER,
-      //   primaryKey: true,
-      // },
-      // kenapa ada id di sini??
+      id: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+      },
       userId: DataTypes.INTEGER,
       productId: DataTypes.INTEGER,
       qty: { type: DataTypes.INTEGER, defaultValue: 1 },
