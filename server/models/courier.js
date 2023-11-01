@@ -14,8 +14,22 @@ module.exports = (sequelize, DataTypes) => {
   }
   courier.init(
     {
-      name: DataTypes.STRING,
-      price: DataTypes.INTEGER,
+      name: {
+        type: DataTypes.STRING,
+        validate: {
+          notEmpty: {
+            msg: "Name is required",
+          },
+        },
+      },
+      price: {
+        type: DataTypes.INTEGER,
+        validate: {
+          notEmpty: {
+            msg: "Price is required",
+          },
+        },
+      },
     },
     {
       sequelize,

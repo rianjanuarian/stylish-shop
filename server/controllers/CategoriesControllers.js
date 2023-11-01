@@ -1,3 +1,4 @@
+const createError = require("../middlewares/createError");
 const { category } = require("../models");
 
 class CategorysControllers {
@@ -9,12 +10,14 @@ class CategorysControllers {
       next(err);
     }
   }
-
+  a;
   static async create(req, res, next) {
     try {
       const { name } = req.body;
       const categories = await category.create({ name });
-      res.status(200).json(categories);
+      res
+        .status(201)
+        .json({ message: "Category has been created!", categories });
     } catch (err) {
       next(err);
     }
@@ -22,14 +25,18 @@ class CategorysControllers {
 
   static async update(req, res, next) {
     try {
-      const { id } = req.params;
-      const { name } = req.body;
-      const categories = await category.update({ name }, { where: { id } });
-      if (categories[0] === 1) {
-        res.status(200).json({ message: "Category has been updated!" });
-      } else {
-        res.status(404).json({ message: "Category not found!" });
+      const id = parseInt(req.params.id);
+
+      const currentCategory = await category.findByPk(id);
+
+      if (!currentCategory) {
+        return next(createError(404, "Category does not exist!"));
       }
+
+      const response = await currentCategory.update(req.body);
+      response.dataValues
+        ? res.status(200).json({ message: "Category has been updated!" })
+        : next(createError(400, "Brand has not been updated!"));
     } catch (err) {
       next(err);
     }
@@ -37,13 +44,16 @@ class CategorysControllers {
 
   static async delete(req, res, next) {
     try {
-      const { id } = req.params;
-      const categories = await category.destroy({ where: { id } });
-      if (categories === 1) {
-        res.status(200).json({ message: "Category has been deleted!" });
-      } else {
-        res.status(404).json({ message: "Category not found!" });
+      const id = parseInt(req.params.id);
+
+      const currentCategory = await category.findByPk(id);
+
+      if (!currentCategory) {
+        return next(createError(404, "Category does not exist!"));
       }
+
+      await currentCategory.destroy();
+      res.status(200).json({ message: "Category has been deleted!" });
     } catch (err) {
       next(err);
     }

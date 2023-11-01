@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "pejantan";
 
 const encodeTokenUsingJwt = (token) => {
-  return jwt.sign(token.toJSON(), PRIVATE_KEY);
+  return jwt.sign(token, PRIVATE_KEY);
 };
 
 const decodeTokenUsingJwt = (token, cb) => {
