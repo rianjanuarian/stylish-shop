@@ -15,10 +15,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   transaction.init(
     {
-      userId: DataTypes.INTEGER,
-      productId: DataTypes.INTEGER,
+      cartId: DataTypes.INTEGER,
+      courierId: DataTypes.INTEGER,
       midtranstoken: DataTypes.STRING,
-      status: DataTypes.ENUM("pending", "reject", "approve"),
+      status: {
+        type: DataTypes.ENUM("pending", "reject", "approve"),
+        defaultValue: "pending",
+      },
     },
     {
       sequelize,
