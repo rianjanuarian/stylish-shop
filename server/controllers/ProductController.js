@@ -21,7 +21,65 @@ class ProductControllers {
     }
   }
 
+
+  static async create(req, res, next) {
+    try {
+      let { categoryId, brandId, ...otherDetails } = req.body;
+
+      const products = await product.create({
+        ...otherDetails,
+      });
+
+      await categoryproduct.create({
+        productId: parseInt(products.id),
+        categoryId: parseInt(categoryId),
+      });
+
+      await brandproduct.create({
+        productId: parseInt(products.id),
+        brandId: parseInt(brandId),
+      });
+
+      res.status(201).json({ message: "Success adding new product!" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async delete(req, res, next) {
+    try {
+      const id = parseInt(req.params.id);
+      let result = await product.destroy({
+        where: { id },
+      });
+      if (result === 1) {
+        res
+          .status(200)
+          .json({ message: "Product has been deleted successfully!" });
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async update(req, res, next) {
+    try {
+      const id = parseInt(req.params.id);
+      let result = await product.update(req.body, {
+        where: { id },
+      });
+
+      if (result[0] === 1) {
+        res.status(200).json(result);
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+
    static async detail(req, res, next) {
+
     try {
       const id = parseInt(req.params.id);
       let result = await product.findByPk(id, {
