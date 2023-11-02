@@ -6,7 +6,7 @@ import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
 
-import { brandSelectors, getBrands } from "../../features/brandSlice";
+import { brandSelectors, getBrands } from "../../redux/brandSlice";
 import { useSelector, useDispatch } from "react-redux";
 const Brand = () => {
   const dispatch = useDispatch();

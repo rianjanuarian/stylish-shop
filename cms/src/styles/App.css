@@ -6,6 +6,7 @@
 .dashboard-body {
   flex: 1;
   display: flex;
+  width: 70vw;
   flex-direction: column;
   background-color: #F0F2F5;
 }

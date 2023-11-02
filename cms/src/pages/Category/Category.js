@@ -5,7 +5,7 @@ import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategories, categorySelectors } from "../../features/categorySlice";
+import { getCategories, categorySelectors } from "../../redux/categorySlice";
 const Category = () => {
   const dispatch = useDispatch();
   const categories = useSelector(categorySelectors.selectAll);
