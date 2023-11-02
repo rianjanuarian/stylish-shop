@@ -15,7 +15,7 @@
 
 npx sequelize-cli model:generate --name user --attributes uid:string,name:string,email:string,password:string,image:string,address:string,role:enum,gender:enum,birthday:date,phone_number:string
 
-npx sequelize-cli model:generate --name transaction --attributes userId:integer,productId:integer,midtranstoken:string,status:enum
+npx sequelize-cli model:generate --name transaction --attributes userId:integer,cartId:string,courierId:integer,orderId:string,midtranstoken:string,status:enum
 
 npx sequelize-cli model:generate --name courier --attributes name:string,price:integer
 
