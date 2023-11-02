@@ -11,17 +11,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       transaction.belongsTo(models.courier);
       transaction.belongsTo(models.cart);
+      transaction.belongsTo(models.user);
     }
   }
   transaction.init(
     {
-      cartId: DataTypes.INTEGER,
+      userId: DataTypes.INTEGER,
+      cartId: DataTypes.STRING,
       courierId: DataTypes.INTEGER,
+      orderId: DataTypes.STRING,
       midtranstoken: DataTypes.STRING,
-      status: {
-        type: DataTypes.ENUM("pending", "reject", "approve"),
-        defaultValue: "pending",
-      },
+      status: DataTypes.ENUM("pending", "reject", "approve"),
     },
     {
       sequelize,

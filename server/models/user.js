@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       // user.belongsToMany(models.product, {
       //   through: models.cart,
       // });
+      user.hasMany(models.transaction);
     }
   }
   user.init(
