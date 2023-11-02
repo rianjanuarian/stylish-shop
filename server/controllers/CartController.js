@@ -1,5 +1,5 @@
 const createError = require("../middlewares/createError");
-const { cart, user, product } = require("../models");
+const { cart, product } = require("../models");
 
 class CartController {
   static async create(req, res, next) {

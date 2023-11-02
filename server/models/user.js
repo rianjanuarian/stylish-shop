@@ -11,9 +11,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       user.hasMany(models.transaction);
-      user.belongsToMany(models.product, {
-        through: models.cart,
-      });
+      // Coba
+      user.hasOne(models.cart);
+      // user.belongsToMany(models.product, {
+      //   through: models.cart,
+      // });
     }
   }
   user.init(
