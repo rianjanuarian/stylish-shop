@@ -25,7 +25,14 @@ class TransactionControllers {
         return next(createError(401, "You are not authorized!"));
       }
 
-      const userPay = await transaction.findByPk(id);
+      const userPay = await transaction.findByPk(id, {
+        include: [
+          {
+            model: user,
+            attributes: ["address"],
+          },
+        ],
+      });
       res.status(200).json({
         userPay,
         redirect_url: `https://app.sandbox.midtrans.com/snap/v3/redirection/${userPay.dataValues.midtranstoken}`,
