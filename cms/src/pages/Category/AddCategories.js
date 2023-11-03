@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
-import { saveCategories } from "../../features/categorySlice";
+import { saveCategories } from "../../redux/categorySlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const AddCategories = () => {

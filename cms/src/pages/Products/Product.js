@@ -7,10 +7,10 @@ import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
 
-import { productSelectors, getProducts } from "../../features/productSlice";
+import { productSelectors, getProducts } from "../../redux/productSlice";
 const Product = () => {
   const products = useSelector(productSelectors.selectAll);
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,8 +35,6 @@ const Product = () => {
 
             <div className="dashboard-content-header">
               <h2>Product List</h2>
-
-        
             </div>
 
             <table>
@@ -95,7 +93,9 @@ const Product = () => {
                     </tr>
                   ))}
                 </tbody>
-              ) : <h3>No data</h3>}
+              ) : (
+                <h3>No data</h3>
+              )}
             </table>
           </div>
         </div>
