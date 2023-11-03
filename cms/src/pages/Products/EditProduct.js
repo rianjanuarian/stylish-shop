@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
-import { updateProducts,productSelectors,getProducts } from "../../features/productSlice";
-import { categorySelectors, getCategories } from "../../features/categorySlice";
-import { brandSelectors, getBrands } from "../../features/brandSlice";
+import { updateProducts,productSelectors,getProducts } from "../../redux/productSlice";
+import { categorySelectors, getCategories } from "../../redux/categorySlice";
+import { brandSelectors, getBrands } from "../../redux/brandSlice";
 import { useParams, useNavigate } from "react-router-dom";
 const EditProduct = () => {
   const [name, setName] = useState("");

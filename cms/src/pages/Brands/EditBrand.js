@@ -5,7 +5,7 @@ import {
   updateBrands,
   brandSelectors,
   getBrands,
-} from "../../features/brandSlice";
+} from "../../redux/brandSlice";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";

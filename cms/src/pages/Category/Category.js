@@ -6,7 +6,9 @@ import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
 import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategories, categorySelectors,deleteCategories } from "../../features/categorySlice";
+
+import { getCategories, categorySelectors,deleteCategories } from "../../redux/categorySlice";
+
 const Category = () => {
   const dispatch = useDispatch();
   const categories = useSelector(categorySelectors.selectAll);

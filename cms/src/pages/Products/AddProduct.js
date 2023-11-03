@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { saveProducts } from "../../features/productSlice";
+
+import { saveProducts } from "../../redux/productSlice";
 import Swal from "sweetalert2";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
-import { categorySelectors, getCategories } from "../../features/categorySlice";
-import { brandSelectors, getBrands } from "../../features/brandSlice";
+import { categorySelectors, getCategories } from "../../redux/categorySlice";
+import { brandSelectors, getBrands } from "../../redux/brandSlice";
 import { useNavigate } from "react-router-dom";
+
+
 const AddProduct = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -17,11 +20,16 @@ const AddProduct = () => {
   const [categoryId, setCategoryId] = useState("");
   const [brandId, setBrand] = useState("");
 
+
+
+
   const categories = useSelector(categorySelectors.selectAll);
   const brands = useSelector(brandSelectors.selectAll);
   const navigate = useNavigate();
   const createProduct = async (e) => {
+
     e.preventDefault();
+
     await dispatch(
       saveProducts({
         name,
@@ -53,6 +61,7 @@ const AddProduct = () => {
       <div className="dashboard-body">
         <div className="addform">
           <h1>Add Product</h1>
+
           <form onSubmit={createProduct} enctype="multipart/form-data">
             <label>Name</label>
             <input type="text" onChange={(e) => setName(e.target.value)} />

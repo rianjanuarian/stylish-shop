@@ -7,11 +7,13 @@ import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
 
+
 import {
   productSelectors,
   getProducts,
   deleteProducts,
-} from "../../features/productSlice";
+} from "../../redux/productSlice";
+
 const Product = () => {
   const products = useSelector(productSelectors.selectAll);
 

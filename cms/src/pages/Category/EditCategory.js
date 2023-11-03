@@ -5,7 +5,7 @@ import {
   updateCategories,
   categorySelectors,
   getCategories,
-} from "../../features/categorySlice";
+} from "../../redux/categorySlice";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 const EditCategory = () => {

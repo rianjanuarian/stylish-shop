@@ -5,8 +5,13 @@ import { Link } from "react-router-dom";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
+
 import Swal from "sweetalert2";
-import { brandSelectors, getBrands,deleteBrands } from "../../features/brandSlice";
+import { brandSelectors, getBrands,deleteBrands } from "../../redux/brandSlice";
+
+
+
+
 import { useSelector, useDispatch } from "react-redux";
 const Brand = () => {
   const dispatch = useDispatch();
