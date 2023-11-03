@@ -1,49 +1,52 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { saveProducts } from "../../features/productSlice";
-import Swal from "sweetalert2";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
+import { updateProducts,productSelectors,getProducts } from "../../features/productSlice";
 import { categorySelectors, getCategories } from "../../features/categorySlice";
 import { brandSelectors, getBrands } from "../../features/brandSlice";
-import { useNavigate } from "react-router-dom";
-const AddProduct = () => {
+import { useParams, useNavigate } from "react-router-dom";
+const EditProduct = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [stock, setStock] = useState("");
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState("");
   const [color, setColor] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [brandId, setBrand] = useState("");
 
   const categories = useSelector(categorySelectors.selectAll);
   const brands = useSelector(brandSelectors.selectAll);
-  const navigate = useNavigate();
-  const createProduct = async (e) => {
-    e.preventDefault();
-    await dispatch(
-      saveProducts({
-        name,
-        price,
-        description,
-        stock,
-        image,
-        color,
-        categoryId,
-        brandId,
-      })
-    );
-
-    window.location.href = "/products";
-    // navigate("/products");
-  };
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const product = useSelector((state)=>productSelectors.selectById(state,id))
+  useEffect(() => {
+    dispatch(getProducts())
+
+  }, [dispatch])
 
   useEffect(() => {
-    dispatch(getCategories());
-    dispatch(getBrands());
-  }, [dispatch]);
+    if(product){
+      setName(product.name)
+      setPrice(product.price)
+      setDescription(product.description)
+      setStock(product.stock)
+      setImage(product.image)
+      setColor(product.color)
+      setCategoryId(product.categoryId)
+      setBrand(product.brandId)
+    }
+  
+    
+  }, [product])
+  const handleUpdate = async(e) => {
+    e.preventDefault()
+    await dispatch(updateProducts({id,name,price,description,stock,image,color,categoryId,brandId}))
+    navigate('/products')
+  }
   const handleImageChange = (event) => {
     setImage(event.target.files[0]);
   };
@@ -52,25 +55,26 @@ const AddProduct = () => {
       <SideBar menu={sidebar_menu} />
       <div className="dashboard-body">
         <div className="addform">
-          <h1>Add Product</h1>
-          <form onSubmit={createProduct} enctype="multipart/form-data">
+          <h1>Edit Product</h1>
+          <form onSubmit={handleUpdate}>
             <label>Name</label>
-            <input type="text" onChange={(e) => setName(e.target.value)} />
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
 
             <label>Price</label>
-            <input type="number" onChange={(e) => setPrice(e.target.value)} />
+            <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
 
             <label>Description</label>
             <input
               type="text"
+              value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
 
             <label>Stock</label>
-            <input type="number" onChange={(e) => setStock(e.target.value)} />
+            <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} />
 
             <label>Image</label>
-            <input type="file" onChange={handleImageChange} />
+            <input type="file" onChange={handleImageChange}/>
 
             <label for="color">Color</label>
             <select
@@ -124,7 +128,7 @@ const AddProduct = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddProduct;
+export default EditProduct

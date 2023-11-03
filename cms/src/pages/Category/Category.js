@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
+import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategories, categorySelectors } from "../../features/categorySlice";
+import { getCategories, categorySelectors,deleteCategories } from "../../features/categorySlice";
 const Category = () => {
   const dispatch = useDispatch();
   const categories = useSelector(categorySelectors.selectAll);
@@ -13,7 +14,22 @@ const Category = () => {
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
-
+  const deletes = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your category has been deleted.", "success");
+        dispatch(deleteCategories(id));
+      }
+    });
+  };
   return (
     <div className="dashboard-container">
       <SideBar menu={sidebar_menu} />
@@ -48,6 +64,14 @@ const Category = () => {
                       </td>
                       <td>
                         <span>{e.name}</span>
+                      </td>
+                      <td>
+                        <div>
+                          <button onClick={()=> deletes(e.id)} className="action-btn-delete">Delete</button>
+                          <Link to={`/editCategory/${e.id}`}>
+                          <button className="action-btn-update">Update</button>
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   ))}

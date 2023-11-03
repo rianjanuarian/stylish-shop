@@ -167,17 +167,40 @@ td span {
   font-weight: 700;
   border-color: #ffffff;
 }
-/* input[type=text], select {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  } */
+input[type="text"],
+select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
 
-/* input[type="submit"] {
+input[type="file"],
+select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="number"],
+select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="submit"] {
   width: 15%;
   background-color: #3498db;
   color: white;
@@ -191,11 +214,33 @@ td span {
 
 input[type="submit"]:hover {
   background-color: #4a10ec;
-} */
+}
 
 .addform {
   align-items: center;
   border-radius: 5px;
   background-color: #ffffff;
   padding: 20px;
+}
+.action-btn-delete {
+  position: flex;
+  margin-right: 10px;
+
+  padding: 8px 16px;
+  background-color: #af4c4c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.action-btn-update {
+  position: flex;
+
+  padding: 8px 16px;
+  background-color: #0004f7;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
 }

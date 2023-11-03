@@ -9,7 +9,9 @@ import AddCategories from "./Category/AddCategories";
 import AddUser from "./Users/AddUser";
 import Brand from "./Brands/Brand";
 import Category from "./Category/Category";
-
+import EditBrand from "./Brands/EditBrand";
+import EditCategory from "./Category/EditCategory";
+import EditProduct from "./Products/EditProduct";
 export {
   LoginPage,
   Orders,
@@ -22,4 +24,7 @@ export {
   AddUser,
   Brand,
   Category,
+  EditBrand,
+  EditCategory,
+  EditProduct
 };

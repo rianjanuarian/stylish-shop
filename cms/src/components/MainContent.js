@@ -11,7 +11,10 @@ import {
   AddCategories,
   AddUser,
   Brand,
-  Category
+  Category,
+  EditBrand,
+  EditCategory,
+  EditProduct
 } from "../pages";
 
 const MainContent = () => {
@@ -31,7 +34,20 @@ const MainContent = () => {
         <Route exact path="/addUser" element={<AddUser></AddUser>} />
         <Route exact path="/brands" element={<Brand></Brand>} />
         <Route exact path="/categories" element={<Category></Category>} />
+        <Route exact path="/editBrand" >
+          <Route path=":id"  element={<EditBrand></EditBrand>}>
+            </Route>
+          </Route>
+          <Route exact path="/editCategory" >
+          <Route path=":id"  element={<EditCategory></EditCategory>}>
+            </Route>
+          </Route>
+          <Route exact path="/editProduct" >
+          <Route path=":id"  element={<EditProduct></EditProduct>}>
+            </Route>
+          </Route>
       </Routes>
+      
     </BrowserRouter>
   );
 };

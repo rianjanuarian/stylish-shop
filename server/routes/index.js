@@ -10,6 +10,7 @@ const errorMiddleware = require("./error");
 
 const route = require("express").Router();
 
+
 route.get("/", (req, res) => {
   res.send({ message: "Welcome to StylishShop" });
 });

@@ -1,5 +1,5 @@
 const { transaction, product, cart } = require("../models");
-const midtransClient = require("midtrans-client");
+//const midtransClient = require("midtrans-client");
 
 class TransactionControllers {
   static async createTransaction(req, res, next) {

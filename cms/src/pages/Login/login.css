@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-body {
+ .login-body {
   margin: 0;
   padding: 0;
   display: flex;
@@ -9,7 +9,7 @@ body {
   min-height: 100vh;
   font-family: "Poppins", sans-serif;
   background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
-}
+} 
 
 .main {
   width: 350px;
@@ -19,6 +19,7 @@ body {
   background: url("../../assets/images/night-sky.jpg") no-repeat center / cover;
   border-radius: 10px;
   box-shadow: 5px 20px 50px #000;
+  
 }
 
 #chk {
@@ -31,7 +32,7 @@ body {
   height: 100%;
 }
 
-label {
+.label-login {
   color: #fff;
   font-size: 2.3em;
   justify-content: center;
@@ -42,7 +43,7 @@ label {
   transition: 0.5s ease-in-out;
 }
 
-input {
+.input-login  {
   width: 60%;
   height: 20px;
   background: #e0dede;
@@ -55,7 +56,9 @@ input {
   border-radius: 5px;
 }
 
-button {
+
+
+.button-login {
   width: 60%;
   height: 40%;
   margin: 10px auto;
@@ -73,7 +76,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.button-login:hover {
   background: #6d44b8;
 }
 

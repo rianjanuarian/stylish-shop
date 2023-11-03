@@ -2,22 +2,41 @@ import React, { useState, useEffect } from "react";
 import DashboardHeader from "../../components/DashboardHeader";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-
+import Swal from "sweetalert2";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
 
-import { productSelectors, getProducts } from "../../features/productSlice";
+import {
+  productSelectors,
+  getProducts,
+  deleteProducts,
+} from "../../features/productSlice";
 const Product = () => {
   const products = useSelector(productSelectors.selectAll);
-  
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
 
-  // Change Page
+  const deletes = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your product has been deleted.", "success");
+        dispatch(deleteProducts(id));
+      }
+    });
+  };
 
   return (
     <div className="dashboard-container">
@@ -35,8 +54,6 @@ const Product = () => {
 
             <div className="dashboard-content-header">
               <h2>Product List</h2>
-
-        
             </div>
 
             <table>
@@ -73,7 +90,7 @@ const Product = () => {
                         <span>{e.stock}</span>
                       </td>
                       <td>
-                        <span>{e.image}</span>
+                      <span><img src={`http://localhost:3000/uploads/${e.image}`} style={{width: "200px",height : "200px"}} alt="Product"></img></span>
                       </td>
                       <td>
                         {e.color === null ? (
@@ -92,10 +109,25 @@ const Product = () => {
                           <span>{el.name}</span>
                         ))}
                       </td>
+                      <td>
+                        <div>
+                          <button
+                            onClick={() => deletes(e.id)}
+                            className="action-btn-delete"
+                          >
+                            Delete
+                          </button>
+                          <Link to={`/editProduct/${e.id}`}>
+                          <button className="action-btn-update">Update</button>
+                          </Link>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
-              ) : <h3>No data</h3>}
+              ) : (
+                <h3>No data</h3>
+              )}
             </table>
           </div>
         </div>

@@ -2,31 +2,33 @@ import React from "react";
 import "./login.css";
 const LoginPage = () => {
   return (
+    <div className="login-body">
     <div className="main">
       <input type="checkbox" id="chk" aria-hidden="true" />
 
       <div className="signup">
         <form>
-          <label for="chk" aria-hidden="true">
+          <label className="label-login" for="chk" aria-hidden="true">
             Sign up
           </label>
-          <input type="text" name="username" placeholder="Username" required />
-          <input type="email" name="email" placeholder="Email" required />
-          <input type="Password" name="pswd" placeholder="Password" required />
-          <button>Sign up</button>
+          <input className="input-login" name="username" placeholder="Username" required />
+          <input className="input-login" type="email" name="email" placeholder="Email" required />
+          <input className="input-login" type="Password" name="pswd" placeholder="Password" required />
+          <button className="button-login" >Sign up</button>
         </form>
       </div>
 
       <div className="login">
         <form>
-          <label for="chk" aria-hidden="true">
+          <label className="label-login" for="chk" aria-hidden="true">
             Login
           </label>
-          <input type="email" name="email" placeholder="Email" required />
-          <input type="Password" name="pswd" placeholder="Password" required />
-          <button>Login</button>
+          <input className="input-login" type="email" name="email" placeholder="Email" required />
+          <input className="input-login" type="Password" name="pswd" placeholder="Password" required />
+          <button className="button-login" >Login</button>
         </form>
       </div>
+    </div>
     </div>
   );
 };

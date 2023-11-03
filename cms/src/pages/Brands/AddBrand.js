@@ -7,12 +7,19 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const AddBrand = () => {
 const [name, setName] = useState('')
-const [image, setImage] = useState('')
+const [image, setImage] = useState(null)
+const handleImageChange = (event) => {
+  setImage(event.target.files[0]);
+};
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const createBrand = async (e) => {
     e.preventDefault()
-    await dispatch(saveBrands({name:name, image:image }))
+    const formData = new FormData();
+    formData.append("images", image);
+    formData.append('name',name)
+   
+    await dispatch(saveBrands(formData))
     navigate('/brands')
   }
   return (
@@ -26,7 +33,7 @@ const [image, setImage] = useState('')
             <input type="text" onChange={(e) =>setName(e.target.value)} />
 
             <label for="fname">Image</label>
-            <input type="file" onChange={(e)=> setImage(e.target.value)}  />
+            <input type="file"  onChange={handleImageChange}  />
 
             <input type="submit" value="Submit" />
           </form>

@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
-
-import { brandSelectors, getBrands } from "../../features/brandSlice";
+import Swal from "sweetalert2";
+import { brandSelectors, getBrands,deleteBrands } from "../../features/brandSlice";
 import { useSelector, useDispatch } from "react-redux";
 const Brand = () => {
   const dispatch = useDispatch();
@@ -15,6 +15,22 @@ const Brand = () => {
     dispatch(getBrands());
   }, [dispatch]);
 
+  const deletes = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your brand has been deleted.", "success");
+        dispatch(deleteBrands(id));
+      }
+    });
+  };
   return (
     <div className="dashboard-container">
       <SideBar menu={sidebar_menu} />
@@ -40,7 +56,7 @@ const Brand = () => {
                 <th>IMAGE</th>
                 <th>ACTION</th>
               </thead>
-
+ 
               {brands.length !== 0 ? (
                 <tbody>
                   {brands.map((e, index) => (
@@ -52,7 +68,21 @@ const Brand = () => {
                         <span>{e.name}</span>
                       </td>
                       <td>
-                        <span>{e.image}</span>
+        
+                      <span><img src={`http://localhost:3000/uploads/${e.image}`} style={{width: "200px",height : "200px"}} alt="Brand"></img></span>
+                      </td>
+                      <td>
+                      <div>
+                          <button
+                             onClick={() => deletes(e.id)}
+                            className="action-btn-delete"
+                          >
+                            Delete
+                          </button>
+                          <Link to={`/editBrand/${e.id}`}>
+                          <button className="action-btn-update">Update</button>
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   ))}
