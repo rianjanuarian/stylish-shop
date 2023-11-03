@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       image: {
         type: DataTypes.STRING,
-        defaultValue: "via.placeholder.com/200",
+        defaultValue: "http://via.placeholder.com/200",
       },
     },
     {

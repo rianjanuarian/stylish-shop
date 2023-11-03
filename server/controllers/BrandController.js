@@ -13,7 +13,10 @@ class BrandControllers {
 
   static async create(req, res, next) {
     try {
-      const newBrand = await brand.create(req.body);
+
+      const { name } = req.body;
+      const newBrand = await brand.create({ name, image: req.file.filename });
+      console.log(req.file);
       res.status(201).json({ message: "Brand has been created!", newBrand });
     } catch (err) {
       next(err);
@@ -30,8 +33,12 @@ class BrandControllers {
         return next(createError(404, "Brand does not exist!"));
       }
 
-      const response = await currentBrand.update(req.body);
-
+      const updatedData = {
+        name: req.body.name,
+        image: req.file.filename,
+      };
+      const response = await currentBrand.update(updatedData);
+      console.log(response);
       response.dataValues
         ? res.status(200).json({ message: "Brand has been updated!" })
         : next(createError(400, "Brand has not been updated!"));

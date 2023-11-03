@@ -24,12 +24,18 @@ class ProductControllers {
 
   static async create(req, res, next) {
     try {
-      let { categoryId, brandId, ...otherDetails } = req.body;
+      let { name, price, description, stock, color, categoryId, brandId } =
+        req.body;
 
       const products = await product.create({
-        ...otherDetails,
+        name,
+        price,
+        description,
+        stock,
+        image: req.file.filename,
+        color,
       });
-
+      console.log(products);
       await categoryproduct.create({
         productId: parseInt(products.id),
         categoryId: parseInt(categoryId),
@@ -77,9 +83,7 @@ class ProductControllers {
     }
   }
 
-
-   static async detail(req, res, next) {
-
+  static async detail(req, res, next) {
     try {
       const id = parseInt(req.params.id);
       let result = await product.findByPk(id, {
@@ -183,13 +187,19 @@ class ProductControllers {
     }
   }
 
-   //only admin can access part
-   static async create(req, res, next) {
+  //only admin can access part
+  static async create(req, res, next) {
     try {
-      let { categoryId, brandId, ...otherDetails } = req.body;
+      let { name, price, description, stock, color, categoryId, brandId } =
+      req.body;
 
       const newProduct = await product.create({
-        ...otherDetails,
+        name,
+        price,
+        description,
+        stock,
+        image: req.file.filename,
+        color,
       });
 
       const isCategoryExist = await category.findByPk(categoryId);
@@ -221,18 +231,27 @@ class ProductControllers {
     }
   }
 
+
   static async update(req, res, next) {
     try {
       const id = parseInt(req.params.id);
-      let { categoryId, brandId, ...otherDetails } = req.body;
+      let { categoryId, brandId } = req.body;
 
       const currentProduct = await product.findByPk(id);
 
       if (!currentProduct) {
         return next(createError(404, "Product not found!"));
       }
+        const updatedData = {
+        name: req.body.name,
+        price: req.body.price,
+        description: req.body.description,
+        stock: req.body.stock,
+        image: req.file.filename,
+        color: req.body.color
+      };
 
-      await currentProduct.update({ ...otherDetails });
+      await currentProduct.update(updatedData);
       await categoryproduct.update(
         { categoryId },
         { where: { productId: currentProduct.id } }
