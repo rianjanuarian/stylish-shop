@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react";
-import sidebar_menu from "../../constants/sidebar-menu";
-import SideBar from "../../components/Sidebar/Sidebar";
+import React from "react";
 import {
   updateBrands,
   brandSelectors,
   getBrands,
 } from "../../redux/brandSlice";
-import { useParams, useNavigate } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-const EditBrand = () => {
+
+const ModalEditbrand = (props) => {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { id } = useParams();
   const brand = useSelector((state) => brandSelectors.selectById(state, id));
+
   useEffect(() => {
     dispatch(getBrands());
   }, [dispatch]);
@@ -26,21 +24,19 @@ const EditBrand = () => {
       setImage(brand.image);
     }
   }, [brand]);
-  const handleUpdate = async (e) => {
+  const handleUpdate = (e) => {
     e.preventDefault();
-
-    await dispatch(updateBrands({ id, name, image }));
-    navigate("/brands");
+    dispatch(updateBrands({ id, name, image }));
+    props.setModal();
   };
   const handleImageChange = (event) => {
     setImage(event.target.files[0]);
   };
 
   return (
-    <div className="dashboard-container">
-      <SideBar menu={sidebar_menu} />
-      <div className="dashboard-body">
-        <div className="addform">
+    <div className="modal">
+      <div className="overlay" onClick={props.toggleModal}>
+        <div className="modal-content" onClick={handleInputClick}>
           <h1>Add Brand</h1>
           <form onSubmit={handleUpdate}>
             <label for="fname">Name</label>
@@ -59,4 +55,4 @@ const EditBrand = () => {
   );
 };
 
-export default EditBrand;
+export default ModalEditbrand;

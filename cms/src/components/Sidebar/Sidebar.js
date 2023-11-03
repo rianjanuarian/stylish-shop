@@ -1,60 +1,55 @@
-import React, {useEffect, useState} from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import SideBarItem from "./sidebar-item";
+import "./sidebar.css";
+import logo from "../../assets/images/logo2.png";
+import LogoutIcon from "../../assets/icons/logout.svg";
 
-import SideBarItem from './sidebar-item';
+function SideBar({ menu }) {
+  const location = useLocation();
 
-import './sidebar.css';
-import logo from '../../assets/images/logo2.png';
-import LogoutIcon from '../../assets/icons/logout.svg';
+  const [active, setActive] = useState(1);
 
-function SideBar ({ menu }) {
-    const location = useLocation();
+  useEffect(() => {
+    menu.forEach((element) => {
+      if (location.pathname === element.path) {
+        setActive(element.id);
+      }
+    });
+  }, [location.pathname, menu]);
 
-    const [active, setActive] = useState(1);
+  const __navigate = (id) => {
+    setActive(id);
+  };
 
-    useEffect(() => {
-        menu.forEach(element => {
-            if (location.pathname === element.path) {
-                setActive(element.id);
-            }
-        });
-    }, [location.pathname])
+  return (
+    <nav className="sidebar">
+      <div className="sidebar-container">
+        <div className="sidebar-logo-container">
+          <img src={logo} alt="logo" />
+        </div>
 
-    const __navigate = (id) => {
-        setActive(id);
-    }
+        <div className="sidebar-container">
+          <div className="sidebar-items">
+            {menu.map((item, index) => (
+              <div key={index} onClick={() => __navigate(item.id)}>
+                <SideBarItem active={item.id === active} item={item} />
+              </div>
+            ))}
+          </div>
 
-    return(
-        <nav className='sidebar'>
-            <div className='sidebar-container'>
-                <div className='sidebar-logo-container'>
-                    <img
-                        src={logo}
-                        alt="logo" />
-                </div>
-
-                <div className='sidebar-container'>
-                    <div className='sidebar-items'>
-                        {menu.map((item, index) => (
-                            <div key={index} onClick={() => __navigate(item.id)}>
-                                <SideBarItem
-                                    active={item.id === active}
-                                    item={item} />
-                            </div>
-                        ))}
-                    </div>
-
-                    <div className='sidebar-footer'>
-                        <span className='sidebar-item-label'>Logout</span>
-                        <img 
-                            src={LogoutIcon}
-                            alt='icon-logout'
-                            className='sidebar-item-icon' />
-                    </div>
-                </div>
-            </div>
-        </nav>
-    )
+          <div className="sidebar-footer">
+            <span className="sidebar-item-label">Logout</span>
+            <img
+              src={LogoutIcon}
+              alt="icon-logout"
+              className="sidebar-item-icon"
+            />
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
 }
 
 export default SideBar;
