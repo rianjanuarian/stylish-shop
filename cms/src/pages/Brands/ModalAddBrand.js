@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { saveBrands } from "../../redux/brandSlice";
+import { createBrand } from "../../redux/brandSliceTest";
 import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 
 const ModalAddBrand = (props) => {
   const dispatch = useDispatch();
@@ -10,13 +11,20 @@ const ModalAddBrand = (props) => {
     setImage(event.target.files[0]);
   };
 
-  const createBrand = async (e) => {
+  const createAddBrand = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("images", image);
     formData.append("name", name);
-    dispatch(saveBrands(formData));
-    props.toggleModal();
+    dispatch(createBrand(formData));
+    Swal.fire({
+      icon: "success",
+      title: "Brand has been created!",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then(() => {
+      props.toggleModalAdd();
+    });
   };
 
   const handleInputClick = (e) => {
@@ -26,13 +34,13 @@ const ModalAddBrand = (props) => {
   return (
     <>
       <div className="modal">
-        <div className="overlay" onClick={props.toggleModal}>
+        <div className="overlay" onClick={props.toggleModalAdd}>
           <div className="modal-content" onClick={handleInputClick}>
             <h1>Add Brand</h1>
-            <form onSubmit={createBrand}>
-              <label for="fname">Name</label>
+            <form onSubmit={createAddBrand}>
+              <label htmlFor="fname">Name</label>
               <input type="text" onChange={(e) => setName(e.target.value)} />
-              <label for="fname">Image</label>
+              <label htmlFor="fname">Image</label>
               <input type="file" onChange={handleImageChange} />
               <input type="submit" value="Submit" />
             </form>

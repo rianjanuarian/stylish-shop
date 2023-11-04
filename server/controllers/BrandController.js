@@ -13,7 +13,6 @@ class BrandControllers {
 
   static async create(req, res, next) {
     try {
-
       const { name } = req.body;
       const newBrand = await brand.create({ name, image: req.file.filename });
       console.log(req.file);
@@ -35,12 +34,17 @@ class BrandControllers {
 
       const updatedData = {
         name: req.body.name,
-        image: req.file.filename,
       };
+
+      if (req.file) {
+        updatedData.image = req.file.filename;
+      }
       const response = await currentBrand.update(updatedData);
-      console.log(response);
       response.dataValues
-        ? res.status(200).json({ message: "Brand has been updated!" })
+        ? res.status(200).json({
+            data: response.dataValues,
+            message: "Brand has been updated!",
+          })
         : next(createError(400, "Brand has not been updated!"));
     } catch (err) {
       next(err);
@@ -58,6 +62,22 @@ class BrandControllers {
 
       await currentBrand.destroy();
       res.status(200).json({ message: "Brand has been deleted!" });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async getOneBrand(req, res, next) {
+    try {
+      const id = parseInt(req.params.id);
+
+      const currentBrand = await brand.findByPk(id);
+
+      if (!currentBrand) {
+        return next(createError(404, "Brand does not exist!"));
+      }
+
+      res.status(201).json(currentBrand);
     } catch (err) {
       next(err);
     }

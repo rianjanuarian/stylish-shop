@@ -4,6 +4,7 @@ import brandReducer from "../redux/brandSlice";
 import categorySlice from "../redux/categorySlice";
 import authReducer from "../redux/authSlice";
 import brandTestReducer from "../redux/brandSliceTest";
+import categoryTestReducer from "../redux/categorySliceTest";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     categories: categorySlice,
     auth: authReducer,
     brandTest: brandTestReducer,
+    categoryTest: categoryTestReducer,
   },
 });

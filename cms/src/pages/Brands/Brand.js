@@ -1,30 +1,35 @@
 import React, { useEffect, useState } from "react";
 import DashboardHeader from "../../components/DashboardHeader";
-import { Link } from "react-router-dom";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
 import Swal from "sweetalert2";
-import {
-  brandSelectors,
-  getBrands,
-  deleteBrands,
-} from "../../redux/brandSlice";
+import { getBrandsTest, deleteBrand } from "../../redux/brandSliceTest";
 import { useSelector, useDispatch } from "react-redux";
 import empty from "../../assets/images/empty.png";
 import ModalAddBrand from "./ModalAddBrand";
+import ModalEditbrand from "./ModalEditbrand";
 
 const Brand = () => {
-  const [modal, setModal] = useState(false);
+  const [modalAdd, setModalAdd] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
+  const [brandId, setBrandId] = useState(0);
   const dispatch = useDispatch();
-  const brands = useSelector(brandSelectors.selectAll);
 
-  const toggleModal = () => {
-    setModal(!modal);
+  const brand = useSelector((state) => state.brandTest);
+  const brands = brand.brands;
+
+  const toggleModalAdd = () => {
+    setModalAdd(!modalAdd);
+  };
+
+  const toggleModalEdit = (id) => {
+    setBrandId(id);
+    setModalEdit(!modalEdit);
   };
 
   useEffect(() => {
-    dispatch(getBrands());
+    dispatch(getBrandsTest());
   }, [dispatch]);
 
   const deletes = (id) => {
@@ -39,10 +44,11 @@ const Brand = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your brand has been deleted.", "success");
-        dispatch(deleteBrands(id));
+        dispatch(deleteBrand(id));
       }
     });
   };
+
   return (
     <>
       <div className="dashboard-container">
@@ -53,66 +59,88 @@ const Brand = () => {
             <div className="dashboard-content-container">
               <div className="dashboard-content-header">
                 <h2>Brand List</h2>
-                <button onClick={toggleModal} className="rows-btn">
+                <button onClick={toggleModalAdd} className="rows-btn">
                   Add Brand
                 </button>
               </div>
-              {brands.length !== 0 ? (
-                <table>
-                  <thead>
-                    <th>No.</th>
-                    <th>NAME</th>
-                    <th>IMAGE</th>
-                    <th>ACTION</th>
-                  </thead>
-                  <tbody>
-                    {brands.map((e, index) => (
-                      <tr key={e.id}>
-                        <td>
-                          <span>{index + 1}</span>
-                        </td>
-                        <td>
-                          <span>{e.name}</span>
-                        </td>
-                        <td>
-                          <span>
-                            <img
-                              src={`http://localhost:3000/uploads/${e.image}`}
-                              style={{ width: "200px", height: "200px" }}
-                              alt="Brand"
-                            ></img>
-                          </span>
-                        </td>
-                        <td>
-                          <div>
-                            <button
-                              onClick={() => deletes(e.id)}
-                              className="action-btn-delete"
-                            >
-                              Delete
-                            </button>
-                            <Link to={`/editBrand/${e.id}`}>
-                              <button className="action-btn-update">
-                                Update
-                              </button>
-                            </Link>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
+              {brand.loading === "pending" ? (
                 <div className="empty">
                   <img src={empty} alt="" />
-                  <h1>The table is empty! Try adding some!</h1>
+                  <h1>Loading...</h1>
                 </div>
+              ) : brand.loading === "rejected" ? (
+                <div className="empty">
+                  <img src={empty} alt="" />
+                  <h1>Error: {brand.error.message}</h1>
+                </div>
+              ) : (
+                <>
+                  {brands.length !== 0 ? (
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>No.</th>
+                          <th>NAME</th>
+                          <th>IMAGE</th>
+                          <th>ACTION</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {brands.map((e, index) => (
+                          <tr key={e.id}>
+                            <td>
+                              <span>{index + 1}</span>
+                            </td>
+                            <td>
+                              <span>{e.name}</span>
+                            </td>
+                            <td>
+                              <span>
+                                <img
+                                  src={`http://localhost:3000/uploads/${e.image}`}
+                                  style={{ width: "200px", height: "200px" }}
+                                  alt="Brand"
+                                ></img>
+                              </span>
+                            </td>
+                            <td>
+                              <div>
+                                <button
+                                  onClick={() => deletes(e.id)}
+                                  className="action-btn-delete"
+                                >
+                                  Delete
+                                </button>
+                                <button
+                                  className="action-btn-update"
+                                  onClick={() => {
+                                    toggleModalEdit(e.id);
+                                  }}
+                                >
+                                  Update
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <div className="empty">
+                      <img src={empty} alt="" />
+                      <h1>The table is empty! Try adding some!</h1>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
         </div>
       </div>
-      {modal && <ModalAddBrand toggleModal={toggleModal} />}
+      {modalAdd && <ModalAddBrand toggleModalAdd={toggleModalAdd} />}
+      {modalEdit && (
+        <ModalEditbrand toggleModalEdit={toggleModalEdit} brandId={brandId} />
+      )}
     </>
   );
 };

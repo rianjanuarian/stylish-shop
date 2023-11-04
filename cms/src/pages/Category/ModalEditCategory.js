@@ -1,33 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getOneBrand, updateBrand } from "../../redux/brandSliceTest";
+import { getOneCategory, updateCategory } from "../../redux/categorySliceTest";
 
-const ModalEditbrand = (props) => {
-  const id = props.brandId;
-  const dispatch = useDispatch();
-  const brand = useSelector((state) => state.brandTest.brand);
-
-  const handleImageChange = (event) => {
-    setImage(event.target.files[0]);
-  };
-
+const ModalEditCategory = (props) => {
+  const id = props.categoryId;
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
+  const dispatch = useDispatch();
+  const category = useSelector((state) => state.categoryTest.category);
 
   useEffect(() => {
-    dispatch(getOneBrand(id));
+    dispatch(getOneCategory(id));
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (brand) {
-      setName(brand.name);
-      setImage(brand.image);
+    if (category) {
+      setName(category.name);
     }
-  }, [brand]);
+  }, [category]);
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    dispatch(updateBrand({ id, name, image }));
+    dispatch(updateCategory({ id, name }));
     props.toggleModalEdit();
   };
 
@@ -35,16 +28,15 @@ const ModalEditbrand = (props) => {
     <div className="modal">
       <div className="overlay" onClick={props.toggleModalEdit}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <h1>Edit Brand</h1>
+          <h1>Edit Category</h1>
           <form onSubmit={handleUpdate}>
             <label htmlFor="fname">Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              name="firstname"
             />
-            <label htmlFor="fname">Image</label>
-            <input type="file" onChange={handleImageChange} />
             <input type="submit" value="Submit" />
           </form>
         </div>
@@ -53,4 +45,4 @@ const ModalEditbrand = (props) => {
   );
 };
 
-export default ModalEditbrand;
+export default ModalEditCategory;

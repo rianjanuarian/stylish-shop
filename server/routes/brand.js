@@ -1,8 +1,7 @@
 const brandRoutes = require("express").Router();
 const { verifyAdmin } = require("../middlewares/verifyRole");
 const BrandControllers = require("../controllers/BrandController");
-const upload = require("../multerconfig")
-
+const upload = require("../multerconfig");
 
 brandRoutes.get("/", BrandControllers.getBrands);
 //middlewarenya aku komen dulu bang
@@ -10,6 +9,11 @@ brandRoutes.get("/", BrandControllers.getBrands);
 // brandRoutes.put("/update/:id", verifyAdmin, BrandControllers.update);
 // brandRoutes.delete("/delete/:id", verifyAdmin, BrandControllers.delete);
 brandRoutes.post("/create", upload.single("images"), BrandControllers.create);
-brandRoutes.put("/update/:id",upload.single("images"),  BrandControllers.update);
-brandRoutes.delete("/delete/:id",  BrandControllers.delete);
+brandRoutes.put(
+  "/update/:id",
+  upload.single("images"),
+  BrandControllers.update
+);
+brandRoutes.delete("/delete/:id", BrandControllers.delete);
+brandRoutes.get("/details/:id", BrandControllers.getOneBrand);
 module.exports = brandRoutes;

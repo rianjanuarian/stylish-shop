@@ -13,12 +13,13 @@ categoriesRoutes.get("/", CategoriesControllers.getCategories);
 //   CategoriesControllers.delete
 // );
 
-categoriesRoutes.post("/create",  CategoriesControllers.create);
-categoriesRoutes.put("/update/:id",  CategoriesControllers.update);
+categoriesRoutes.post("/create", CategoriesControllers.create);
+categoriesRoutes.put("/update/:id", CategoriesControllers.update);
 categoriesRoutes.delete(
   "/delete/:id",
-  
+
   CategoriesControllers.delete
 );
+categoriesRoutes.get("/details/:id", CategoriesControllers.getOneCategory);
 
 module.exports = categoriesRoutes;
