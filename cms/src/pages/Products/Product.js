@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import DashboardHeader from "../../components/DashboardHeader";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -46,18 +46,13 @@ const Product = () => {
       <div className="dashboard-body">
         <div className="dashboard-content">
           <DashboardHeader />
-
           <div className="dashboard-content-container">
-            <div className="rows">
+            <div className="dashboard-content-header">
+              <h2>Product List</h2>
               <Link to={"/addProduct"} className="rows-btn" type="button">
                 Add Product
               </Link>
             </div>
-
-            <div className="dashboard-content-header">
-              <h2>Product List</h2>
-            </div>
-
             {products.length !== 0 ? (
               <table>
                 <thead>

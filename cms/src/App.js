@@ -16,7 +16,9 @@ import {
   EditCategory,
   EditProduct,
 } from "./pages";
+
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -25,11 +27,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (<ProtectedRoute><Dashboard /></ProtectedRoute>),
   },
   {
     path: "/orders",
-    element: <Orders />,
+    element: (<ProtectedRoute><Orders /></ProtectedRoute>),
   },
   {
     path: "/locations",
@@ -45,31 +47,31 @@ const router = createBrowserRouter([
   },
   {
     path: "/products",
-    element: <Product />,
+    element: (<ProtectedRoute><Product /></ProtectedRoute>),
   },
   {
     path: "/addProduct",
-    element: <AddProduct />,
+    element: (<ProtectedRoute><AddProduct /></ProtectedRoute>),
   },
   {
     path: "/addBrand",
-    element: <AddBrand />,
+    element: (<ProtectedRoute><AddBrand /></ProtectedRoute>),
   },
   {
     path: "/addCategory",
-    element: <AddCategories />,
+    element: (<ProtectedRoute><AddCategories /></ProtectedRoute>),
   },
   {
     path: "/addUser",
-    element: <AddUser />,
+    element: (<ProtectedRoute><AddUser /></ProtectedRoute>),
   },
   {
     path: "/brands",
-    element: <Brand />,
+    element: (<ProtectedRoute><Brand /></ProtectedRoute>),
   },
   {
     path: "/categories",
-    element: <Category />,
+    element: (<ProtectedRoute><Category /></ProtectedRoute>),
   },
   {
     path: "/categories/:id",

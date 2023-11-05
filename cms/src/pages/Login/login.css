@@ -77,7 +77,7 @@
 
 .login {
   height: 460px;
-  background: #eee;
+  background: #fff;
   border-radius: 60% / 10%;
   transform: translateY(-180px);
   transition: 0.8s ease-in-out;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import DashboardHeader from "../../components/DashboardHeader";
 import { Link } from "react-router-dom";
 import sidebar_menu from "../../constants/sidebar-menu";
@@ -12,16 +12,10 @@ import {
 } from "../../redux/brandSlice";
 import { useSelector, useDispatch } from "react-redux";
 import empty from "../../assets/images/empty.png";
-import ModalAddBrand from "./ModalAddBrand";
 
 const Brand = () => {
-  const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
   const brands = useSelector(brandSelectors.selectAll);
-
-  const toggleModal = () => {
-    setModal(!modal);
-  };
 
   useEffect(() => {
     dispatch(getBrands());
@@ -53,9 +47,9 @@ const Brand = () => {
             <div className="dashboard-content-container">
               <div className="dashboard-content-header">
                 <h2>Brand List</h2>
-                <button onClick={toggleModal} className="rows-btn">
+                <Link to={"/addBrand"} className="rows-btn" type="button">
                   Add Brand
-                </button>
+                </Link>
               </div>
               {brands.length !== 0 ? (
                 <table>
@@ -112,7 +106,6 @@ const Brand = () => {
           </div>
         </div>
       </div>
-      {modal && <ModalAddBrand toggleModal={toggleModal} />}
     </>
   );
 };

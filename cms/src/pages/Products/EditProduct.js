@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import { updateProducts,productSelectors,getProducts } from "../../redux/productSlice";
-import { categorySelectors, getCategories } from "../../redux/categorySlice";
-import { brandSelectors, getBrands } from "../../redux/brandSlice";
+import { categorySelectors } from "../../redux/categorySlice";
+import { brandSelectors } from "../../redux/brandSlice";
 import { useParams, useNavigate } from "react-router-dom";
 const EditProduct = () => {
   const [name, setName] = useState("");
@@ -76,7 +76,7 @@ const EditProduct = () => {
             <label>Image</label>
             <input type="file" onChange={handleImageChange}/>
 
-            <label for="color">Color</label>
+            <label htmlFor="color">Color</label>
             <select
               id="color"
               name="color"
@@ -92,7 +92,7 @@ const EditProduct = () => {
               <option value="green">Green</option>
             </select>
 
-            <label for="fname">Category</label>
+            <label htmlFor="fname">Category</label>
             <select
               id="category"
               name="category"
@@ -107,7 +107,7 @@ const EditProduct = () => {
                 </option>
               ))}
             </select>
-            <label for="fname">Brand</label>
+            <label htmlFor="fname">Brand</label>
             <select
               id="brand"
               name="brand"

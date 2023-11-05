@@ -20,7 +20,7 @@ const AddCategories = () => {
         <div className="addform">
           <h1>Add Category</h1>
           <form onSubmit={createCategory}>
-            <label for="fname">Name</label>
+            <label htmlFor="fname">Name</label>
             <input
               type="text"
               onChange={(e) => setName(e.target.value)}
