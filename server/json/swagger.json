@@ -366,6 +366,29 @@
         ]
       }
     },
+    "/users/get_user_admin": {
+      "get": {
+        "tags": ["Admins"],
+        "operationId": "Users_GetUserAdmin",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserVm"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
     "/brands": {
       "get": {
         "tags": ["Brands"],
@@ -2105,7 +2128,7 @@
       "JWT": {
         "type": "apiKey",
         "description": "Type into the textbox: Bearer {your JWT token}.",
-        "name": "access_token",
+        "name": "authorization",
         "in": "header"
       }
     }
