@@ -8,6 +8,7 @@ userRoutes.post("/register_with_google", UserControllers.registerWithGoogle);
 userRoutes.post("/login_with_email", UserControllers.loginWithEmail);
 userRoutes.post("/login_with_google", UserControllers.loginWithGoogle);
 userRoutes.get('/getUser', verifyUser, UserControllers.getOneUser);
+userRoutes.get('/logout', UserControllers.logout);
 
 //Admin Only
 userRoutes.get("/", verifyAdmin, UserControllers.getUsers);

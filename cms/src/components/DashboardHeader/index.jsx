@@ -9,7 +9,8 @@ function DashboardHeader() {
 
   useEffect(() => {
     if (!user.data) {
-      dispatch(getUser());
+      const accessToken = localStorage.getItem('Authorization');
+      dispatch(getUser(accessToken));
     }
   }, [dispatch, user.data]);
 
@@ -21,7 +22,7 @@ function DashboardHeader() {
           <img
             className="dashbord-header-avatar"
             src={user.data.image}
-            alt="Profile picture"
+            alt="Profile"
           />
         </>}
       </div>

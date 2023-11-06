@@ -42,7 +42,7 @@ const LoginPage = () => {
   }, [auth.error]);
 
   useEffect(() => {
-    if (localStorage.getItem("access_token")) {
+    if (localStorage.getItem("Authorization")) {
       navigate("/dashboard");
     }
   }, [auth, navigate]);
