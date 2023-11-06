@@ -15,13 +15,12 @@ admin.initializeApp({
 });
 
 const corsOptions = {
-  allowedHeaders: 'access_token, Content-Type', 
+  allowedHeaders: 'Content-Type, Authorization', 
   origin: 'http://localhost:3001', 
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, 
   optionsSuccessStatus: 204,
 };
-const cors = require("cors");
 app.use(cors(corsOptions));
 
 app.use(express.json());
