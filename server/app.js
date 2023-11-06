@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 const routes = require("./routes/index.js");
+const cors = require("cors");
 
 // Swagger
 const swaggerUI = require("swagger-ui-express");
@@ -17,8 +18,14 @@ admin.initializeApp({
   databaseURL: "https://stylishshop-562a7.firebaseio.com",
 });
 
-const cors = require("cors");
-app.use(cors());
+const corsOptions = {
+  allowedHeaders: 'Content-Type, Authorization', 
+  origin: 'http://localhost:3001', 
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, 
+  optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
