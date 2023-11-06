@@ -43,16 +43,14 @@ const EditBrand = () => {
         <div className="addform">
           <h1>Add Brand</h1>
           <form onSubmit={handleUpdate}>
-            <label for="fname">Name</label>
+            <label htmlFor="fname">Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-
-            <label for="fname">Image</label>
+            <label htmlFor="fname">Image</label>
             <input type="file" onChange={handleImageChange} />
-
             <input type="submit" value="Submit" />
           </form>
         </div>

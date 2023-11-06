@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import DashboardHeader from "../../components/DashboardHeader";
 import { Link } from "react-router-dom";
 import sidebar_menu from "../../constants/sidebar-menu";
@@ -7,7 +7,15 @@ import "../styles.css";
 import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getCategories, categorySelectors,deleteCategories } from "../../redux/categorySlice";
+import empty from "../../assets/images/empty.png";
+
+import {
+  getCategories,
+  categorySelectors,
+  deleteCategories,
+} from "../../redux/categorySlice";
+
+
 
 const Category = () => {
   const dispatch = useDispatch();
@@ -33,57 +41,68 @@ const Category = () => {
     });
   };
   return (
-    <div className="dashboard-container">
-      <SideBar menu={sidebar_menu} />
-      <div className="dashboard-body">
-        <div className="dashboard-content">
-          <DashboardHeader />
+    <>
+      <div className="dashboard-container">
+        <SideBar menu={sidebar_menu} />
+        <div className="dashboard-body">
+          <div className="dashboard-content">
+            <DashboardHeader />
 
-          <div className="dashboard-content-container">
-            <div className="rows">
-              <Link to={"/addCategory"} className="rows-btn" type="button">
+            <div className="dashboard-content-container">
+              <div className="dashboard-content-header">
+                <h2>Categories List</h2>
+                <Link to={"/addCategory"} className="rows-btn" type="button">
                 Add Category
               </Link>
-            </div>
-
-            <div className="dashboard-content-header">
-              <h2>Categories List</h2>
-            </div>
-
-            <table>
-              <thead>
-                <th>No.</th>
-                <th>NAME</th>
-                <th>ACTION</th>
-              </thead>
-
+              </div>
               {categories.length !== 0 ? (
-                <tbody>
-                  {categories.map((e, index) => (
-                    <tr key={e.id}>
-                      <td>
-                        <span>{index + 1}</span>
-                      </td>
-                      <td>
-                        <span>{e.name}</span>
-                      </td>
-                      <td>
-                        <div>
-                          <button onClick={()=> deletes(e.id)} className="action-btn-delete">Delete</button>
-                          <Link to={`/editCategory/${e.id}`}>
-                          <button className="action-btn-update">Update</button>
-                          </Link>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              ) : null}
-            </table>
+                <table>
+                  <thead>
+                    <th>No.</th>
+                    <th>NAME</th>
+                    <th>ACTION</th>
+                  </thead>
+
+                  <tbody>
+                    {categories.map((e, index) => (
+                      <tr key={e.id}>
+                        <td>
+                          <span>{index + 1}</span>
+                        </td>
+                        <td>
+                          <span>{e.name}</span>
+                        </td>
+                        <td>
+                          <div>
+                            <button
+                              onClick={() => deletes(e.id)}
+                              className="action-btn-delete"
+                            >
+                              Delete
+                            </button>
+                            <Link to={`/editCategory/${e.id}`}>
+                              <button className="action-btn-update">
+                                Update
+                              </button>
+                            </Link>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="empty">
+                  <img src={empty} alt="" />
+                  <h1>The table is empty! Try adding some!</h1>
+                </div>
+              )}
+              ;
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

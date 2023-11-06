@@ -1,5 +1,5 @@
 const createError = require("../middlewares/createError");
-const { cart, product } = require("../models");
+const { cart, product, user, courier } = require("../models");
 
 class CartController {
   static async create(req, res, next) {
@@ -35,6 +35,38 @@ class CartController {
         },
       });
       res.status(200).json(products);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getDetailCart(req, res, next) {
+    try {
+      const userId = req.user.dataValues.id;
+      const courierId = req.params.id;
+      const allCart = await cart.findAll({
+        where: {
+          userId,
+        },
+        include: [
+          {
+            model: user,
+            attributes: ["name", "email", "address", "phone_number"],
+          },
+          {
+            model: product,
+            attributes: ["name", "description", "price", "image"],
+          },
+        ],
+      });
+      const getCourier = await courier.findByPk(courierId);
+      const allTotal =
+        allCart.reduce((a, b) => a + b.total_price, 0) + getCourier.price;
+
+      res.status(200).json({
+        allCart,
+        allTotal: allTotal,
+      });
     } catch (error) {
       next(error);
     }
