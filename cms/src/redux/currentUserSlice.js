@@ -23,7 +23,7 @@ export const getUser = createAsyncThunk("/get_user_admin", async (accessToken) =
     }
 });
 
-const userSlice = createSlice({
+const currentUserSlice = createSlice({
     name: "auth",
     initialState,
     extraReducers: (builder) => {
@@ -46,4 +46,4 @@ const userSlice = createSlice({
 });
 
 
-export default userSlice.reducer;
+export default currentUserSlice.reducer;

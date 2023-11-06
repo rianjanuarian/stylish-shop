@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
-import { deleteUsers, getUsers, userSelectors,sortByRole } from "../../redux/userSlice";
+import { deleteUsers, getUsers, userSelectors, sortByRole } from "../../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 import Loading from "../../helpers/Loading/Loading";

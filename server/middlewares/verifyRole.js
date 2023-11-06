@@ -4,7 +4,6 @@ const createError = require("./createError");
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-
   if (!authHeader) {
     return next(createError(401, "You must be logged in to access this!"));
   }
@@ -17,7 +16,7 @@ const verifyToken = (req, res, next) => {
 
   decodeTokenUsingJwt(token, (err, user) => {
     if (err) {
-      return next(createError(403, "Token is invalid!"));
+      return next(createError(403, err));
     }
     req.user = user;
     next();
