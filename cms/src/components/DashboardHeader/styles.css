@@ -2,7 +2,7 @@
     padding: 1em;
     display: flex;
     flex-direction: row;
-    justify-content: end;
+    justify-content: flex-end;
 }
 .dashbord-header-btn {
     padding: 0.8em;

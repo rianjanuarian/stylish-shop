@@ -5,11 +5,11 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const accessToken = localStorage.getItem("access_token");
+const accessToken = localStorage.getItem("Authorization")  || "";
 const config = {
   headers: {
     "Content-Type": "application/json",
-    access_token: `${accessToken}`,
+    Authorization: `Bearer ${accessToken}`,
   },
   withCredentials: true,
 };

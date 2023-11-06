@@ -2,11 +2,18 @@ const { decodeTokenUsingJwt } = require("../helpers/jsonwebtoken");
 const createError = require("./createError");
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers.access_token;
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
+
+  if (!authHeader) {
     return next(createError(401, "You must be logged in to access this!"));
   }
+
+  if (!authHeader.startsWith('Bearer ')) {
+    return next(createError(401, "Invalid token format"));
+  }
+
+  const token = authHeader.slice(7);
 
   decodeTokenUsingJwt(token, (err, user) => {
     if (err) {

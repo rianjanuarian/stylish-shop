@@ -7,17 +7,18 @@ const initialState = {
     data: null,
 };
 
-const accessToken = localStorage.getItem("access_token");
-const config = {
-    headers: {
-        "Content-Type": "application/json",
-        access_token: `${accessToken}`,
-    },
-    withCredentials: true,
-};
 
-export const getUser = createAsyncThunk("/get_user_admin", async () => {
+
+
+export const getUser = createAsyncThunk("/get_user_admin", async (accessToken) => {
     try {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+            },
+            withCredentials: true,
+        };
         const response = await userApi.get("/get_user_admin", config);
         return response.data;
     } catch (error) {

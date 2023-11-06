@@ -95,7 +95,7 @@ class UserController {
       const { password, ...otherDetails } = yuser;
 
       const access_token = encodeTokenUsingJwt({ ...otherDetails });
-      res.setHeader("access_token", access_token);
+      res.setHeader("Authorization", `Bearer ${access_token}`);
       res
         .status(200)
         .json({ message: "You are successfully logged in!", access_token });
@@ -108,7 +108,7 @@ class UserController {
     try {
       const { credentials } = req.body;
       const access_token = encodeTokenUsingJwt(credentials);
-      res.setHeader("access_token", access_token);
+      res.setHeader("Authorization", `Bearer ${access_token}`);
       res
         .status(200)
         .json({ message: "You are successfully logged in!", access_token });
@@ -118,7 +118,7 @@ class UserController {
   }
 
   static async logout(req, res, next) {
-    delete req.headers["access_token"];
+    delete req.headers["Authorization"];
     res.json({ msg: "User has been sign out successfully" });
   }
 
@@ -257,7 +257,7 @@ class UserController {
       const { password, ...otherDetails } = yuser;
 
       const access_token = encodeTokenUsingJwt({ ...otherDetails });
-      res.setHeader("access_token", access_token);
+      res.setHeader("Authorization", `Bearer ${access_token}`);
       res
         .status(200)
         .json({ message: "You are successfully logged in!", access_token });
