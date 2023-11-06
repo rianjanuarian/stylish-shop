@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
-
 import "./styles.css";
-
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/userSlice";
 
@@ -13,18 +11,19 @@ function DashboardHeader() {
     dispatch(getUser());
   }, [dispatch])
 
-
-
   return (
     <div className="dashbord-header-container">
-      <a />
-
       <div className="dashbord-header-right">
-        <h3>Hi {user.data.name}!</h3>
-        <img
-          className="dashbord-header-avatar"
-          src={user.data.image}
-        />
+        {user.data && <>
+          <h3>Hi {user.data.name}!</h3>
+          <img
+            className="dashbord-header-avatar"
+            src={user.data.image}
+            alt="Profile picture"
+          />
+        </>}
+
+
       </div>
     </div>
   );
