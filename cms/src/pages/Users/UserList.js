@@ -9,6 +9,7 @@ import "../styles.css";
 import DoneIcon from "../../assets/icons/done.svg";
 import CancelIcon from "../../assets/icons/cancel.svg";
 import RefundedIcon from "../../assets/icons/refunded.svg";
+import empty from "../../assets/images/empty.png";
 
 const UserList = () => {
   const [search, setSearch] = useState("");
@@ -19,7 +20,7 @@ const UserList = () => {
   useEffect(() => {
     setPagination(calculateRange(all_orders, 5));
     setOrders(sliceData(all_orders, page, 5));
-  }, []);
+  }, [page]);
 
   // Search
   const __handleSearch = (event) => {
@@ -52,7 +53,9 @@ const UserList = () => {
 
           <div className="dashboard-content-container">
             <div className="rows">
-            <Link to={'/addUser'} className="rows-btn" type="button">Add User</Link>
+              <Link to={"/addUser"} className="rows-btn" type="button">
+                Add User
+              </Link>
             </div>
 
             <div className="dashboard-content-header">
@@ -152,8 +155,9 @@ const UserList = () => {
                 ))}
               </div>
             ) : (
-              <div className="dashboard-content-footer">
-                <span className="empty-table">No data</span>
+              <div className="empty">
+                <img src={empty} alt="" />
+                <h1>The table is empty! Try adding some!</h1>
               </div>
             )}
           </div>

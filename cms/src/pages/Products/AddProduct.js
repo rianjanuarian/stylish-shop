@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { saveProducts } from "../../redux/productSlice";
-import Swal from "sweetalert2";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import { categorySelectors, getCategories } from "../../redux/categorySlice";
 import { brandSelectors, getBrands } from "../../redux/brandSlice";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 
 const AddProduct = () => {
@@ -25,7 +24,7 @@ const AddProduct = () => {
 
   const categories = useSelector(categorySelectors.selectAll);
   const brands = useSelector(brandSelectors.selectAll);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const createProduct = async (e) => {
 
     e.preventDefault();
@@ -81,7 +80,7 @@ const AddProduct = () => {
             <label>Image</label>
             <input type="file" onChange={handleImageChange} />
 
-            <label for="color">Color</label>
+            <label htmlFor="color">Color</label>
             <select
               id="color"
               name="color"
@@ -97,7 +96,7 @@ const AddProduct = () => {
               <option value="green">Green</option>
             </select>
 
-            <label for="fname">Category</label>
+            <label htmlFor="fname">Category</label>
             <select
               id="category"
               name="category"
@@ -112,7 +111,7 @@ const AddProduct = () => {
                 </option>
               ))}
             </select>
-            <label for="fname">Brand</label>
+            <label htmlFor="fname">Brand</label>
             <select
               id="brand"
               name="brand"

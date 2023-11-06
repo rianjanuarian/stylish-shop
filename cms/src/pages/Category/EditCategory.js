@@ -39,7 +39,7 @@ const EditCategory = () => {
         <div className="addform">
           <h1>Edit Category</h1>
           <form onSubmit={handleUpdate}>
-            <label for="fname">Name</label>
+            <label htmlFor="fname">Name</label>
             <input type="text" value={name} onChange={(e)=> setName(e.target.value)} name="firstname" />
 
             <input type="submit" value="Submit" />
