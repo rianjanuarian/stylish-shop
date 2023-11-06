@@ -10,7 +10,7 @@ const {
 const { Op } = require("sequelize");
 
 class ProductControllers {
-  static async getData(req, res, next) {
+  static async getProducts(req, res, next) {
     try {
       const result = await product.findAll({
         include: [category, brand],
@@ -20,7 +20,6 @@ class ProductControllers {
       next(error);
     }
   }
-
 
   static async create(req, res, next) {
     try {
@@ -35,7 +34,7 @@ class ProductControllers {
         image: req.file.filename,
         color,
       });
-      console.log(products);
+
       await categoryproduct.create({
         productId: parseInt(products.id),
         categoryId: parseInt(categoryId),
@@ -191,7 +190,7 @@ class ProductControllers {
   static async create(req, res, next) {
     try {
       let { name, price, description, stock, color, categoryId, brandId } =
-      req.body;
+        req.body;
 
       const newProduct = await product.create({
         name,
@@ -231,7 +230,6 @@ class ProductControllers {
     }
   }
 
-
   static async update(req, res, next) {
     try {
       const id = parseInt(req.params.id);
@@ -242,13 +240,13 @@ class ProductControllers {
       if (!currentProduct) {
         return next(createError(404, "Product not found!"));
       }
-        const updatedData = {
+      const updatedData = {
         name: req.body.name,
         price: req.body.price,
         description: req.body.description,
         stock: req.body.stock,
         image: req.file.filename,
-        color: req.body.color
+        color: req.body.color,
       };
 
       await currentProduct.update(updatedData);
