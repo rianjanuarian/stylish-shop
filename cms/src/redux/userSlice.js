@@ -16,7 +16,7 @@ const config = {
     withCredentials: true,
 };
 
-export const getUser = createAsyncThunk("/get_user_admin", async (formData) => {
+export const getUser = createAsyncThunk("/get_user_admin", async () => {
     try {
         const response = await userApi.get("/get_user_admin", config);
         return response.data;
