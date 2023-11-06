@@ -2,8 +2,7 @@
     padding: 1em;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 .dashbord-header-btn {
     padding: 0.8em;
@@ -25,6 +24,7 @@
 }
 .dashbord-header-right {
     display: flex;
+    gap: 20px;
     flex-direction: row;
     align-items: center;
 }

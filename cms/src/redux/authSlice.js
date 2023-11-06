@@ -4,7 +4,7 @@ import { userApi } from "../api";
 const initialState = {
   loading: false,
   error: null,
-  accessToken: localStorage.getItem("access_token") || null,
+  accessToken: localStorage.getItem("Authorization") || null,
 };
 
 export const login = createAsyncThunk("/login", async (formData) => {
@@ -16,9 +16,14 @@ export const login = createAsyncThunk("/login", async (formData) => {
   }
 });
 
-export const logout = () => {
-  localStorage.clear();
-};
+export const logout = createAsyncThunk("/logout", async () => {
+  try {
+    const response = await userApi.get("/logout");
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+})
 
 const authSlice = createSlice({
   name: "auth",
@@ -32,7 +37,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        localStorage.setItem("access_token", action.payload.access_token);
+        localStorage.setItem("Authorization", action.payload.access_token);
         state.accessToken = action.payload.access_token;
       })
       .addCase(login.rejected, (state, action) => {
@@ -40,6 +45,13 @@ const authSlice = createSlice({
         state.error = action.error || "An error occurred. Please try again.";
         console.log(action.error);
       });
+    builder
+      .addCase(logout.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.accessToken = null;
+        localStorage.clear();
+      })
   },
 });
 

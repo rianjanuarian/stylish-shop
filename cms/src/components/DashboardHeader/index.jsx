@@ -1,29 +1,30 @@
-import React from "react";
-
+import React, { useEffect } from "react";
 import "./styles.css";
-import NotificationIcon from "../../assets/icons/notification.svg";
-import SettingsIcon from "../../assets/icons/settings.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../../redux/userSlice";
 
 function DashboardHeader() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!user.data) {
+      const accessToken = localStorage.getItem('Authorization');
+      dispatch(getUser(accessToken));
+    }
+  }, [dispatch, user.data]);
+
   return (
     <div className="dashbord-header-container">
-      <a />
-
       <div className="dashbord-header-right">
-        <img
-          src={NotificationIcon}
-          alt="notification-icon"
-          className="dashbord-header-icon"
-        />
-        <img
-          src={SettingsIcon}
-          alt="settings-icon"
-          className="dashbord-header-icon"
-        />
-        <img
-          className="dashbord-header-avatar"
-          src="https://reqres.in/img/faces/9-image.jpg"
-        />
+        {user.data && <>
+          <h3>Hi {user.data.name}!</h3>
+          <img
+            className="dashbord-header-avatar"
+            src={user.data.image}
+            alt="Profile"
+          />
+        </>}
       </div>
     </div>
   );

@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      image: DataTypes.STRING,
+      image: {type: DataTypes.STRING, defaultValue: "http://via.placeholder.com/100"},
       address: DataTypes.STRING,
       role: { type: DataTypes.ENUM("admin", "user"), defaultValue: "user" },
       gender: DataTypes.ENUM("man", "woman"),

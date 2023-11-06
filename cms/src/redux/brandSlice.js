@@ -5,18 +5,29 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const accessToken = localStorage.getItem("Authorization")  || "";
+const config = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+  },
+  withCredentials: true,
+};
+
 export const getBrands = createAsyncThunk("brands/getBrands", async () => {
-  const response = await axios.get("http://localhost:3000/brands");
+  const response = await axios.get("http://localhost:3000/brands", config);
   return response.data;
 });
 
 export const saveBrands = createAsyncThunk(
   "brands/saveBrands",
   async (formData) => {
+
     const response = await axios.post(
       "http://localhost:3000/brands/create",
       formData
     );
+
     return response.data;
   }
 );

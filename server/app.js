@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 const routes = require("./routes/index.js");
+const cors = require("cors");
 
 //Firebase
 const admin = require("firebase-admin");
@@ -12,6 +13,7 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://stylishshop-562a7.firebaseio.com",
 });
+
 const corsOptions = {
   allowedHeaders: 'access_token, Content-Type', 
   origin: 'http://localhost:3001', 
