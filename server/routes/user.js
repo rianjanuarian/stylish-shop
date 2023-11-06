@@ -7,9 +7,10 @@ userRoutes.post("/register_with_email", UserControllers.registerWithEmail);
 userRoutes.post("/register_with_google", UserControllers.registerWithGoogle);
 userRoutes.post("/login_with_email", UserControllers.loginWithEmail);
 userRoutes.post("/login_with_google", UserControllers.loginWithGoogle);
+userRoutes.get('/getUser', verifyUser, UserControllers.getOneUser);
 
 //Admin Only
-userRoutes.get("/", verifyAdmin, UserControllers.getUser);
+userRoutes.get("/", verifyAdmin, UserControllers.getUsers);
 userRoutes.post("/create_admin", UserControllers.createAdmin);
 userRoutes.post("/login_admin", UserControllers.loginAdmin);
 userRoutes.put(
@@ -23,6 +24,7 @@ userRoutes.delete(
   verifyAdmin,
   UserControllers.deleteAccount
 );
+userRoutes.get('/get_user_admin', verifyAdmin, UserControllers.getOneUser);
 
 //User Data
 userRoutes.put("/change_password", verifyUser, UserControllers.changePassword);

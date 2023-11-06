@@ -1,28 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import "./styles.css";
-import NotificationIcon from "../../assets/icons/notification.svg";
-import SettingsIcon from "../../assets/icons/settings.svg";
+
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../../redux/userSlice";
 
 function DashboardHeader() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch])
+
+
+
   return (
     <div className="dashbord-header-container">
       <a />
 
       <div className="dashbord-header-right">
-        <img
-          src={NotificationIcon}
-          alt="notification-icon"
-          className="dashbord-header-icon"
-        />
-        <img
-          src={SettingsIcon}
-          alt="settings-icon"
-          className="dashbord-header-icon"
-        />
+        <h3>Hi {user.data.name}!</h3>
         <img
           className="dashbord-header-avatar"
-          src="https://reqres.in/img/faces/9-image.jpg"
+          src={user.data.image}
         />
       </div>
     </div>
