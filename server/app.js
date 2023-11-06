@@ -14,12 +14,15 @@ admin.initializeApp({
   databaseURL: "https://stylishshop-562a7.firebaseio.com",
 });
 
-app.use(cors({
-  origin: 'http://localhost:3001',
-  methods: 'GET,POST,PUT,DELETE',
-  allowedHeaders: 'Content-Type, Authorization, access_token',
-  credentials: true,
-}));
+const corsOptions = {
+  allowedHeaders: 'access_token, Content-Type', 
+  origin: 'http://localhost:3001', 
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, 
+  optionsSuccessStatus: 204,
+};
+const cors = require("cors");
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

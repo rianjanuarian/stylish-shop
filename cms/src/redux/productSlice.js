@@ -86,6 +86,7 @@ const productSlice = createSlice({
   extraReducers: {
     [getProducts.pending]: (state) => {
       state.status = "loading";
+
     },
     [getProducts.fulfilled]: (state, action) => {
       state.status = "success";

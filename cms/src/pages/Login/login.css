@@ -9,6 +9,7 @@
   background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
 } 
 
+
 .main {
   width: 350px;
   height: 500px;
@@ -30,6 +31,7 @@
 }
 
 .label-login {
+
   color: #fff;
   font-size: 2.3em;
   justify-content: center;
@@ -41,6 +43,7 @@
 }
 
 .input-login  {
+
   width: 60%;
   height: 40px;
   background: #e0dede;
@@ -98,4 +101,5 @@
 
 #chk:checked ~ .signup label {
   transform: scale(0.6);
+
 }

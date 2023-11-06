@@ -1,28 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import DashboardHeader from "../../components/DashboardHeader";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
-import Swal from "sweetalert2";
+import { deleteUsers, getUsers, userSelectors } from "../../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+
 import Loading from "../../helpers/Loading/Loading";
 import empty from "../../assets/images/empty.png";
 
-import {
-  getCategories,
-  categorySelectors,
-  deleteCategories,
-} from "../../redux/categorySlice";
-
-const Category = () => {
+const UserList = () => {
   const dispatch = useDispatch();
-  const categories = useSelector(categorySelectors.selectAll);
-  const status = useSelector((state) => state.categories.status);
-  const error = useSelector((state) => state.categories.error);
+  const users = useSelector(userSelectors.selectAll);
+  const status = useSelector((state) => state.users.status);
+  const error = useSelector((state) => state.users.error);
+
   useEffect(() => {
-    dispatch(getCategories());
+    dispatch(getUsers());
   }, [dispatch]);
+
   const deletes = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -34,11 +32,12 @@ const Category = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your category has been deleted.", "success");
-        dispatch(deleteCategories(id));
+        Swal.fire("Deleted!", "User has been deleted.", "success");
+        dispatch(deleteUsers(id));
       }
     });
   };
+
   return (
     <>
       <div className="dashboard-container">
@@ -49,9 +48,18 @@ const Category = () => {
 
             <div className="dashboard-content-container">
               <div className="dashboard-content-header">
-                <h2>Categories List</h2>
-                <Link to={"/addCategory"} className="rows-btn" type="button">
-                  Add Category
+                <h2>User List</h2>
+                <Link to={"/addUser"} className="rows-btn" type="button">
+                  Add User
+                </Link>
+              </div>
+              <p>Role : </p>
+              <div className="user-role">
+                <Link to={"/adminList"}>
+                <button className="user-btn">Admin</button>
+                </Link>
+                <Link to={"/customerList"}>
+                <button className="user-btn">User</button>
                 </Link>
               </div>
               {status === "loading" ? (
@@ -60,16 +68,17 @@ const Category = () => {
                 </div>
               ) : status === "rejected" ? (
                 <p>{error}</p>
-              ) : categories.length !== 0 ? (
+              ) : users.length !== 0 ? (
                 <table>
                   <thead>
                     <th>No.</th>
                     <th>NAME</th>
+                    <th>ROLE</th>
                     <th>ACTION</th>
                   </thead>
 
                   <tbody>
-                    {categories.map((e, index) => (
+                    {users.map((e, index) => (
                       <tr key={e.id}>
                         <td>
                           <span>{index + 1}</span>
@@ -78,13 +87,16 @@ const Category = () => {
                           <span>{e.name}</span>
                         </td>
                         <td>
+                          <span>{e.role}</span>
+                        </td>
+                        <td>
                           <div>
                             <button
-                              onClick={() => deletes(e.id)}
-                              className="action-btn-delete"
-                            >
-                              Delete
-                            </button>
+                            onClick={() => deletes(e.id)}
+                            className="action-btn-delete"
+                          >
+                            Delete
+                          </button>
                             <Link to={`/editCategory/${e.id}`}>
                               <button className="action-btn-update">
                                 Update
@@ -110,4 +122,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default UserList;

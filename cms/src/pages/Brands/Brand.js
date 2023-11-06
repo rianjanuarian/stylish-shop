@@ -5,6 +5,7 @@ import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
 import Swal from "sweetalert2";
+import Loading from "../../helpers/Loading/Loading";
 import {
   brandSelectors,
   getBrands,
@@ -14,9 +15,11 @@ import { useSelector, useDispatch } from "react-redux";
 import empty from "../../assets/images/empty.png";
 
 const Brand = () => {
-  const dispatch = useDispatch();
-  const brands = useSelector(brandSelectors.selectAll);
 
+  const brands = useSelector(brandSelectors.selectAll);
+  const status = useSelector((state) => state.brands.status);
+  const error = useSelector((state) => state.brands.error);
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getBrands());
   }, [dispatch]);
@@ -51,7 +54,14 @@ const Brand = () => {
                   Add Brand
                 </Link>
               </div>
-              {brands.length !== 0 ? (
+              {status === "loading" ? (
+                <div className="loading-animate">
+                 
+                  <Loading></Loading>
+                </div>
+              ) : status === "rejected" ? (
+                <p>{error}</p>
+              ) : brands.length !== 0 ? (
                 <table>
                   <thead>
                     <th>No.</th>
