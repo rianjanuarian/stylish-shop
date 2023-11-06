@@ -313,3 +313,20 @@ body.active-modal {
   justify-content: center;
   align-items: center;
 }
+
+.user-role{
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.user-btn {
+  position: flex;
+  margin-right: 10px;
+  padding: 8px 16px;
+  background-color: rgb(0, 169, 247);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
