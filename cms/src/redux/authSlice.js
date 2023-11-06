@@ -9,7 +9,7 @@ const initialState = {
 
 export const login = createAsyncThunk("/login", async (formData) => {
   try {
-    const response = await userApi.post("/login_with_email", formData);
+    const response = await userApi.post("/login_admin", formData);
     return response.data;
   } catch (error) {
     throw error.response.data;

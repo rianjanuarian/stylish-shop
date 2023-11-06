@@ -12,37 +12,10 @@ import RefundedIcon from "../../assets/icons/refunded.svg";
 import empty from "../../assets/images/empty.png";
 
 const UserList = () => {
-  const [search, setSearch] = useState("");
+
   const [orders, setOrders] = useState(all_orders);
-  const [page, setPage] = useState(1);
-  const [pagination, setPagination] = useState([]);
 
-  useEffect(() => {
-    setPagination(calculateRange(all_orders, 5));
-    setOrders(sliceData(all_orders, page, 5));
-  }, [page]);
 
-  // Search
-  const __handleSearch = (event) => {
-    setSearch(event.target.value);
-    if (event.target.value !== "") {
-      let search_results = orders.filter(
-        (item) =>
-          item.first_name.toLowerCase().includes(search.toLowerCase()) ||
-          item.last_name.toLowerCase().includes(search.toLowerCase()) ||
-          item.product.toLowerCase().includes(search.toLowerCase())
-      );
-      setOrders(search_results);
-    } else {
-      __handleChangePage(1);
-    }
-  };
-
-  // Change Page
-  const __handleChangePage = (new_page) => {
-    setPage(new_page);
-    setOrders(sliceData(all_orders, new_page, 5));
-  };
 
   return (
     <div className="dashboard-container">
@@ -61,15 +34,7 @@ const UserList = () => {
             <div className="dashboard-content-header">
               <h2>User List</h2>
 
-              <div className="dashboard-content-search">
-                <input
-                  type="text"
-                  value={search}
-                  placeholder="Search.."
-                  className="dashboard-content-input"
-                  onChange={(e) => __handleSearch(e)}
-                />
-              </div>
+           
             </div>
 
             <table>
@@ -140,26 +105,7 @@ const UserList = () => {
               ) : null}
             </table>
 
-            {orders.length !== 0 ? (
-              <div className="dashboard-content-footer">
-                {pagination.map((item, index) => (
-                  <span
-                    key={index}
-                    className={
-                      item === page ? "active-pagination" : "pagination"
-                    }
-                    onClick={() => __handleChangePage(item)}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <div className="empty">
-                <img src={empty} alt="" />
-                <h1>The table is empty! Try adding some!</h1>
-              </div>
-            )}
+        
           </div>
         </div>
       </div>

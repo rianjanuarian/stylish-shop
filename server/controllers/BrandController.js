@@ -15,7 +15,7 @@ class BrandControllers {
     try {
 
       const { name } = req.body;
-      const newBrand = await brand.create({ name, image: req.file.filename });
+      const newBrand = await brand.create({ name, image: req.file.filename  });
       console.log(req.file);
       res.status(201).json({ message: "Brand has been created!", newBrand });
     } catch (err) {

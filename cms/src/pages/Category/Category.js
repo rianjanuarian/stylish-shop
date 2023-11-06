@@ -6,7 +6,7 @@ import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
 import Swal from "sweetalert2";
 import { useSelector, useDispatch } from "react-redux";
-
+import Loading from "../../helpers/Loading/Loading";
 import empty from "../../assets/images/empty.png";
 
 import {
@@ -15,12 +15,11 @@ import {
   deleteCategories,
 } from "../../redux/categorySlice";
 
-
-
 const Category = () => {
   const dispatch = useDispatch();
   const categories = useSelector(categorySelectors.selectAll);
-
+  const status = useSelector((state) => state.categories.status);
+  const error = useSelector((state) => state.categories.error);
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
@@ -52,10 +51,16 @@ const Category = () => {
               <div className="dashboard-content-header">
                 <h2>Categories List</h2>
                 <Link to={"/addCategory"} className="rows-btn" type="button">
-                Add Category
-              </Link>
+                  Add Category
+                </Link>
               </div>
-              {categories.length !== 0 ? (
+              {status === "loading" ? (
+                <div className="loading-animate">
+                  <Loading></Loading>
+                </div>
+              ) : status === "rejected" ? (
+                <p>{error}</p>
+              ) : categories.length !== 0 ? (
                 <table>
                   <thead>
                     <th>No.</th>
@@ -97,7 +102,6 @@ const Category = () => {
                   <h1>The table is empty! Try adding some!</h1>
                 </div>
               )}
-              ;
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@ import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
 import empty from "../../assets/images/empty.png";
-
+import Loading from "../../helpers/Loading/Loading";
 import {
   productSelectors,
   getProducts,
@@ -16,9 +16,9 @@ import {
 
 const Product = () => {
   const products = useSelector(productSelectors.selectAll);
-
+  const status = useSelector((state) => state.products.status);
+  const error = useSelector((state) => state.products.error);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
@@ -53,7 +53,14 @@ const Product = () => {
                 Add Product
               </Link>
             </div>
-            {products.length !== 0 ? (
+            {status === "loading" ? (
+              <div className="loading-animate">
+             
+                <Loading></Loading>
+              </div>
+            ) : status === "rejected" ? (
+              <p>{error}</p>
+            ) : products.length !== 0 ? (
               <table>
                 <thead>
                   <th>No.</th>
