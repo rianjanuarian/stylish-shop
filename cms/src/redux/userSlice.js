@@ -11,6 +11,7 @@ import {
       "Content-Type": "application/json",
       Authorization: `Bearer ${accessToken}`,
     },
+
     withCredentials: true,
   };
   
@@ -71,5 +72,6 @@ import {
     },
   });
   export const userSelectors = userEntity.getSelectors((state) => state.users);
+
 
   export default userSlice.reducer;
