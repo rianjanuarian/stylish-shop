@@ -4,7 +4,7 @@ import {
   createEntityAdapter,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import { saveBrands } from "./brandSlice";
 
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
@@ -55,17 +55,9 @@ const categorySlice = createSlice({
   initialState: categoryEntity.getInitialState(),
   extraReducers: {
     [getCategories.fulfilled]: (state, action) => {
-      state.status = "success"
       categoryEntity.setAll(state, action.payload);
     },
-    [getCategories.pending] : (state) => {
-      state.status = "loading"
-    },
-    [getCategories.rejected] : (state,action)=>{
-      state.status = "rejected"
-      state.error = action.error.message
-    },
-    [saveCategories.fulfilled]: (state, action) => {
+    [saveBrands.fulfilled]: (state, action) => {
       categoryEntity.addOne(state, action.payload);
     },
     [deleteCategories.fulfilled]: (state, action) => {

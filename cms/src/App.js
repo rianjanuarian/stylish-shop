@@ -15,8 +15,6 @@ import {
   EditBrand,
   EditCategory,
   EditProduct,
-  CustomerList,
-  AdminList
 } from "./pages";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -90,14 +88,6 @@ const router = createBrowserRouter([
   {
     path: "/editProduct/:id",
     element: <EditProduct />,
-  },
-  {
-    path: "/adminList",
-    element: <AdminList />,
-  },
-  {
-    path: "/customerList",
-    element: <CustomerList />,
   },
 ]);
 

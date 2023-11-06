@@ -23,11 +23,7 @@ export const saveBrands = createAsyncThunk(
   "brands/saveBrands",
   async (formData) => {
 
-    const response = await axios.post(
-      "http://localhost:3000/brands/create",
-      formData
-    );
-
+    const response = await axios.post("http://localhost:3000/brands/create", formData);
     return response.data;
   }
 );
@@ -60,18 +56,9 @@ const brandSlice = createSlice({
   name: "brands",
   initialState: brandEntity.getInitialState(),
   extraReducers: {
-    [getBrands.pending]: (state) => {
-      state.status = "loading";
-    },
-    [getBrands.rejected]: (state, action) => {
-      state.status = "rejected";
-      state.error = action.error.message;
-    },
     [getBrands.fulfilled]: (state, action) => {
-      state.status = "success"
       brandEntity.setAll(state, action.payload);
     },
- 
     [saveBrands.fulfilled]: (state, action) => {
       brandEntity.addOne(state, action.payload);
     },
