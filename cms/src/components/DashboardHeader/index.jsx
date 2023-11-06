@@ -8,8 +8,10 @@ function DashboardHeader() {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch])
+    if (!user.data) {
+      dispatch(getUser());
+    }
+  }, [dispatch, user.data]);
 
   return (
     <div className="dashbord-header-container">
@@ -22,8 +24,6 @@ function DashboardHeader() {
             alt="Profile picture"
           />
         </>}
-
-
       </div>
     </div>
   );
