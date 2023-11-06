@@ -8,7 +8,6 @@
   font-family: "Poppins", sans-serif;
   background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
 } 
-} 
 
 .main {
   width: 350px;
@@ -18,7 +17,6 @@
   background: url("../../assets/images/night-sky.jpg") no-repeat center / cover;
   border-radius: 10px;
   box-shadow: 5px 20px 50px #000;
-  
 }
 
 #chk {
@@ -32,7 +30,6 @@
 }
 
 .label-login {
-.label-login {
   color: #fff;
   font-size: 2.3em;
   justify-content: center;
@@ -43,7 +40,6 @@
   transition: 0.5s ease-in-out;
 }
 
-.input-login  {
 .input-login  {
   width: 60%;
   height: 40px;
@@ -76,7 +72,6 @@
 }
 
 .button-login:hover {
-
   background: #6d44b8;
 }
 

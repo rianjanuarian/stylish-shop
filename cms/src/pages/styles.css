@@ -232,7 +232,7 @@ select {
   box-sizing: border-box;
 }
 
-/* input[type="submit"] {
+input[type="submit"] {
   width: 15%;
   background-color: #3498db;
   color: white;
