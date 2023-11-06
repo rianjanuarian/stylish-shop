@@ -41,6 +41,12 @@
   font-size: xx-large;
   font-weight: 700;
 }
+
+.dashbord-header-right {
+  display: flex;
+  gap: 20px;
+}
+
 .dashboard-content-search {
   font-weight: 400;
   line-height: 1.4em;
