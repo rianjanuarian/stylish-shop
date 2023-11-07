@@ -9,8 +9,9 @@ const accessToken = localStorage.getItem("access_token");
 const config = {
   headers: {
     "Content-Type": "application/json",
-    access_token: `${accessToken}`,
+    Authorization: `Bearer ${accessToken}`,
   },
+
   withCredentials: true,
 };
 
