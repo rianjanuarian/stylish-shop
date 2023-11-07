@@ -76,10 +76,10 @@ const UserList = () => {
                     <th>EMAIL</th>
                     <th>IMAGE</th>
                     <th>ROLE</th>
+                    <th>ADDRESS</th>
                     <th>GENDER</th>
                     <th>BIRTHDAY</th>
                     <th>PHONE</th>
-                    <th>ADDRESS</th>
                     <th>ACTION</th>
                   </thead>
 
@@ -96,23 +96,30 @@ const UserList = () => {
                           <span>{e.email}</span>
                         </td>
                         <td>
-                          <img src={e.image}></img >
+                        <span>
+                            <img
+                              src={`http://localhost:3000/uploads/${e.image}`}
+                              style={{ width: "200px", height: "200px" }}
+                              alt="Brand"
+                            ></img>
+                          </span>
                         </td>
                         <td>
                           <span>{e.role}</span>
                         </td>
                         <td>
-                          <span>{e.gender}</span>
+                          <span>{e.address===null ? '-' :e.address}</span>
                         </td>
                         <td>
-                          <span>{e.birthday}</span>
+                          <span>{e.gender===null ? '-' :e.gender}</span>
                         </td>
                         <td>
-                          <span>{e.phone}</span>
+                          <span>{e.birthday ? e.birthday.slice(0, 10) : "-"}</span>
                         </td>
                         <td>
-                          <span>{e.address}</span>
+                          <span>{e.phone_number===null ? "-" : e.phone_number}</span>
                         </td>
+                      
 
                         <td>
                           <div>
@@ -122,7 +129,7 @@ const UserList = () => {
                           >
                             Delete
                           </button>
-                            <Link to={`/editCategory/${e.id}`}>
+                            <Link to={`/updateUser/${e.id}`}>
                               <button className="action-btn-update">
                                 Update
                               </button>

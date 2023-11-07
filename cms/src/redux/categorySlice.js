@@ -5,6 +5,15 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const accessToken = localStorage.getItem("Authorization");
+const config = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+  },
+
+  withCredentials: true,
+};
 
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
@@ -21,7 +30,8 @@ export const saveCategories = createAsyncThunk(
       "http://localhost:3000/categories/create",
       {
         name,
-      }
+      },
+      config
     );
     return response.data;
   }
@@ -29,7 +39,7 @@ export const saveCategories = createAsyncThunk(
 export const deleteCategories = createAsyncThunk(
   "categories/deleteCategories",
   async (id) => {
-    await axios.delete(`http://localhost:3000/categories/delete/${id}`);
+    await axios.delete(`http://localhost:3000/categories/delete/${id}`,config);
     return id;
   }
 );
@@ -41,7 +51,8 @@ export const updateCategories = createAsyncThunk(
       `http://localhost:3000/categories/update/${id}`,
       {
         name,
-      }
+      },
+      config
     );
     return response.data;
   }

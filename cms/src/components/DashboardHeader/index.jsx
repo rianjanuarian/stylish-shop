@@ -21,7 +21,7 @@ function DashboardHeader() {
           <h3>Hi {currentUser.data.name}!</h3>
           <img
             className="dashbord-header-avatar"
-            src={currentUser.data.image}
+            src={`http://localhost:3000/uploads/${currentUser.data.image}`}
             alt="Profile"
           />
         </>}

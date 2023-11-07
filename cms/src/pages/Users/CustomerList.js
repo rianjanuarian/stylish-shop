@@ -72,23 +72,53 @@ const CustomerList = () => {
               ) : users.length !== 0 ? (
                 <table>
                   <thead>
-                    <th>No.</th>
+                  <th>No.</th>
                     <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>IMAGE</th>
                     <th>ROLE</th>
+                    <th>ADDRESS</th>
+                    <th>GENDER</th>
+                    <th>BIRTHDAY</th>
+                    <th>PHONE</th>
                     <th>ACTION</th>
                   </thead>
 
                   <tbody>
                     {adminRole.map((e, index) => (
                       <tr key={e.id}>
-                        <td>
+                           <td>
                           <span>{index + 1}</span>
                         </td>
                         <td>
                           <span>{e.name}</span>
                         </td>
                         <td>
+                          <span>{e.email}</span>
+                        </td>
+                        <td>
+                        <span>
+                            <img
+                              src={`http://localhost:3000/uploads/${e.image}`}
+                              style={{ width: "200px", height: "200px" }}
+                              alt="Brand"
+                            ></img>
+                          </span>
+                        </td>
+                        <td>
                           <span>{e.role}</span>
+                        </td>
+                        <td>
+                          <span>{e.address}</span>
+                        </td>
+                        <td>
+                          <span>{e.gender}</span>
+                        </td>
+                        <td>
+                          <span>{e.birthday ? e.birthday.slice(0, 10) : ""}</span>
+                        </td>
+                        <td>
+                          <span>{e.phone_number}</span>
                         </td>
                         <td>
                           <div>
@@ -98,7 +128,7 @@ const CustomerList = () => {
                           >
                             Delete
                           </button>
-                            <Link to={`/editCategory/${e.id}`}>
+                          <Link to={`/updateUser/${e.id}`}>
                               <button className="action-btn-update">
                                 Update
                               </button>

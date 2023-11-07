@@ -14,6 +14,7 @@ import EditCategory from "./Category/EditCategory";
 import EditProduct from "./Products/EditProduct";
 import AdminList from "./Users/AdminList";
 import CustomerList from "./Users/CustomerList";
+import UpdateUser from "./Users/UpdateUser";
 export {
   LoginPage,
   Orders,
@@ -30,5 +31,6 @@ export {
   EditCategory,
   AdminList,
   EditProduct,
-  CustomerList
+  CustomerList,
+  UpdateUser
 };

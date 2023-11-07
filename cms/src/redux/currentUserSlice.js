@@ -11,7 +11,7 @@ export const getUser = createAsyncThunk("/get_user_admin", async (accessToken) =
     try {
         const config = {
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 Authorization: `Bearer ${accessToken}`,
             },
             withCredentials: true,
