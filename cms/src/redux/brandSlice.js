@@ -23,14 +23,12 @@ export const getBrands = createAsyncThunk("brands/getBrands", async () => {
 export const saveBrands = createAsyncThunk(
   "brands/saveBrands",
   async (formData) => {
-    
     const response = await axios.post(
       "http://localhost:3000/brands/create",
       formData,
       config
-  
     );
-      
+
     return response.data;
   }
 );
@@ -50,8 +48,8 @@ export const updateBrands = createAsyncThunk(
     formData.append("name", name);
     const response = await axios.put(
       `http://localhost:3000/brands/update/${id}`,
-      config,
-      formData
+      formData,
+      config
     );
     return response.data;
   }
@@ -93,4 +91,3 @@ const brandSlice = createSlice({
 
 export const brandSelectors = brandEntity.getSelectors((state) => state.brands);
 export default brandSlice.reducer;
-

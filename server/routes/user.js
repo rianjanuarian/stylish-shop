@@ -15,7 +15,7 @@ userRoutes.get('/logout', UserControllers.logout);
 
 //Admin Only
 userRoutes.get("/", verifyAdmin, UserControllers.getUsers);
-userRoutes.post("/create_admin", upload.single("images"), UserControllers.createAdmin);
+userRoutes.post("/create_admin",verifyAdmin, upload.single("images"), UserControllers.createAdmin);
 userRoutes.post("/login_admin", UserControllers.loginAdmin);
 userRoutes.put(
   "/change_password_admin",

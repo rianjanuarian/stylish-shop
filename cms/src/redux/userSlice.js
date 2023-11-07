@@ -6,9 +6,10 @@ import {
 import axios from "axios";
 
 const accessToken = localStorage.getItem("Authorization");
+
 const config = {
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
     Authorization: `Bearer ${accessToken}`,
   },
 
@@ -35,7 +36,7 @@ export const saveUsers = createAsyncThunk(
     formData.append("gender", gender);
  
     const response = await axios.post(
-      "http://localhost:3000/users/create_admin",formData
+      "http://localhost:3000/users/create_admin",formData,config
    
     );
     return response.data;
