@@ -5,29 +5,32 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const accessToken = localStorage.getItem("Authorization")  || "";
+const accessToken = localStorage.getItem("Authorization");
 const config = {
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
     Authorization: `Bearer ${accessToken}`,
   },
+
   withCredentials: true,
 };
 
 export const getBrands = createAsyncThunk("brands/getBrands", async () => {
-  const response = await axios.get("http://localhost:3000/brands", config);
+  const response = await axios.get("http://localhost:3000/brands");
   return response.data;
 });
 
 export const saveBrands = createAsyncThunk(
   "brands/saveBrands",
   async (formData) => {
-
+    
     const response = await axios.post(
       "http://localhost:3000/brands/create",
-      formData
+      formData,
+      config
+  
     );
-
+      
     return response.data;
   }
 );
@@ -47,6 +50,7 @@ export const updateBrands = createAsyncThunk(
     formData.append("name", name);
     const response = await axios.put(
       `http://localhost:3000/brands/update/${id}`,
+      config,
       formData
     );
     return response.data;
@@ -68,10 +72,10 @@ const brandSlice = createSlice({
       state.error = action.error.message;
     },
     [getBrands.fulfilled]: (state, action) => {
-      state.status = "success"
+      state.status = "success";
       brandEntity.setAll(state, action.payload);
     },
- 
+
     [saveBrands.fulfilled]: (state, action) => {
       brandEntity.addOne(state, action.payload);
     },
@@ -89,3 +93,4 @@ const brandSlice = createSlice({
 
 export const brandSelectors = brandEntity.getSelectors((state) => state.brands);
 export default brandSlice.reducer;
+

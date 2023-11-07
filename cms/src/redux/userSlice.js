@@ -5,7 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const accessToken = localStorage.getItem("access_token");
+const accessToken = localStorage.getItem("Authorization");
 const config = {
   headers: {
     "Content-Type": "application/json",
@@ -22,14 +22,21 @@ export const getUsers = createAsyncThunk("users/getUsers", async () => {
 
 export const saveUsers = createAsyncThunk(
   "users/saveUsers",
-  async ({ name, email, password }) => {
+  async ({ name, email, password,image,address,gender,birthday,phone }) => {
+    const formData = new FormData();
+    formData.append("images", image);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("address", address);
+    formData.append("birthday", birthday);
+    formData.append("address", address);
+    formData.append("phone", phone);
+    formData.append("gender", gender);
+ 
     const response = await axios.post(
-      "http://localhost:3000/users/create_admin",
-      {
-        name,
-        email,
-        password,
-      }
+      "http://localhost:3000/users/create_admin",formData
+   
     );
     return response.data;
   }
@@ -74,6 +81,4 @@ const userSlice = createSlice({
 export const userSelectors = userEntity.getSelectors((state) => state.users);
 
 
-
-
-  export default userSlice.reducer;
+export default userSlice.reducer;
