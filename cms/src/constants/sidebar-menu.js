@@ -5,6 +5,7 @@ import { RiFileListLine } from "react-icons/ri";
 import { BsShop } from "react-icons/bs";
 import { FiUsers } from "react-icons/fi";
 import { AiOutlineUser } from "react-icons/ai";
+import { GiDeliveryDrone } from "react-icons/gi";
 
 const sidebar_menu = [
   {
@@ -39,12 +40,18 @@ const sidebar_menu = [
   },
   {
     id: 7,
+    icon: GiDeliveryDrone,
+    path: "/courier",
+    title: "Courier",
+  },
+  {
+    id: 8,
     icon: FiUsers,
     path: "/user",
     title: "User",
   },
   {
-    id: 8,
+    id: 9,
     icon: AiOutlineUser,
     path: "/profile",
     title: "My account",

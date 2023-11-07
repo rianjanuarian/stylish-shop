@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveProducts } from "../../redux/productSlice";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
-import { categorySelectors, getCategories } from "../../redux/categorySlice";
-import { brandSelectors, getBrands } from "../../redux/brandSlice";
+import { categorySelectors, getCategories, selectAllCategory } from "../../redux/categorySlice";
+import { brandSelectors, getBrands, selectAllBrands } from "../../redux/brandSlice";
 // import { useNavigate } from "react-router-dom";
 
 
@@ -22,8 +22,8 @@ const AddProduct = () => {
 
 
 
-  const categories = useSelector(categorySelectors.selectAll);
-  const brands = useSelector(brandSelectors.selectAll);
+  const categories = useSelector(selectAllCategory);
+  const brands = useSelector(selectAllBrands);
   // const navigate = useNavigate();
   const createProduct = async (e) => {
 

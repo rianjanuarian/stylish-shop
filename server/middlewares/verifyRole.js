@@ -28,7 +28,7 @@ const verifyUser = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    if (req.user.dataValues.role !== "user") {
+    if (req.user.role !== "user") {
       return next(
         createError(403, "You do not have permisson to access this!")
       );
@@ -43,7 +43,7 @@ const verifyAdmin = (req, res, next) => {
       return next(err);
     }
 
-    if (req.user.dataValues.role !== "admin") {
+    if (req.user.role !== "admin") {
       return next(
         createError(403, "You do not have permisson to access this!")
       );

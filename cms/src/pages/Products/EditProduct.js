@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import { updateProducts,productSelectors,getProducts } from "../../redux/productSlice";
-import { categorySelectors } from "../../redux/categorySlice";
-import { brandSelectors } from "../../redux/brandSlice";
+import { categorySelectors, selectAllCategory } from "../../redux/categorySlice";
+import { brandSelectors, selectAllBrands } from "../../redux/brandSlice";
 import { useParams, useNavigate } from "react-router-dom";
 const EditProduct = () => {
   const [name, setName] = useState("");
@@ -16,8 +16,8 @@ const EditProduct = () => {
   const [categoryId, setCategoryId] = useState("");
   const [brandId, setBrand] = useState("");
 
-  const categories = useSelector(categorySelectors.selectAll);
-  const brands = useSelector(brandSelectors.selectAll);
+  const categories = useSelector(selectAllCategory);
+  const brands = useSelector(selectAllBrands);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();

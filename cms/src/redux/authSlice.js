@@ -2,9 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { userApi } from "../api";
 
 const initialState = {
-  loading: false,
-  error: null,
-  accessToken: localStorage.getItem("Authorization") || null,
+  currentUser: null,
 };
 
 export const login = createAsyncThunk("/login", async (formData) => {
@@ -23,35 +21,22 @@ export const logout = createAsyncThunk("/logout", async () => {
   } catch (error) {
     throw error.response.data;
   }
-})
+});
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   extraReducers: (builder) => {
-    builder
-      .addCase(login.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        localStorage.setItem("Authorization", action.payload.access_token);
-        state.accessToken = action.payload.access_token;
-      })
-      .addCase(login.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error || "An error occurred. Please try again.";
-        console.log(action.error);
-      });
-    builder
-      .addCase(logout.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        state.accessToken = null;
-        localStorage.clear();
-      })
+    builder.addCase(login.fulfilled, (state, action) => {
+      localStorage.setItem("Authorization", action.payload.accessToken);
+      localStorage.setItem("currentUser", JSON.stringify(action.payload.currentUser));
+      state.currentUser = action.payload.currentUser;
+    });
+
+    builder.addCase(logout.fulfilled, (state, action) => {
+      state.currentUser = null;
+      localStorage.clear();
+    });
   },
 });
 

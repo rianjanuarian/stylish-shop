@@ -1,36 +1,33 @@
 import React, { useEffect, useState } from "react";
-import DashboardHeader from "../../components/DashboardHeader";
-import { Link } from "react-router-dom";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
-import "../styles.css";
-import Swal from "sweetalert2";
-import { useSelector, useDispatch } from "react-redux";
-import Loading from "../../helpers/Loading/Loading";
-import empty from "../../assets/images/empty.png";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  getCategories,
-  selectAllCategory,
-  deleteCategory,
-} from "../../redux/categorySlice";
-import CategoryModalAdd from "./CategoryModalAdd";
-import CategoryModalEdit from "./CategoryModalEdit";
+  deleteCourier,
+  getCouriers,
+  selectAllCouriers,
+} from "../../redux/courierSlice";
+import DashboardHeader from "../../components/DashboardHeader";
+import empty from "../../assets/images/empty.png";
+import CourierModalAdd from "./CourierModalAdd";
+import Swal from "sweetalert2";
+import CourierModalEdit from "./CourierModalEdit";
 
-const Category = () => {
-  const categories = useSelector(selectAllCategory);
-  const { error, loading } = useSelector((state) => state.categories);
+const Courier = () => {
+  const couriers = useSelector(selectAllCouriers);
+  const { error, loading } = useSelector((state) => state.couriers);
   const dispatch = useDispatch();
 
   const [modalAdd, setModalAdd] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
-  const [categoryId, setCategoryId] = useState(0);
+  const [courierId, setCourierId] = useState(0);
+
+  useEffect(() => {
+    dispatch(getCouriers());
+  }, [dispatch]);
 
   const toggleModalAdd = () => setModalAdd(!modalAdd);
   const toggleModalEdit = () => setModalEdit(!modalEdit);
-
-  useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
 
   const deletes = (id) => {
     Swal.fire({
@@ -43,7 +40,7 @@ const Category = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteCategory(id))
+        dispatch(deleteCourier(id))
           .unwrap()
           .then((data) => {
             Swal.fire({
@@ -66,7 +63,7 @@ const Category = () => {
   };
 
   const update = (id) => {
-    setCategoryId(id);
+    setCourierId(id);
     toggleModalEdit();
   };
 
@@ -79,34 +76,51 @@ const Category = () => {
             <DashboardHeader />
             <div className="dashboard-content-container">
               <div className="dashboard-content-header">
-                <h2>Categories List</h2>
+                <h2>Courier List</h2>
                 <button className="rows-btn" onClick={toggleModalAdd}>
-                  Add Category
+                  Add Courier
                 </button>
               </div>
               {loading ? (
                 <div className="loading-animate">
-                  <Loading></Loading>
+                  <div className="empty">
+                    <img src={empty} alt="" />
+                    <h1>Loading...</h1>
+                  </div>
                 </div>
               ) : error ? (
                 <p>{error}</p>
-              ) : categories.length !== 0 ? (
+              ) : couriers && couriers.length !== 0 ? (
                 <table>
                   <thead>
                     <tr>
                       <th>No.</th>
                       <th>NAME</th>
+                      <th>PRICE</th>
+                      <th>IMAGE</th>
                       <th>ACTION</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {categories.map((e, index) => (
+                    {couriers.map((e, index) => (
                       <tr key={e.id}>
                         <td>
                           <span>{index + 1}</span>
                         </td>
                         <td>
                           <span>{e.name}</span>
+                        </td>
+                        <td>
+                          <span>Rp. {e.price}</span>
+                        </td>
+                        <td>
+                          <span>
+                            <img
+                              src={`http://localhost:3000/uploads/${e.image}`}
+                              style={{ width: "200px", height: "200px" }}
+                              alt="courier"
+                            ></img>
+                          </span>
                         </td>
                         <td>
                           <div>
@@ -138,15 +152,15 @@ const Category = () => {
           </div>
         </div>
       </div>
-      {modalAdd && <CategoryModalAdd toggleModalAdd={toggleModalAdd} />}
+      {modalAdd && <CourierModalAdd toggleModalAdd={toggleModalAdd} />}
       {modalEdit && (
-        <CategoryModalEdit
+        <CourierModalEdit
           toggleModalEdit={toggleModalEdit}
-          categoryId={categoryId}
+          courierId={courierId}
         />
       )}
     </>
   );
 };
 
-export default Category;
+export default Courier;
