@@ -7,16 +7,15 @@ import {
   Product,
   UserList,
   AddProduct,
-  AddBrand,
   AddCategories,
   AddUser,
   Brand,
   Category,
-  EditBrand,
   EditCategory,
   EditProduct,
   CustomerList,
   AdminList,
+  Courier,
   UpdateUser
 } from "./pages";
 
@@ -30,11 +29,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: (<ProtectedRoute><Dashboard /></ProtectedRoute>),
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/orders",
-    element: (<ProtectedRoute><Orders /></ProtectedRoute>),
+    element: (
+      <ProtectedRoute>
+        <Orders />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/locations",
@@ -50,39 +57,47 @@ const router = createBrowserRouter([
   },
   {
     path: "/products",
-    element: (<ProtectedRoute><Product /></ProtectedRoute>),
+    element: (
+      <ProtectedRoute>
+        <Product />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/addProduct",
-    element: (<ProtectedRoute><AddProduct /></ProtectedRoute>),
-  },
-  {
-    path: "/addBrand",
-    element: (<ProtectedRoute><AddBrand /></ProtectedRoute>),
-  },
-  {
-    path: "/addCategory",
-    element: (<ProtectedRoute><AddCategories /></ProtectedRoute>),
+    element: (
+      <ProtectedRoute>
+        <AddProduct />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/addUser",
-    element: (<ProtectedRoute><AddUser /></ProtectedRoute>),
+    element: (
+      <ProtectedRoute>
+        <AddUser />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/brands",
-    element: (<ProtectedRoute><Brand /></ProtectedRoute>),
+    element: (
+      <ProtectedRoute>
+        <Brand />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/categories",
-    element: (<ProtectedRoute><Category /></ProtectedRoute>),
+    element: (
+      <ProtectedRoute>
+        <Category />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/categories/:id",
     element: <Category />,
-  },
-  {
-    path: "/editBrand/:id",
-    element: <EditBrand />,
   },
   {
     path: "/editCategory/:id",
@@ -91,6 +106,14 @@ const router = createBrowserRouter([
   {
     path: "/editProduct/:id",
     element: <EditProduct />,
+  },
+  {
+    path: "/courier",
+    element: (
+      <ProtectedRoute>
+        <Courier />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/adminList",
@@ -110,4 +133,4 @@ const App = () => {
   return <RouterProvider router={router} />;
 };
 
-export default App
+export default App;

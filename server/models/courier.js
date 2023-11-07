@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
           },
         },
       },
+      image: {
+        type: DataTypes.STRING,
+        defaultValue: "http://via.placeholder.com/100"
+      },
     },
     {
       sequelize,

@@ -1,30 +1,22 @@
-import React, { useEffect } from "react";
 import "./styles.css";
-import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../redux/currentUserSlice";
 
 function DashboardHeader() {
-  const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.currentUser);
-
-  useEffect(() => {
-    if (!currentUser.data) {
-      const accessToken = localStorage.getItem('Authorization');
-      dispatch(getUser(accessToken));
-    }
-  }, [dispatch, currentUser.data]);
+  const storedCurrentUser = localStorage.getItem("currentUser");
+  const currentUser = JSON.parse(storedCurrentUser);
 
   return (
     <div className="dashbord-header-container">
       <div className="dashbord-header-right">
-        {currentUser.data && <>
-          <h3>Hi {currentUser.data.name}!</h3>
-          <img
-            className="dashbord-header-avatar"
-            src={`http://localhost:3000/uploads/${currentUser.data.image}`}
-            alt="Profile"
-          />
-        </>}
+        {currentUser && (
+          <>
+            <h3>Hi {currentUser.name}!</h3>
+            <img
+              className="dashbord-header-avatar"
+              src={currentUser.image}
+              alt="Profile"
+            />
+          </>
+        )}
       </div>
     </div>
   );

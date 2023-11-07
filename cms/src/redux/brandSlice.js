@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   createEntityAdapter,
 } from "@reduxjs/toolkit";
-import axios from "axios";
+import { brandApi } from "../api";
 
 const accessToken = localStorage.getItem("Authorization");
 const config = {
@@ -11,83 +11,103 @@ const config = {
     "Content-Type": "multipart/form-data",
     Authorization: `Bearer ${accessToken}`,
   },
-
   withCredentials: true,
 };
 
 export const getBrands = createAsyncThunk("brands/getBrands", async () => {
-  const response = await axios.get("http://localhost:3000/brands");
-  return response.data;
+  try {
+    const response = await brandApi("/");
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
 });
 
-export const saveBrands = createAsyncThunk(
+export const saveBrand = createAsyncThunk(
   "brands/saveBrands",
-  async (formData) => {
-    const response = await axios.post(
-      "http://localhost:3000/brands/create",
-      formData,
-      config
-    );
-
-    return response.data;
-  }
-);
-export const deleteBrands = createAsyncThunk(
-  "products/deleteBrands",
-  async (id) => {
-    await axios.delete(`http://localhost:3000/brands/delete/${id}`);
-    return id;
+  async ({ name, image }) => {
+    try {
+      // await new Promise(resolve => setTimeout(resolve, 5000));
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("images", image);
+      const response = await brandApi.post("/create", formData, config);
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
   }
 );
 
-export const updateBrands = createAsyncThunk(
+export const updateBrand = createAsyncThunk(
   "brands/updateBrands",
   async ({ id, name, image }) => {
-    const formData = new FormData();
-    formData.append("images", image);
-    formData.append("name", name);
-    const response = await axios.put(
-      `http://localhost:3000/brands/update/${id}`,
-      formData,
-      config
-    );
-    return response.data;
+    try {
+      const formData = new FormData();
+      formData.append("images", image);
+      formData.append("name", name);
+      const response = await brandApi.put(`/update/${id}`, formData, config);
+      return { id, message: response.data.message, data: response.data.data };
+    } catch (error) {
+      throw error.response.data;
+    }
   }
 );
+
+export const deleteBrand = createAsyncThunk(
+  "products/deleteBrands",
+  async (id) => {
+    try {
+      const response = await brandApi.delete(`/delete/${id}`);
+      return { id, message: response.data.message };
+    } catch (error) {
+      throw error.response.data;
+    }
+  }
+);
+
 const brandEntity = createEntityAdapter({
-  selectId: (brands) => brands.id,
+  selectId: (brand) => brand.id,
 });
 
 const brandSlice = createSlice({
   name: "brands",
   initialState: brandEntity.getInitialState(),
-  extraReducers: {
-    [getBrands.pending]: (state) => {
-      state.status = "loading";
-    },
-    [getBrands.rejected]: (state, action) => {
-      state.status = "rejected";
-      state.error = action.error.message;
-    },
-    [getBrands.fulfilled]: (state, action) => {
-      state.status = "success";
-      brandEntity.setAll(state, action.payload);
-    },
-
-    [saveBrands.fulfilled]: (state, action) => {
-      brandEntity.addOne(state, action.payload);
-    },
-    [deleteBrands.fulfilled]: (state, action) => {
-      brandEntity.removeOne(state, action.payload);
-    },
-    [updateBrands.fulfilled]: (state, action) => {
+  extraReducers: (builder) => {
+    //get
+    builder
+      .addCase(getBrands.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getBrands.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        brandEntity.setAll(state, action.payload);
+      })
+      .addCase(getBrands.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error || "An error occurred. Please try again.";
+      });
+    //add
+    builder.addCase(saveBrand.fulfilled, (state, action) => {
+      console.log(action.payload);
+      brandEntity.addOne(state, action.payload.newBrand);
+    });
+    //delete
+    builder.addCase(deleteBrand.fulfilled, (state, action) => {
+      brandEntity.removeOne(state, action.payload.id);
+    });
+    //update
+    builder.addCase(updateBrand.fulfilled, (state, action) => {
       brandEntity.updateOne(state, {
         id: action.payload.id,
-        updates: action.payload,
+        changes: action.payload.data,
       });
-    },
+    });
   },
 });
 
-export const brandSelectors = brandEntity.getSelectors((state) => state.brands);
+export const { selectAll: selectAllBrands, selectById: selectBrandById } =
+  brandEntity.getSelectors((state) => state.brands);
 export default brandSlice.reducer;

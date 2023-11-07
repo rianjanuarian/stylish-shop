@@ -14,10 +14,10 @@ class CategorysControllers {
   static async create(req, res, next) {
     try {
       const { name } = req.body;
-      const categories = await category.create({ name });
+      const newCategory = await category.create({ name });
       res
         .status(201)
-        .json({ message: "Category has been created!", categories });
+        .json({ message: "Category has been created!", newCategory });
     } catch (err) {
       next(err);
     }
@@ -35,7 +35,12 @@ class CategorysControllers {
 
       const response = await currentCategory.update(req.body);
       response.dataValues
-        ? res.status(200).json({ message: "Category has been updated!" })
+        ? res
+            .status(200)
+            .json({
+              message: "Category has been updated!",
+              data: response.dataValues,
+            })
         : next(createError(400, "Brand has not been updated!"));
     } catch (err) {
       next(err);
