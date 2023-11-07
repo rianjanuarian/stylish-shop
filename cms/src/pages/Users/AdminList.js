@@ -49,7 +49,7 @@ const AdminList = () => {
 
             <div className="dashboard-content-container">
               <div className="dashboard-content-header">
-                <h2>User List</h2>
+                <h2>Admin List</h2>
                 <Link to={"/addUser"} className="rows-btn" type="button">
                   Add User
                 </Link>
@@ -98,7 +98,7 @@ const AdminList = () => {
                           >
                             Delete
                           </button>
-                            <Link to={`/editCategory/${e.id}`}>
+                          <Link to={`/updateUser/${e.id}`}>
                               <button className="action-btn-update">
                                 Update
                               </button>

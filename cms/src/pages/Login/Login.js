@@ -3,6 +3,7 @@ import "./login.css";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { login } from "../../redux/authSlice";
 
 // React Icons
@@ -18,6 +19,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -55,8 +57,7 @@ const LoginPage = () => {
         text: auth.error.message,
         footer: auth.error.stack,
       });
-    }
-  }, [auth.error]);
+  };
 
   useEffect(() => {
     if (localStorage.getItem("Authorization")) {

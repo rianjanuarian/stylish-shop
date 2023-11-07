@@ -38,7 +38,12 @@ class BrandControllers {
       };
       const response = await currentBrand.update(updatedData);
       response.dataValues
-        ? res.status(200).json({ message: "Brand has been updated!" })
+        ? res
+            .status(200)
+            .json({
+              message: "Brand has been updated!",
+              data: response.dataValues,
+            })
         : next(createError(400, "Brand has not been updated!"));
     } catch (err) {
       next(err);

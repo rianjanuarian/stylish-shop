@@ -3,84 +3,133 @@ import {
   createAsyncThunk,
   createEntityAdapter,
 } from "@reduxjs/toolkit";
-import axios from "axios";
+import { categoryApi } from "../api";
 
+const accessToken = localStorage.getItem("Authorization");
+const config = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+  },
+  withCredentials: true,
+};
 
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
   async () => {
-    const response = await axios.get("http://localhost:3000/categories");
-    return response.data;
+    try {
+      const response = await categoryApi.get("/");
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
   }
 );
 
-export const saveCategories = createAsyncThunk(
-  "categories/saveCateogires",
+export const saveCategory = createAsyncThunk(
+  "categories/saveCateogry",
   async ({ name }) => {
-    const response = await axios.post(
-      "http://localhost:3000/categories/create",
-      {
-        name,
-      }
-    );
-    return response.data;
+    try {
+      const response = await categoryApi.post("/create", {name}, config);
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
   }
 );
-export const deleteCategories = createAsyncThunk(
-  "categories/deleteCategories",
+export const deleteCategory = createAsyncThunk(
+  "categories/deleteCategory",
   async (id) => {
-    await axios.delete(`http://localhost:3000/categories/delete/${id}`);
-    return id;
+    try {
+      const response = await categoryApi.delete(`/delete/${id}`, config);
+      return { id, message: response.data.message };
+    } catch (error) {
+      throw error.response.data;
+    }
   }
 );
 
-export const updateCategories = createAsyncThunk(
-  "categories/updateCategories",
+export const updateCategory = createAsyncThunk(
+  "categories/updateCategory",
   async ({ id, name }) => {
-    const response = await axios.put(
-      `http://localhost:3000/categories/update/${id}`,
-      {
-        name,
-      }
-    );
-    return response.data;
+    try {
+      const response = await categoryApi.put(
+        `/update/${id}`,
+        {
+          name,
+        },
+        config
+      );
+      console.log(response.data);
+      return { id, message: response.data.message, data: response.data.data };
+    } catch (error) {
+      throw error.response.data;
+    }
   }
 );
 const categoryEntity = createEntityAdapter({
-  selectId: (categories) => categories.id,
+  selectId: (category) => category.id,
 });
 
 const categorySlice = createSlice({
   name: "categories",
   initialState: categoryEntity.getInitialState(),
-  extraReducers: {
-    [getCategories.fulfilled]: (state, action) => {
-      state.status = "success"
-      categoryEntity.setAll(state, action.payload);
-    },
-    [getCategories.pending] : (state) => {
-      state.status = "loading"
-    },
-    [getCategories.rejected] : (state,action)=>{
-      state.status = "rejected"
-      state.error = action.error.message
-    },
-    [saveCategories.fulfilled]: (state, action) => {
-      categoryEntity.addOne(state, action.payload);
-    },
-    [deleteCategories.fulfilled]: (state, action) => {
-      categoryEntity.removeOne(state, action.payload);
-    },
-    [updateCategories.fulfilled]: (state, action) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCategories.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getCategories.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        categoryEntity.setAll(state, action.payload);
+      })
+      .addCase(getCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error || "An error occurred. Please try again.";
+      });
+    builder.addCase(saveCategory.fulfilled, (state, action) => {
+      categoryEntity.addOne(state, action.payload.newCategory);
+    });
+    builder.addCase(deleteCategory.fulfilled, (state, action) => {
+      categoryEntity.removeOne(state, action.payload.id);
+    });
+    builder.addCase(updateCategory.fulfilled, (state, action) => {
       categoryEntity.updateOne(state, {
         id: action.payload.id,
-        updates: action.payload,
+        changes: action.payload.data,
       });
-    },
+    });
   },
+
+  // {
+  //   [getCategories.fulfilled]: (state, action) => {
+  //     state.status = "success";
+  //     categoryEntity.setAll(state, action.payload);
+  //   },
+  //   [getCategories.pending]: (state) => {
+  //     state.status = "loading";
+  //   },
+  //   [getCategories.rejected]: (state, action) => {
+  //     state.status = "rejected";
+  //     state.error = action.error.message;
+  //   },
+  //   [saveCategories.fulfilled]: (state, action) => {
+  //     categoryEntity.addOne(state, action.payload);
+  //   },
+  //   [deleteCategories.fulfilled]: (state, action) => {
+  //     categoryEntity.removeOne(state, action.payload);
+  //   },
+  //   [updateCategories.fulfilled]: (state, action) => {
+  //     categoryEntity.updateOne(state, {
+  //       id: action.payload.id,
+  //       updates: action.payload,
+  //     });
+  //   },
+  // },
 });
 
-export const categorySelectors = categoryEntity.getSelectors(
-  (state) => state.categories
-);
+export const { selectAll: selectAllCategory, selectById: selectCategoryById } =
+  categoryEntity.getSelectors((state) => state.categories);
 export default categorySlice.reducer;

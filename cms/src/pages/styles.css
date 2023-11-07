@@ -97,10 +97,10 @@ th {
 tbody {
   display: table-row-group;
 }
+
 tr,
 thead {
   color: inherit;
-  display: table-row;
   vertical-align: middle;
   outline: 0px;
 }
@@ -177,6 +177,16 @@ select {
   border-radius: 4px;
   box-sizing: border-box;
 }
+input[type="email"],
+select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
 
 input[type="file"],
 select {
@@ -199,9 +209,7 @@ select {
   border-radius: 4px;
   box-sizing: border-box;
 }
-
-
-input[type="number"],
+input[type="datetime-local"],
 select {
   width: 100%;
   padding: 12px 20px;
@@ -212,9 +220,7 @@ select {
   box-sizing: border-box;
 }
 
-
 input[type="submit"] {
-  width: 15%;
   background-color: #3498db;
   color: white;
   padding: 14px 20px;
@@ -227,6 +233,12 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
   background-color: #4a10ec;
+}
+
+input[type="submit"]:disabled {
+  background-color: #ccc; 
+  color: #999;
+  cursor: not-allowed;
 }
 
 .addform {
@@ -342,4 +354,10 @@ body.active-modal {
   border: none;
   cursor: pointer;
   border-radius: 4px;
+}
+
+.button:disabled {
+  background-color: #ccc; 
+  color: #999; 
+  cursor: not-allowed;
 }

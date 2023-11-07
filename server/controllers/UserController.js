@@ -222,6 +222,7 @@ class UserController {
         password,
         uid,
         role: "admin",
+        image: req.file.filename
       });
 
       res
@@ -254,13 +255,16 @@ class UserController {
         );
       }
 
-      const { password, ...otherDetails } = yuser;
-
-      const access_token = encodeTokenUsingJwt({ ...otherDetails });
-      res.setHeader("Authorization", `Bearer ${access_token}`);
+      const { password, createdAt, updatedAt, ...userToSendToFrontend } = yuser.dataValues;
+      const accessToken = encodeTokenUsingJwt({ ...userToSendToFrontend });
+      res.setHeader("Authorization", `Bearer ${accessToken}`);
       res
         .status(200)
-        .json({ message: "You are successfully logged in!", access_token });
+        .json({
+          message: "You are successfully logged in!",
+          accessToken,
+          currentUser: userToSendToFrontend,
+        });
     } catch (err) {
       next(err);
     }
@@ -275,8 +279,16 @@ class UserController {
       if (!adminAccount) {
         return next(createError(404, "User not found!"));
       }
-
-      const response = await adminAccount.update(req.body);
+      const updatedData = {
+        name: req.body.name,
+        email: req.body.email,
+        image: req.file.filename,
+        address:req.body.address,
+        gender: req.body.gender,
+        birthday : req.body.birthday,
+        phone_number : req.body.phone_number,
+      };
+      const response = await adminAccount.update(updatedData);
 
       if (response.dataValues) {
         res.status(200).json({ message: "User has been updated!" });
@@ -322,7 +334,6 @@ class UserController {
         return next(createError(404, "User not found!"));
       }
       res.status(200).json(currentUser);
-
     } catch (error) {
       next(error);
     }
