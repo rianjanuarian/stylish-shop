@@ -16,6 +16,7 @@ import {
   CustomerList,
   AdminList,
   Courier,
+  UpdateUser
 } from "./pages";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
   {
     path: "/customerList",
     element: <CustomerList />,
+  },
+  {
+    path: "/updateUser/:id",
+    element: <UpdateUser />,
   },
 ]);
 

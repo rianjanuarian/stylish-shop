@@ -23,34 +23,51 @@ export const getUsers = createAsyncThunk("users/getUsers", async () => {
 
 export const saveUsers = createAsyncThunk(
   "users/saveUsers",
-  async ({ name, email, password,image,address,gender,birthday,phone }) => {
+  async ({ name, email, password, image }) => {
     const formData = new FormData();
-    formData.append("images", image);
+
     formData.append("name", name);
     formData.append("email", email);
     formData.append("password", password);
-    formData.append("address", address);
-    formData.append("birthday", birthday);
-    formData.append("address", address);
-    formData.append("phone", phone);
-    formData.append("gender", gender);
- 
+    formData.append("images", image);
+
     const response = await axios.post(
-      "http://localhost:3000/users/create_admin",formData,config
-   
+      "http://localhost:3000/users/create_admin",
+      formData,
+      config
     );
     return response.data;
   }
 );
 
 export const deleteUsers = createAsyncThunk("users/deleteUsers", async (id) => {
-  await axios.delete(`http://localhost:3000/users/delete_account/${id}`,config);
+  await axios.delete(
+    `http://localhost:3000/users/delete_account/${id}`,
+    config
+  );
   return id;
 });
 
-// export const updateUsers = createAsyncThunk('users/updateUsers',async({id,name,email,password})=>{
-//     const response=await axios.put(`http://localhost:3000/users/edit_user/${id}`,{
-// })
+export const updateUsers = createAsyncThunk(
+  "users/updateUsers",
+  async ({ id, name, email,image,address,gender,birthday,phone_number }) => {
+    const formData = new FormData();
+    formData.append("images", image);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("address", address);
+    formData.append("gender", gender);
+    formData.append("birthday", birthday);
+    formData.append("phone_number", phone_number);
+    // formData.append("password", password);
+    const response = await axios.put(
+      `http://localhost:3000/users/update_admin/${id}`,
+      formData,
+      config
+    );
+    return response.data;
+  }
+);
 
 const userEntity = createEntityAdapter({
   selectId: (users) => users.id,
@@ -77,9 +94,14 @@ const userSlice = createSlice({
     [deleteUsers.fulfilled]: (state, action) => {
       userEntity.removeOne(state, action.payload);
     },
+    [updateUsers.fulfilled] : (state,action) => {
+      userEntity.updateOne(state,{
+        id: action.payload.id,
+        updates: action.payload
+      })
+    }
   },
 });
 export const userSelectors = userEntity.getSelectors((state) => state.users);
-
 
 export default userSlice.reducer;

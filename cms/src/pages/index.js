@@ -11,6 +11,7 @@ import EditCategory from "./Category/EditCategory";
 import EditProduct from "./Products/EditProduct";
 import AdminList from "./Users/AdminList";
 import CustomerList from "./Users/CustomerList";
+import UpdateUser from "./Users/UpdateUser";
 import Courier from "./Couriers/Courier";
 
 
@@ -28,5 +29,6 @@ export {
   AdminList,
   EditProduct,
   CustomerList,
+  UpdateUser,
   Courier
 };
