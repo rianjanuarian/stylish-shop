@@ -1,5 +1,7 @@
-const { transaction, product, cart } = require("../models");
+const { transaction, cart, courier } = require("../models");
 const midtransClient = require("midtrans-client");
+const { createOrder } = require("../helpers/order");
+const createError = require("../middlewares/createError");
 
 class TransactionControllers {
   static async getTransaction(req, res, next) {
@@ -15,20 +17,18 @@ class TransactionControllers {
     try {
       const id = req.params.id;
       const userId = req.user.dataValues.id;
-      const allTransactions = await transaction.findAll();
+      const userPay = await transaction.findByPk(id);
 
-      if (allTransactions.forEach((e) => e.dataValues.id !== id)) {
-        return next(createError(404, "Transaction not found"));
+      if (!userPay) {
+        return next(createError(404, "Transaction not found!"));
       }
-
-      if (userId !== userId) {
+      if (userId !== userPay.userId) {
         return next(createError(401, "You are not authorized!"));
       }
 
-      const userPay = await transaction.findByPk(id);
       res.status(200).json({
         userPay,
-        redirect_url: `https://app.sandbox.midtrans.com/snap/v3/redirection/${userPay.dataValues.midtranstoken}`,
+        redirect_url: `https://app.sandbox.midtrans.com/snap/v3/redirection/${userPay.midtranstoken}`,
       });
     } catch (error) {
       next(error);

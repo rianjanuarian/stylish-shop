@@ -1,4 +1,3 @@
-
 import {
   createSlice,
   createAsyncThunk,
@@ -75,4 +74,5 @@ export const userSelectors = userEntity.getSelectors((state) => state.users);
 
 
 
-export default userSlice.reducer;
+
+  export default userSlice.reducer;

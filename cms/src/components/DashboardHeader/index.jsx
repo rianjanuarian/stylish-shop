@@ -1,27 +1,27 @@
 import React, { useEffect } from "react";
 import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../redux/userSlice";
+import { getUser } from "../../redux/currentUserSlice";
 
 function DashboardHeader() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const currentUser = useSelector((state) => state.currentUser);
 
   useEffect(() => {
-    if (!user.data) {
+    if (!currentUser.data) {
       const accessToken = localStorage.getItem('Authorization');
       dispatch(getUser(accessToken));
     }
-  }, [dispatch, user.data]);
+  }, [dispatch, currentUser.data]);
 
   return (
     <div className="dashbord-header-container">
       <div className="dashbord-header-right">
-        {user.data && <>
-          <h3>Hi {user.data.name}!</h3>
+        {currentUser.data && <>
+          <h3>Hi {currentUser.data.name}!</h3>
           <img
             className="dashbord-header-avatar"
-            src={user.data.image}
+            src={currentUser.data.image}
             alt="Profile"
           />
         </>}
