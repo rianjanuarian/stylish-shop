@@ -24,8 +24,6 @@ const LoginPage = () => {
     password: "",
   });
 
-  console.log(formData);
-
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
 

@@ -49,7 +49,7 @@ const BrandModalEdit = (props) => {
   return (
     <>
       <div className="modal">
-        <div className="overlay" onClick={props.toggleModalAdd}>
+        <div className="overlay" onClick={props.toggleModalEdit}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h1>Add Brand</h1>
             <form onSubmit={handleUpdate}>

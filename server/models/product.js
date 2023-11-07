@@ -12,8 +12,16 @@ module.exports = (sequelize, DataTypes) => {
 
       product.belongsToMany(models.category, {
         through: models.categoryproduct,
+        foreignKey: "productId",
+        otherKey: "categoryId",
+        onDelete: "CASCADE",
       });
-      product.belongsToMany(models.brand, { through: models.brandproduct });
+      product.belongsToMany(models.brand, {
+        through: models.brandproduct,
+        foreignKey: "productId",
+        otherKey: "brandId",
+        onDelete: "CASCADE",
+      });
       // coba
       product.hasMany(models.cart);
       // product.belongsToMany(models.user, {
@@ -60,14 +68,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png",
       },
-      color: {
-        type: DataTypes.STRING,
-        validate: {
-          notEmpty: {
-            msg: "Product color cannot be empty",
-          },
-        },
-      },
+      colors: { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
     },
     {
       sequelize,

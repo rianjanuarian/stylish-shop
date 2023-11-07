@@ -3,7 +3,7 @@ import {
   createAsyncThunk,
   createEntityAdapter,
 } from "@reduxjs/toolkit";
-import axios from "axios";
+import { productApi } from "../api";
 
 const accessToken = localStorage.getItem("Authorization");
 const config = {
@@ -18,11 +18,16 @@ const config = {
 export const getProducts = createAsyncThunk(
   "products/getProducts",
   async () => {
-    const response = await axios.get("http://localhost:3000/products");
-    return response.data;
+    try {
+      const response = await productApi.get("/");
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
   }
 );
-export const saveProducts = createAsyncThunk(
+
+export const saveProduct = createAsyncThunk(
   "products/saveProducts",
   async ({
     name,
@@ -30,34 +35,43 @@ export const saveProducts = createAsyncThunk(
     description,
     stock,
     image,
-    color,
+    colors,
     categoryId,
     brandId,
   }) => {
-    const formData = new FormData();
-    formData.append("images", image);
-    formData.append("name", name);
-    formData.append("price", price);
-    formData.append("description", description);
-    formData.append("stock", stock);
-    formData.append("color", color);
-    formData.append("categoryId", categoryId);
-    formData.append("brandId", brandId); 
-  
-    const response = await axios.post("http://localhost:3000/products/create", formData,config);
-    return response.data;
+    try {
+      const colorsString = colors.join(",");
+      const formData = new FormData();
+      formData.append("images", image);
+      formData.append("name", name);
+      formData.append("price", price);
+      formData.append("description", description);
+      formData.append("stock", stock);
+      formData.append("colors", colorsString);
+      formData.append("categoryId", categoryId);
+      formData.append("brandId", brandId);
+
+      const response = await productApi.post("/create", formData, config);
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
   }
 );
 
-export const deleteProducts = createAsyncThunk(
+export const deleteProduct = createAsyncThunk(
   "products/deleteProducts",
   async (id) => {
-    await axios.delete(`http://localhost:3000/products/delete/${id}`);
-    return id;
+    try {
+      const response = await productApi.delete(`/delete/${id}`, config);
+      return { id, message: response.data.message };
+    } catch (error) {
+      throw error.response.data;
+    }
   }
 );
 
-export const updateProducts = createAsyncThunk(
+export const updateProduct = createAsyncThunk(
   "products/updateProducts",
   async ({
     id,
@@ -66,24 +80,26 @@ export const updateProducts = createAsyncThunk(
     description,
     stock,
     image,
-    color,
+    colors,
     categoryId,
     brandId,
   }) => {
-    const formData = new FormData();
-    formData.append("images", image);
-    formData.append("name", name);
-    formData.append("price", price);
-    formData.append("description", description);
-    formData.append("stock", stock);
-    formData.append("color", color);
-    formData.append("categoryId", categoryId);
-    formData.append("brandId", brandId); 
-    const response = await axios.put(
-      `http://localhost:3000/products/update/${id}`,
-      formData,config
-    );
-    return response.data;
+    try {
+      const colorsString = colors.join(",");
+      const formData = new FormData();
+      formData.append("images", image);
+      formData.append("name", name);
+      formData.append("price", price);
+      formData.append("description", description);
+      formData.append("stock", stock);
+      formData.append("colors", colorsString);
+      formData.append("categoryId", categoryId);
+      formData.append("brandId", brandId);
+      const response = await productApi.put(`/update/${id}`, formData, config);
+      return { id, message: response.data.message, data: response.data.data };
+    } catch (error) {
+      throw error.response.data;
+    }
   }
 );
 const productEntity = createEntityAdapter({
@@ -93,35 +109,41 @@ const productEntity = createEntityAdapter({
 const productSlice = createSlice({
   name: "products",
   initialState: productEntity.getInitialState(),
-  extraReducers: {
-    [getProducts.pending]: (state) => {
-      state.status = "loading";
-
-    },
-    [getProducts.fulfilled]: (state, action) => {
-      state.status = "success";
-      productEntity.setAll(state, action.payload);
-    },
-    [getProducts.rejected]: (state, action) => {
-      state.status = "rejected";
-      state.error = action.error.message;
-    },
-    [saveProducts.fulfilled]: (state, action) => {
-      productEntity.addOne(state, action.payload);
-    },
-    [deleteProducts.fulfilled]: (state, action) => {
-      productEntity.removeOne(state, action.payload);
-    },
-    [updateProducts.fulfilled]: (state, action) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(getProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        productEntity.setAll(state, action.payload);
+      })
+      .addCase(getProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          action.error.message || "An error occurred. Please try again.";
+      });
+    //add
+    builder.addCase(saveProduct.fulfilled, (state, action) => {
+      productEntity.addOne(state, action.payload.newProduct);
+    });
+    //delete
+    builder.addCase(deleteProduct.fulfilled, (state, action) => {
+      productEntity.removeOne(state, action.payload.id);
+    });
+    //update
+    builder.addCase(updateProduct.fulfilled, (state, action) => {
+      console.log(action.payload.data);
       productEntity.updateOne(state, {
         id: action.payload.id,
-        updates: action.payload,
+        changes: action.payload.data,
       });
-    },
+    });
   },
 });
 
-export const productSelectors = productEntity.getSelectors(
-  (state) => state.products
-);
+export const { selectAll: selectAllProducts, selectById: selectProductById } =
+  productEntity.getSelectors((state) => state.products);
 export default productSlice.reducer;
