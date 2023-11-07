@@ -50,7 +50,7 @@ const UserList = () => {
               <div className="dashboard-content-header">
                 <h2>User List</h2>
                 <Link to={"/addUser"} className="rows-btn" type="button">
-                  Add User
+                  Add Admin
                 </Link>
               </div>
               <p>Role : </p>
@@ -73,7 +73,13 @@ const UserList = () => {
                   <thead>
                     <th>No.</th>
                     <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>IMAGE</th>
                     <th>ROLE</th>
+                    <th>GENDER</th>
+                    <th>BIRTHDAY</th>
+                    <th>PHONE</th>
+                    <th>ADDRESS</th>
                     <th>ACTION</th>
                   </thead>
 
@@ -87,8 +93,27 @@ const UserList = () => {
                           <span>{e.name}</span>
                         </td>
                         <td>
+                          <span>{e.email}</span>
+                        </td>
+                        <td>
+                          <img src={e.image}></img >
+                        </td>
+                        <td>
                           <span>{e.role}</span>
                         </td>
+                        <td>
+                          <span>{e.gender}</span>
+                        </td>
+                        <td>
+                          <span>{e.birthday}</span>
+                        </td>
+                        <td>
+                          <span>{e.phone}</span>
+                        </td>
+                        <td>
+                          <span>{e.address}</span>
+                        </td>
+
                         <td>
                           <div>
                             <button

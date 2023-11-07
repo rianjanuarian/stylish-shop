@@ -5,6 +5,16 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const accessToken = localStorage.getItem("Authorization");
+const config = {
+  headers: {
+    "Content-Type": "multipart/form-data",
+    Authorization: `Bearer ${accessToken}`,
+  },
+
+  withCredentials: true,
+};
+
 export const getProducts = createAsyncThunk(
   "products/getProducts",
   async () => {
@@ -34,7 +44,7 @@ export const saveProducts = createAsyncThunk(
     formData.append("categoryId", categoryId);
     formData.append("brandId", brandId); 
   
-    const response = await axios.post("http://localhost:3000/products/create", formData);
+    const response = await axios.post("http://localhost:3000/products/create", formData,config);
     return response.data;
   }
 );
@@ -71,7 +81,7 @@ export const updateProducts = createAsyncThunk(
     formData.append("brandId", brandId); 
     const response = await axios.put(
       `http://localhost:3000/products/update/${id}`,
-      formData
+      formData,config
     );
     return response.data;
   }
