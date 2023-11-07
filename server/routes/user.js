@@ -2,8 +2,6 @@ const userRoutes = require("express").Router();
 const { verifyUser, verifyAdmin } = require("../middlewares/verifyRole");
 const UserControllers = require("../controllers/UserController");
 const upload = require("../multerconfig");
-
-
  
 //User Auth
 userRoutes.post("/register_with_email", UserControllers.registerWithEmail);
@@ -22,7 +20,7 @@ userRoutes.put(
   verifyAdmin,
   UserControllers.changePassword
 );
-userRoutes.put("/update_admin/:id", upload.single("images"), verifyAdmin, UserControllers.updateAdminV2);
+userRoutes.put("/update_admin/:id",  verifyAdmin, upload.single("images"),UserControllers.updateAdminV2);
 userRoutes.delete(
   "/delete_account/:id",
   verifyAdmin,

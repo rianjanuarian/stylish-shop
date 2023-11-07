@@ -9,10 +9,7 @@ const AddUser = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [image, setImage] = useState('')
-  const [address, setAddress] = useState('')
-  const [birthday, setBirthday] = useState('')
-  const [phone, setPhone] = useState('')
-  const [gender, setGender] = useState('')
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,8 +17,11 @@ const AddUser = () => {
   const createUser = async (e) => {
     e.preventDefault();
   
-
-    await dispatch(saveUsers({name,email,password,image,address,gender}));
+    if (password.length < 8) {
+      alert("Password must be 8 character");
+      return;
+    }
+    await dispatch(saveUsers({name:name,email:email,password:password,image:image}));
     navigate("/user");
   };
   const handleImageChange = (event) => {
@@ -32,7 +32,7 @@ const AddUser = () => {
       <SideBar menu={sidebar_menu} />
       <div className="dashboard-body">
         <div className="addform">
-          <h1>Add User</h1>
+          <h1>Add Admin</h1>
           <form onSubmit={createUser}>
             <label htmlFor="fname">Name</label>
             <input type="text" onChange={(e) => setName(e.target.value)} />
@@ -42,22 +42,7 @@ const AddUser = () => {
             <input type="text" onChange={(e) => setPassword(e.target.value)} />
             <label htmlFor="fname">Image</label>
             <input type="file" onChange={handleImageChange} />
-            <label htmlFor="fname">Address</label>
-            <input type="text" onChange={(e) => setAddress(e.target.value)} />
-    
-            <label htmlFor="Gender">Gender</label>
-            <select
-              id="gender"
-              name="gender"
-              onChange={(e) => setGender(e.target.value)}
-            >
-              <option value="" disabled selected>
-                --
-              </option>
-              <option value="man">Male</option>
-              <option value="woman">Female</option>
-             
-            </select>
+          
 
             <input type="submit" value="Submit" />
           </form>
