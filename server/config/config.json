@@ -7,11 +7,11 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "default",
-    "password": "kpWg3M2fRZlo",
-    "database": "verceldb",
-    "host": "ep-shy-river-02607465-pooler.us-east-1.postgres.vercel-storage.com",
-    "dialect": "postgres"
+    "username": "root",
+    "password": null,
+    "database": "database_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
   },
   "production": {
     "username": "root",
