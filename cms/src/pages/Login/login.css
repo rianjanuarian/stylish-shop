@@ -182,14 +182,14 @@ a:hover {
   transition: 0.5s;
 }
 
-.btn:hover {
-  background-position: right;
-}
-
-.button-login:disabled {
-  background-color: #ccc;
+.btn:disabled {
+  background-image: #ccc;
   color: #999;
   cursor: not-allowed;
+}
+
+.btn:hover {
+  background-position: right;
 }
 
 @media screen and (max-width: 1050px) {

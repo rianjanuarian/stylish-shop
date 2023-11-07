@@ -3,7 +3,6 @@ import "./login.css";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { login } from "../../redux/authSlice";
 
 // React Icons
@@ -40,23 +39,32 @@ const LoginPage = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(login(formData));
+    setIsLoading(true);
+    dispatch(login(formData))
+      .unwrap()
+      .then(() => {
+        setIsLoading(false);
+        navigate("/dashboard");
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        setFormData({
+          email: "",
+          password: "",
+        });
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: err.message,
+          footer: err.stack,
+        });
+      });
   };
 
   const remcl = (event, inputRef, setIsFocused) => {
     if (event.target.value === "") {
       setIsFocused(false);
     }
-  };
-
-  useEffect(() => {
-    if (auth.error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: auth.error.message,
-        footer: auth.error.stack,
-      });
   };
 
   useEffect(() => {
@@ -92,6 +100,7 @@ const LoginPage = () => {
                   onChange={handleChange}
                   onFocus={() => setIsEmailFocused(true)}
                   onBlur={(e) => remcl(e, formData.email, setIsEmailFocused)}
+                  value={formData.email}
                   required
                 />
               </div>
@@ -116,12 +125,13 @@ const LoginPage = () => {
                   onBlur={(e) =>
                     remcl(e, formData.password, setIsPasswordFocused)
                   }
+                  value={formData.password}
                   required
                 />
               </div>
             </div>
             <a href="/">Forgot Password?</a>
-            <button type="submit" className="btn">
+            <button type="submit" className="btn" disabled={isLoading}>
               Login
             </button>
           </form>
