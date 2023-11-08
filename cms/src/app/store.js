@@ -5,6 +5,7 @@ import categorySlice from "../redux/categorySlice";
 import authReducer from "../redux/authSlice";
 import userReducer from "../redux/userSlice";
 import courierReducer from "../redux/courierSlice";
+import transactionReducer from "../redux/transactionSlice";
 
 
 
@@ -16,5 +17,6 @@ export const store = configureStore({
     categories: categorySlice,
     users: userReducer,
     couriers: courierReducer,
+    transactions: transactionReducer
   },
 });

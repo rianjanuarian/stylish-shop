@@ -100,7 +100,7 @@ const UserList = () => {
                         <td>
                           <span>
                             <img
-                              src={e.image}
+                              src={`http://localhost:3000/uploads/${e.image}`}
                               style={{ width: "100px", height: "100px" }}
                               alt="user"
                             ></img>
