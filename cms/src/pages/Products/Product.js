@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardHeader from "../../components/DashboardHeader";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -9,16 +9,25 @@ import "../styles.css";
 import empty from "../../assets/images/empty.png";
 import Loading from "../../helpers/Loading/Loading";
 import {
-  productSelectors,
   getProducts,
-  deleteProducts,
+  deleteProduct,
+  selectAllProducts,
 } from "../../redux/productSlice";
+import ProductAddModal from "./ProductAddModal";
+import ProductEditModal from "./ProductEditModal";
 
 const Product = () => {
-  const products = useSelector(productSelectors.selectAll);
-  const status = useSelector((state) => state.products.status);
-  const error = useSelector((state) => state.products.error);
+  const products = useSelector(selectAllProducts);
+  const { error, loading } = useSelector((state) => state.products);
   const dispatch = useDispatch();
+
+  const [modalAdd, setModalAdd] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
+  const [productId, setProductId] = useState(0);
+
+  const toggleModalAdd = () => setModalAdd(!modalAdd);
+  const toggleModalEdit = () => setModalEdit(!modalEdit);
+
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
@@ -34,120 +43,169 @@ const Product = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your product has been deleted.", "success");
-        dispatch(deleteProducts(id));
+        dispatch(deleteProduct(id))
+          .unwrap()
+          .then((data) => {
+            Swal.fire({
+              icon: "success",
+              title: data.message,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          })
+          .catch((err) => {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: err.message,
+              footer: err.stack,
+            });
+          });
       }
     });
   };
 
-  return (
-    <div className="dashboard-container">
-      <SideBar menu={sidebar_menu} />
-      <div className="dashboard-body">
-        <div className="dashboard-content">
-          <DashboardHeader />
-          <div className="dashboard-content-container">
-            <div className="dashboard-content-header">
-              <h2>Product List</h2>
-              <Link to={"/addProduct"} className="rows-btn" type="button">
-                Add Product
-              </Link>
-            </div>
-            {status === "loading" ? (
-              <div className="loading-animate">
-             
-                <Loading></Loading>
-              </div>
-            ) : status === "rejected" ? (
-              <p>{error}</p>
-            ) : products.length !== 0 ? (
-              <table>
-                <thead>
-                  <th>No.</th>
-                  <th>NAME</th>
-                  <th>PRICE</th>
-                  <th>DESCRIPTION</th>
-                  <th>STOCK</th>
-                  <th>IMAGE</th>
-                  <th>COLOR</th>
-                  <th>CATEGORIES</th>
-                  <th>BRAND</th>
-                  <th>ACTION</th>
-                </thead>
+  const handleUpdate = (id) => {
+    setProductId(id);
+    toggleModalEdit();
+  };
 
-                <tbody>
-                  {products.map((e, index) => (
-                    <tr key={e.id}>
-                      <td>
-                        <span>{index + 1}</span>
-                      </td>
-                      <td>
-                        <span>{e.name}</span>
-                      </td>
-                      <td>
-                        <span>${e.price}</span>
-                      </td>
-                      <td>
-                        <span>{e.description}</span>
-                      </td>
-                      <td>
-                        <span>{e.stock}</span>
-                      </td>
-                      <td>
-                        <span>
-                          <img
-                            src={`http://localhost:3000/uploads/${e.image}`}
-                            style={{ width: "200px", height: "200px" }}
-                            alt="Product"
-                          ></img>
-                        </span>
-                      </td>
-                      <td>
-                        {e.color === null ? (
-                          <span>No color</span>
-                        ) : (
-                          <span>{e.color}</span>
-                        )}
-                      </td>
-                      <td>
-                        {e.categories.map((el) => (
-                          <span>{el.name}</span>
-                        ))}
-                      </td>
-                      <td>
-                        {e.brands.map((el) => (
-                          <span>{el.name}</span>
-                        ))}
-                      </td>
-                      <td>
-                        <div>
-                          <button
-                            onClick={() => deletes(e.id)}
-                            className="action-btn-delete"
-                          >
-                            Delete
-                          </button>
-                          <Link to={`/editProduct/${e.id}`}>
-                            <button className="action-btn-update">
+  return (
+    <>
+      <div className="dashboard-container">
+        <SideBar menu={sidebar_menu} />
+        <div className="dashboard-body">
+          <div className="dashboard-content">
+            <DashboardHeader />
+            <div className="dashboard-content-container">
+              <div className="dashboard-content-header">
+                <h2>Product List</h2>
+                <button className="rows-btn" onClick={toggleModalAdd}>
+                  Add Product
+                </button>
+              </div>
+              {loading ? (
+                <div className="loading-animate">
+                  <Loading />
+                </div>
+              ) : error ? (
+                <p>{error}</p>
+              ) : products.length !== 0 ? (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>NAME</th>
+                      <th>PRICE</th>
+                      <th>DESCRIPTION</th>
+                      <th>STOCK</th>
+                      <th>IMAGE</th>
+                      <th>COLORS</th>
+                      <th>CATEGORIES</th>
+                      <th>BRAND</th>
+                      <th>ACTION</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {products.map((product, index) => (
+                      <tr key={product.id}>
+                        <td>
+                          <span>{index + 1}</span>
+                        </td>
+                        <td>
+                          <span>{product.name}</span>
+                        </td>
+                        <td>
+                          <span>Rp{product.price},00</span>
+                        </td>
+                        <td>
+                          <span>{product.description}</span>
+                        </td>
+                        <td>
+                          <span>{product.stock}</span>
+                        </td>
+                        <td>
+                          <span>
+                            {product.image.startsWith("http") ? (
+                              <img
+                                src={product.image}
+                                style={{ width: "100px", height: "100px" }}
+                                alt="Product"
+                              />
+                            ) : (
+                              <img
+                                src={`http://localhost:3000/uploads/${product.image}`}
+                                style={{ width: "100px", height: "100px" }}
+                                alt="Product"
+                              />
+                            )}
+                          </span>
+                        </td>
+                        <td>
+                          {product.colors &&
+                            (!product.colors.length ? (
+                              <span>No color</span>
+                            ) : product.colors.length === 1 ? (
+                              <span>{product.colors[0]}</span>
+                            ) : product.colors.length === 2 ? (
+                              <span>{product.colors.join(" & ")}</span>
+                            ) : (
+                              <span>
+                                {product.colors.slice(0, -1).join(", ")}, &{" "}
+                                {product.colors.slice(-1)}
+                              </span>
+                            ))}
+                        </td>
+                        <td>
+                          {product.categories &&
+                            product.categories.map((category) => (
+                              <span key={category.id}>{category.name}</span>
+                            ))}
+                        </td>
+                        <td>
+                          {product.brands &&
+                            product.brands.map((brand) => (
+                              <span key={brand.id}>{brand.name}</span>
+                            ))}
+                        </td>
+                        <td>
+                          <div>
+                            <button
+                              onClick={() => deletes(product.id)}
+                              className="action-btn-delete"
+                            >
+                              Delete
+                            </button>
+                            <button
+                              className="action-btn-update"
+                              onClick={() => handleUpdate(product.id)}
+                            >
                               Update
                             </button>
-                          </Link>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
-              <div className="empty">
-                <img src={empty} alt="" />
-                <h1>The table is empty! Try adding some!</h1>
-              </div>
-            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="empty">
+                  <img src={empty} alt="" />
+                  <h1>The table is empty! Try adding some!</h1>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      {modalAdd && <ProductAddModal toggleModalAdd={toggleModalAdd} />}
+      {modalEdit && (
+        <ProductEditModal
+          toggleModalEdit={toggleModalEdit}
+          productId={productId}
+        />
+      )}
+    </>
   );
 };
 

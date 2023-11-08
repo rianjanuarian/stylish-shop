@@ -56,10 +56,10 @@ const UserList = () => {
               <p>Role : </p>
               <div className="user-role">
                 <Link to={"/adminList"}>
-                <button className="user-btn">Admin</button>
+                  <button className="user-btn">Admin</button>
                 </Link>
                 <Link to={"/customerList"}>
-                <button className="user-btn">User</button>
+                  <button className="user-btn">User</button>
                 </Link>
               </div>
               {status === "loading" ? (
@@ -71,16 +71,18 @@ const UserList = () => {
               ) : users.length !== 0 ? (
                 <table>
                   <thead>
-                    <th>No.</th>
-                    <th>NAME</th>
-                    <th>EMAIL</th>
-                    <th>IMAGE</th>
-                    <th>ROLE</th>
-                    <th>ADDRESS</th>
-                    <th>GENDER</th>
-                    <th>BIRTHDAY</th>
-                    <th>PHONE</th>
-                    <th>ACTION</th>
+                    <tr>
+                      <th>No.</th>
+                      <th>NAME</th>
+                      <th>EMAIL</th>
+                      <th>IMAGE</th>
+                      <th>ROLE</th>
+                      <th>ADDRESS</th>
+                      <th>GENDER</th>
+                      <th>BIRTHDAY</th>
+                      <th>PHONE</th>
+                      <th>ACTION</th>
+                    </tr>
                   </thead>
 
                   <tbody>
@@ -96,11 +98,11 @@ const UserList = () => {
                           <span>{e.email}</span>
                         </td>
                         <td>
-                        <span>
+                          <span>
                             <img
-                              src={`http://localhost:3000/uploads/${e.image}`}
-                              style={{ width: "200px", height: "200px" }}
-                              alt="Brand"
+                              src={e.image}
+                              style={{ width: "100px", height: "100px" }}
+                              alt="user"
                             ></img>
                           </span>
                         </td>
@@ -108,27 +110,29 @@ const UserList = () => {
                           <span>{e.role}</span>
                         </td>
                         <td>
-                          <span>{e.address===null ? '-' :e.address}</span>
+                          <span>{e.address === null ? "-" : e.address}</span>
                         </td>
                         <td>
-                          <span>{e.gender===null ? '-' :e.gender}</span>
+                          <span>{e.gender === null ? "-" : e.gender}</span>
                         </td>
                         <td>
-                          <span>{e.birthday ? e.birthday.slice(0, 10) : "-"}</span>
+                          <span>
+                            {e.birthday ? e.birthday.slice(0, 10) : "-"}
+                          </span>
                         </td>
                         <td>
-                          <span>{e.phone_number===null ? "-" : e.phone_number}</span>
+                          <span>
+                            {e.phone_number === null ? "-" : e.phone_number}
+                          </span>
                         </td>
-                      
-
                         <td>
                           <div>
                             <button
-                            onClick={() => deletes(e.id)}
-                            className="action-btn-delete"
-                          >
-                            Delete
-                          </button>
+                              onClick={() => deletes(e.id)}
+                              className="action-btn-delete"
+                            >
+                              Delete
+                            </button>
                             <Link to={`/updateUser/${e.id}`}>
                               <button className="action-btn-update">
                                 Update

@@ -21,67 +21,6 @@ class ProductControllers {
     }
   }
 
-  static async create(req, res, next) {
-    try {
-      let { name, price, description, stock, color, categoryId, brandId } =
-        req.body;
-
-      const products = await product.create({
-        name,
-        price,
-        description,
-        stock,
-        image: req.file.filename,
-        color,
-      });
-
-      await categoryproduct.create({
-        productId: parseInt(products.id),
-        categoryId: parseInt(categoryId),
-      });
-
-      await brandproduct.create({
-        productId: parseInt(products.id),
-        brandId: parseInt(brandId),
-      });
-
-      res.status(201).json({ message: "Success adding new product!" });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  static async delete(req, res, next) {
-    try {
-      const id = parseInt(req.params.id);
-      let result = await product.destroy({
-        where: { id },
-      });
-      if (result === 1) {
-        res
-          .status(200)
-          .json({ message: "Product has been deleted successfully!" });
-      }
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  static async update(req, res, next) {
-    try {
-      const id = parseInt(req.params.id);
-      let result = await product.update(req.body, {
-        where: { id },
-      });
-
-      if (result[0] === 1) {
-        res.status(200).json(result);
-      }
-    } catch (error) {
-      next(error);
-    }
-  }
-
   static async detail(req, res, next) {
     try {
       const id = parseInt(req.params.id);
@@ -189,16 +128,20 @@ class ProductControllers {
   //only admin can access part
   static async create(req, res, next) {
     try {
-      let { name, price, description, stock, color, categoryId, brandId } =
-        req.body;
+      let { categoryId, brandId, colors, ...otherDetails } = req.body;
+      categoryId = parseInt(categoryId);
+      brandId = parseInt(brandId);
+
+      colors = colors.split(",");
+
+      const image = req.file
+        ? req.file.filename
+        : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png";
 
       const newProduct = await product.create({
-        name,
-        price,
-        description,
-        stock,
-        image: req.file.filename,
-        color,
+        colors,
+        ...otherDetails,
+        image,
       });
 
       const isCategoryExist = await category.findByPk(categoryId);
@@ -222,9 +165,13 @@ class ProductControllers {
         brandId: parseInt(brandId),
       });
 
+      const result = await product.findByPk(newProduct.id, {
+        include: [category, brand],
+      });
+
       res
         .status(201)
-        .json({ message: "Success adding new product!", newProduct });
+        .json({ message: "Success adding new product!", newProduct: result });
     } catch (error) {
       next(error);
     }
@@ -233,23 +180,28 @@ class ProductControllers {
   static async update(req, res, next) {
     try {
       const id = parseInt(req.params.id);
-      let { categoryId, brandId } = req.body;
+      let { categoryId, brandId, colors, ...otherDetails } = req.body;
+
+      colors = colors.split(",");
 
       const currentProduct = await product.findByPk(id);
 
       if (!currentProduct) {
         return next(createError(404, "Product not found!"));
       }
+
+      const image = req.file
+        ? req.file.filename
+        : currentProduct.dataValues.image;
+
       const updatedData = {
-        name: req.body.name,
-        price: req.body.price,
-        description: req.body.description,
-        stock: req.body.stock,
-        image: req.file.filename,
-        color: req.body.color,
+        colors,
+        ...otherDetails,
+        image,
       };
 
       await currentProduct.update(updatedData);
+
       await categoryproduct.update(
         { categoryId },
         { where: { productId: currentProduct.id } }
@@ -258,9 +210,15 @@ class ProductControllers {
         { brandId },
         { where: { productId: currentProduct.id } }
       );
-      res
-        .status(200)
-        .json({ message: "Product has been updated successfully!" });
+
+      const result = await product.findByPk(currentProduct.id, {
+        include: [category, brand],
+      });
+
+      res.status(200).json({
+        message: "Product has been updated successfully!",
+        data: result.dataValues,
+      });
     } catch (error) {
       next(error);
     }

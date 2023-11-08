@@ -12,6 +12,7 @@ import empty from "../../assets/images/empty.png";
 import CourierModalAdd from "./CourierModalAdd";
 import Swal from "sweetalert2";
 import CourierModalEdit from "./CourierModalEdit";
+import Loading from "../../helpers/Loading/Loading";
 
 const Courier = () => {
   const couriers = useSelector(selectAllCouriers);
@@ -22,12 +23,12 @@ const Courier = () => {
   const [modalEdit, setModalEdit] = useState(false);
   const [courierId, setCourierId] = useState(0);
 
+  const toggleModalAdd = () => setModalAdd(!modalAdd);
+  const toggleModalEdit = () => setModalEdit(!modalEdit);
+
   useEffect(() => {
     dispatch(getCouriers());
   }, [dispatch]);
-
-  const toggleModalAdd = () => setModalAdd(!modalAdd);
-  const toggleModalEdit = () => setModalEdit(!modalEdit);
 
   const deletes = (id) => {
     Swal.fire({
@@ -83,10 +84,7 @@ const Courier = () => {
               </div>
               {loading ? (
                 <div className="loading-animate">
-                  <div className="empty">
-                    <img src={empty} alt="" />
-                    <h1>Loading...</h1>
-                  </div>
+                  <Loading />
                 </div>
               ) : error ? (
                 <p>{error}</p>
@@ -102,37 +100,45 @@ const Courier = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {couriers.map((e, index) => (
-                      <tr key={e.id}>
+                    {couriers.map((courier, index) => (
+                      <tr key={courier.id}>
                         <td>
                           <span>{index + 1}</span>
                         </td>
                         <td>
-                          <span>{e.name}</span>
+                          <span>{courier.name}</span>
                         </td>
                         <td>
-                          <span>Rp. {e.price}</span>
+                          <span>Rp. {courier.price}</span>
                         </td>
                         <td>
                           <span>
-                            <img
-                              src={`http://localhost:3000/uploads/${e.image}`}
-                              style={{ width: "200px", height: "200px" }}
-                              alt="courier"
-                            ></img>
+                            {courier.image.startsWith("http") ? (
+                              <img
+                                src={courier.image}
+                                style={{ width: "100px", height: "100px" }}
+                                alt="courier"
+                              />
+                            ) : (
+                              <img
+                                src={`http://localhost:3000/uploads/${courier.image}`}
+                                style={{ width: "100px", height: "100px" }}
+                                alt="courier"
+                              />
+                            )}
                           </span>
                         </td>
                         <td>
                           <div>
                             <button
-                              onClick={() => deletes(e.id)}
+                              onClick={() => deletes(courier.id)}
                               className="action-btn-delete"
                             >
                               Delete
                             </button>
                             <button
                               className="action-btn-update"
-                              onClick={() => update(e.id)}
+                              onClick={() => update(courier.id)}
                             >
                               Update
                             </button>

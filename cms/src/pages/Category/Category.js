@@ -10,14 +10,14 @@ import Loading from "../../helpers/Loading/Loading";
 import empty from "../../assets/images/empty.png";
 import {
   getCategories,
-  selectAllCategory,
   deleteCategory,
+  selectAllCategories,
 } from "../../redux/categorySlice";
 import CategoryModalAdd from "./CategoryModalAdd";
 import CategoryModalEdit from "./CategoryModalEdit";
 
 const Category = () => {
-  const categories = useSelector(selectAllCategory);
+  const categories = useSelector(selectAllCategories);
   const { error, loading } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
 
@@ -86,7 +86,7 @@ const Category = () => {
               </div>
               {loading ? (
                 <div className="loading-animate">
-                  <Loading></Loading>
+                  <Loading />
                 </div>
               ) : error ? (
                 <p>{error}</p>

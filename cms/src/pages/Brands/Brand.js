@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import empty from "../../assets/images/empty.png";
 import BrandModalAdd from "./BrandModalAdd";
 import BrandModalEdit from "./BrandModalEdit";
+import Loading from "../../helpers/Loading/Loading";
 
 const Brand = () => {
   const brands = useSelector(selectAllBrands);
@@ -84,12 +85,9 @@ const Brand = () => {
                 </button>
               </div>
               {loading ? (
-                <div className="loading-animate">
-                  <div className="empty">
-                    <img src={empty} alt="" />
-                    <h1>Loading...</h1>
-                  </div>
-                </div>
+                 <div className="loading-animate">
+                 <Loading />
+               </div>
               ) : error ? (
                 <p>{error}</p>
               ) : brands.length !== 0 ? (
@@ -115,7 +113,7 @@ const Brand = () => {
                           <span>
                             <img
                               src={`http://localhost:3000/uploads/${e.image}`}
-                              style={{ width: "200px", height: "200px" }}
+                              style={{ width: "100px", height: "100px" }}
                               alt="Brand"
                             ></img>
                           </span>
