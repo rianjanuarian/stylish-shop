@@ -85,50 +85,50 @@ const CustomerList = () => {
                   </thead>
 
                   <tbody>
-                    {adminRole.map((e, index) => (
-                      <tr key={e.id}>
+                    {adminRole.map((admin, index) => (
+                      <tr key={admin.id}>
                            <td>
                           <span>{index + 1}</span>
                         </td>
                         <td>
-                          <span>{e.name}</span>
+                          <span>{admin.name}</span>
                         </td>
                         <td>
-                          <span>{e.email}</span>
+                          <span>{admin.email}</span>
                         </td>
                         <td>
                         <span>
                             <img
-                              src={`http://localhost:3000/uploads/${e.image}`}
+                              src={!admin.image.startsWith('http') ? `http://localhost:3000/uploads/${admin.image}` : `${admin.image}`}
                               style={{ width: "200px", height: "200px" }}
                               alt="Brand"
                             ></img>
                           </span>
                         </td>
                         <td>
-                          <span>{e.role}</span>
+                          <span>{admin.role}</span>
                         </td>
                         <td>
-                          <span>{e.address}</span>
+                          <span>{admin.address}</span>
                         </td>
                         <td>
-                          <span>{e.gender}</span>
+                          <span>{admin.gender}</span>
                         </td>
                         <td>
-                          <span>{e.birthday ? e.birthday.slice(0, 10) : ""}</span>
+                          <span>{admin.birthday ? admin.birthday.slice(0, 10) : ""}</span>
                         </td>
                         <td>
-                          <span>{e.phone_number}</span>
+                          <span>{admin.phone_number}</span>
                         </td>
                         <td>
                           <div>
                             <button
-                            onClick={() => deletes(e.id)}
+                            onClick={() => deletes(admin.id)}
                             className="action-btn-delete"
                           >
                             Delete
                           </button>
-                          <Link to={`/updateUser/${e.id}`}>
+                          <Link to={`/updateUser/${admin.id}`}>
                               <button className="action-btn-update">
                                 Update
                               </button>
