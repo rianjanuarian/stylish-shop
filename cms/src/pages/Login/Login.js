@@ -52,11 +52,12 @@ const LoginPage = () => {
           email: "",
           password: "",
         });
+        setIsEmailFocused(false);
+        setIsPasswordFocused(false);
         Swal.fire({
           icon: "error",
           title: "Error",
           text: err.message,
-          footer: err.stack,
         });
       });
   };
@@ -74,9 +75,9 @@ const LoginPage = () => {
   }, [auth, navigate]);
 
   return (
-    <>
+    <div className="login">
       <img className="wave" src={wave} alt="Wave" />
-      <div className="container">
+      <div className="container1">
         <div className="img">
           <img src={bg} alt="Background" />
         </div>
@@ -137,7 +138,7 @@ const LoginPage = () => {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
