@@ -100,7 +100,7 @@ const UserList = () => {
                         <td>
                           <span>
                             <img
-                              src={!user.image.startsWith('http') ? `http://localhost:3000/uploads/${user.image}` : `${user.image}`}
+                              src={user.image && !user.image.startsWith('http') ? `http://localhost:3000/uploads/${user.image}` : `${user.image}`}
                               style={{ width: "100px", height: "100px" }}
                               alt="user"
                             ></img>

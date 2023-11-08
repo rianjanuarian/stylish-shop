@@ -99,7 +99,7 @@ const CustomerList = () => {
                         <td>
                         <span>
                             <img
-                              src={!admin.image.startsWith('http') ? `http://localhost:3000/uploads/${admin.image}` : `${admin.image}`}
+                              src={admin.image && !admin.image.startsWith('http') ? `http://localhost:3000/uploads/${admin.image}` : `${admin.image}`}
                               style={{ width: "200px", height: "200px" }}
                               alt="Brand"
                             ></img>
