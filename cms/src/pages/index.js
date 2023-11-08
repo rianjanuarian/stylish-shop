@@ -13,7 +13,8 @@ import AdminList from "./Users/AdminList";
 import CustomerList from "./Users/CustomerList";
 import UpdateUser from "./Users/UpdateUser";
 import Courier from "./Couriers/Courier";
-
+import ProductAddModal from "./Products/ProductAddModal";
+import ProductEditModal from "./Products/ProductEditModal";
 
 export {
   LoginPage,
@@ -30,5 +31,7 @@ export {
   EditProduct,
   CustomerList,
   UpdateUser,
-  Courier
+  Courier,
+  ProductAddModal,
+  ProductEditModal
 };

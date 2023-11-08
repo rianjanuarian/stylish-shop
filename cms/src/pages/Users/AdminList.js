@@ -74,7 +74,13 @@ const AdminList = () => {
                   <thead>
                     <th>No.</th>
                     <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>IMAGE</th>
                     <th>ROLE</th>
+                    <th>ADDRESS</th>
+                    <th>GENDER</th>
+                    <th>BIRTHDAY</th>
+                    <th>PHONE</th>
                     <th>ACTION</th>
                   </thead>
 
@@ -88,7 +94,31 @@ const AdminList = () => {
                           <span>{e.name}</span>
                         </td>
                         <td>
+                          <span>{e.email}</span>
+                        </td>
+                        <td>
+                        <span>
+                            <img
+                              src={`http://localhost:3000/uploads/${e.image}`}
+                              style={{ width: "200px", height: "200px" }}
+                              alt="Brand"
+                            ></img>
+                          </span>
+                        </td>
+                        <td>
                           <span>{e.role}</span>
+                        </td>
+                        <td>
+                          <span>{e.address}</span>
+                        </td>
+                        <td>
+                          <span>{e.gender}</span>
+                        </td>
+                        <td>
+                          <span>{e.birthday ? e.birthday.slice(0, 10) : ""}</span>
+                        </td>
+                        <td>
+                          <span>{e.phone_number}</span>
                         </td>
                         <td>
                           <div>

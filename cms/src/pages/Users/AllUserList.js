@@ -86,54 +86,54 @@ const UserList = () => {
                   </thead>
 
                   <tbody>
-                    {users.map((e, index) => (
-                      <tr key={e.id}>
+                    {users.map((user, index) => (
+                      <tr key={user.id}>
                         <td>
                           <span>{index + 1}</span>
                         </td>
                         <td>
-                          <span>{e.name}</span>
+                          <span>{user.name}</span>
                         </td>
                         <td>
-                          <span>{e.email}</span>
+                          <span>{user.email}</span>
                         </td>
                         <td>
                           <span>
                             <img
-                              src={e.image}
+                              src={!user.image.startsWith('http') ? `http://localhost:3000/uploads/${user.image}` : `${user.image}`}
                               style={{ width: "100px", height: "100px" }}
                               alt="user"
                             ></img>
                           </span>
                         </td>
                         <td>
-                          <span>{e.role}</span>
+                          <span>{user.role}</span>
                         </td>
                         <td>
-                          <span>{e.address === null ? "-" : e.address}</span>
+                          <span>{user.address === null ? "-" : user.address}</span>
                         </td>
                         <td>
-                          <span>{e.gender === null ? "-" : e.gender}</span>
+                          <span>{user.gender === null ? "-" : user.gender}</span>
                         </td>
                         <td>
                           <span>
-                            {e.birthday ? e.birthday.slice(0, 10) : "-"}
+                            {user.birthday ? user.birthday.slice(0, 10) : "-"}
                           </span>
                         </td>
                         <td>
                           <span>
-                            {e.phone_number === null ? "-" : e.phone_number}
+                            {user.phone_number === null ? "-" : user.phone_number}
                           </span>
                         </td>
                         <td>
                           <div>
                             <button
-                              onClick={() => deletes(e.id)}
+                              onClick={() => deletes(user.id)}
                               className="action-btn-delete"
                             >
                               Delete
                             </button>
-                            <Link to={`/updateUser/${e.id}`}>
+                            <Link to={`/updateUser/${user.id}`}>
                               <button className="action-btn-update">
                                 Update
                               </button>
