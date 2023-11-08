@@ -12,7 +12,7 @@ function DashboardHeader() {
             <h3>Hi {currentUser.name}!</h3>
             <img
               className="dashbord-header-avatar"
-              src={currentUser.image}
+              src={`http://localhost:3000/uploads/${currentUser.image}`}
               alt="Profile"
             />
           </>

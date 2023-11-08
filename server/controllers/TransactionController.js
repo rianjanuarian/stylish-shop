@@ -1,4 +1,4 @@
-const { transaction, cart, courier } = require("../models");
+const { transaction, cart, courier,user } = require("../models");
 const midtransClient = require("midtrans-client");
 const { createOrder } = require("../helpers/order");
 const createError = require("../middlewares/createError");
@@ -6,7 +6,9 @@ const createError = require("../middlewares/createError");
 class TransactionControllers {
   static async getTransaction(req, res, next) {
     try {
-      const transactions = await transaction.findAll();
+      const transactions = await transaction.findAll({
+        include : [user,courier]
+      });
       res.status(200).json(transactions);
     } catch (error) {
       next(error);
