@@ -222,5 +222,6 @@ a:hover {
 
   .login-content {
     justify-content: center;
+    padding-left: 50%;
   }
 }
