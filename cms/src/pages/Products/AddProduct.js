@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { saveProducts } from "../../redux/productSlice";
+import { saveProduct, saveProducts } from "../../redux/productSlice";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
-import { categorySelectors, getCategories, selectAllCategory } from "../../redux/categorySlice";
-import { brandSelectors, getBrands, selectAllBrands } from "../../redux/brandSlice";
+import {  getCategories, selectAllCategories } from "../../redux/categorySlice";
+import { getBrands, selectAllBrands } from "../../redux/brandSlice";
 // import { useNavigate } from "react-router-dom";
 
 
@@ -22,7 +22,7 @@ const AddProduct = () => {
 
 
 
-  const categories = useSelector(selectAllCategory);
+  const categories = useSelector(selectAllCategories);
   const brands = useSelector(selectAllBrands);
   // const navigate = useNavigate();
   const createProduct = async (e) => {
@@ -30,7 +30,7 @@ const AddProduct = () => {
     e.preventDefault();
 
     await dispatch(
-      saveProducts({
+      saveProduct({
         name,
         price,
         description,

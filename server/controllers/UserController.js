@@ -92,7 +92,7 @@ class UserController {
         return next(createError(401, "Password is incorrect!"));
       }
 
-      const { password, ...otherDetails } = yuser;
+      const { password, ...otherDetails } = yuser.dataValues;
 
       const access_token = encodeTokenUsingJwt({ ...otherDetails });
       res.setHeader("Authorization", `Bearer ${access_token}`);

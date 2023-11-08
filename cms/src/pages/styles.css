@@ -111,6 +111,10 @@ td {
   box-shadow: none;
   border-bottom: 0.05rem solid rgb(240, 242, 245);
 }
+
+td img {
+  height: 100px;
+}
 td div {
   display: flex;
   flex-direction: row;
@@ -315,7 +319,7 @@ body.active-modal {
 }
 .modal-content {
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   line-height: 1.4;
@@ -360,4 +364,12 @@ body.active-modal {
   background-color: #ccc; 
   color: #999; 
   cursor: not-allowed;
+}
+
+.colors{
+  margin-bottom: 8px;
+}
+
+.color-option {
+  margin-top: 8px;
 }

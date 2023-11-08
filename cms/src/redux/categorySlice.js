@@ -130,6 +130,6 @@ const categorySlice = createSlice({
   // },
 });
 
-export const { selectAll: selectAllCategory, selectById: selectCategoryById } =
+export const { selectAll: selectAllCategories, selectById: selectCategoryById } =
   categoryEntity.getSelectors((state) => state.categories);
 export default categorySlice.reducer;
