@@ -99,7 +99,7 @@ const AdminList = () => {
                         <td>
                         <span>
                             <img
-                              src={`http://localhost:3000/uploads/${e.image}`}
+                              src={e.image && !e.image.startsWith('http') ? `http://localhost:3000/uploads/${e.image}` : `${e.image}`}
                               style={{ width: "200px", height: "200px" }}
                               alt="Brand"
                             ></img>
