@@ -1,5 +1,6 @@
 import 'package:client/pages/common/splash_screen.dart';
 import 'package:client/pages/common/unknown.dart';
+import 'package:client/pages/setting/setting.dart';
 import 'package:flutter/services.dart';
 import 'package:client/pages/auth/login_screen.dart';
 import 'package:client/pages/auth/login_signup_screen.dart';
@@ -14,8 +15,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  // add these lines
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -58,12 +57,13 @@ class MyApp extends StatelessWidget {
                 page: () => const SignupScreen(),
                 transition: Transition.rightToLeft),
             GetPage(name: '/home', page: () => const HomeScreen()),
+            GetPage(name: '/setting', page: () => const Setting()),
           ],
           debugShowCheckedModeBanner: false,
           home: child,
         );
       },
-      // child: const HomeScreen(),
+      // child: const Setting(),
       child: FutureBuilder(
         future: Future.delayed(const Duration(seconds: 3)),
         builder: (
