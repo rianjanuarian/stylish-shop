@@ -11,12 +11,20 @@ import { useSelector, useDispatch } from "react-redux";
 import Loading from "../../helpers/Loading/Loading";
 import empty from "../../assets/images/empty.png";
 
+import AddUser from "./AddUser";
+import UpdateUser from "./UpdateUser";
+
+
 const UserList = () => {
   const dispatch = useDispatch();
   const users = useSelector(userSelectors.selectAll);
   const status = useSelector((state) => state.users.status);
   const error = useSelector((state) => state.users.error);
-
+  const [modalAdd, setModalAdd] = useState(false)
+  const [modalEdit, setModalEdit] = useState(false);
+  const [userId, setUserId] = useState(0)
+  const toggleModalAdd = () => setModalAdd(!modalAdd);
+  const toggleModalEdit = () => setModalEdit(!modalEdit);
   useEffect(() => {
     dispatch(getUsers());
   }, [dispatch]);
@@ -37,7 +45,10 @@ const UserList = () => {
       }
     });
   };
-
+  const update = (id) => {
+    setUserId(id);
+    toggleModalEdit();
+  };
   return (
     <>
       <div className="dashboard-container">
@@ -49,9 +60,9 @@ const UserList = () => {
             <div className="dashboard-content-container">
               <div className="dashboard-content-header">
                 <h2>User List</h2>
-                <Link to={"/addUser"} className="rows-btn" type="button">
+                <button className="rows-btn" type="button" onClick={toggleModalAdd}>
                   Add Admin
-                </Link>
+                </button>
               </div>
               <p>Role : </p>
               <div className="user-role">
@@ -113,7 +124,7 @@ const UserList = () => {
                           <span>{user.address === null ? "-" : user.address}</span>
                         </td>
                         <td>
-                          <span>{user.gender === null ? "-" : user.gender}</span>
+                          <span>{user.gender === null ? "-" : user.gender === 'man' ? 'Male': 'Female'}</span>
                         </td>
                         <td>
                           <span>
@@ -133,11 +144,12 @@ const UserList = () => {
                             >
                               Delete
                             </button>
-                            <Link to={`/updateUser/${user.id}`}>
-                              <button className="action-btn-update">
+                            
+                              <button className="action-btn-update" 
+                              onClick={() => update(user.id)}>
                                 Update
                               </button>
-                            </Link>
+                            
                           </div>
                         </td>
                       </tr>
@@ -154,6 +166,8 @@ const UserList = () => {
           </div>
         </div>
       </div>
+      {modalAdd && <AddUser toggleModalAdd={toggleModalAdd}/>}
+      {modalEdit && <UpdateUser toggleModalEdit={toggleModalEdit} userId={userId}/>}
     </>
   );
 };

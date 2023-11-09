@@ -27,7 +27,14 @@ const Product = () => {
 
   const toggleModalAdd = () => setModalAdd(!modalAdd);
   const toggleModalEdit = () => setModalEdit(!modalEdit);
+  const priceConverter = (price) => {
+    const formattedPrice = new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(price);
 
+    return <div>{formattedPrice}</div>;
+  };
   useEffect(() => {
     dispatch(getProducts());
   }, [dispatch]);
@@ -116,7 +123,7 @@ const Product = () => {
                           <span>{product.name}</span>
                         </td>
                         <td>
-                          <span>Rp{product.price},00</span>
+                          <span>{priceConverter(product.price)}</span>
                         </td>
                         <td>
                           <span>{product.description}</span>

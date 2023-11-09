@@ -50,12 +50,12 @@ const sidebar_menu = [
     path: "/user",
     title: "User",
   },
-  {
-    id: 9,
-    icon: AiOutlineUser,
-    path: "/profile",
-    title: "My account",
-  },
+  // {
+  //   id: 9,
+  //   icon: AiOutlineUser,
+  //   path: "/profile",
+  //   title: "My account",
+  // },
 ];
 
 export default sidebar_menu;

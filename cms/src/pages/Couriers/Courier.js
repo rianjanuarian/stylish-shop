@@ -25,7 +25,14 @@ const Courier = () => {
 
   const toggleModalAdd = () => setModalAdd(!modalAdd);
   const toggleModalEdit = () => setModalEdit(!modalEdit);
+  const priceConverter = (price) => {
+    const formattedPrice = new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    }).format(price);
 
+    return <div>{formattedPrice}</div>;
+  };
   useEffect(() => {
     dispatch(getCouriers());
   }, [dispatch]);
@@ -109,7 +116,7 @@ const Courier = () => {
                           <span>{courier.name}</span>
                         </td>
                         <td>
-                          <span>Rp. {courier.price}</span>
+                          <span>{priceConverter(courier.price)}</span>
                         </td>
                         <td>
                           <span>
