@@ -42,6 +42,6 @@ class MyApp extends StatelessWidget {
         //             : const GetStartedOne()
         //   ),
         // ),
-        home: const DasboardScreen());
+        home: const GetStartedOneScreen());
   }
 }
