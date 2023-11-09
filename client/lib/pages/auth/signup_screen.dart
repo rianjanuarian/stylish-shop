@@ -1,125 +1,147 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
   @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: ListView(
-          children: [
-            Align(
-                alignment: Alignment.center,
-                child: Image.asset('assets/logo/logo_light.png')),
-            const Text(
-              'Join Us!',
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
-            ),
-            const Text(
-              'Register now and get your benefit',
-              style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w200,
-                  color: Color(0xff9D9B9B)),
-            ),
-            const SizedBox(height: 20),
-            Form(
-              child: Column(
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: REdgeInsets.symmetric(horizontal: 20),
+          child: KeyboardVisibilityBuilder(
+            builder: (p0, isKeyboardVisible) {
+              return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Username',
+                  if (!isKeyboardVisible)
+                    Align(
+                        alignment: Alignment.center,
+                        child: Image.asset('assets/logo/logo_light.png')),
+                  if (isKeyboardVisible) SizedBox(height: 50.h),
+                  Text(
+                    'Join Us!',
+                    style:
+                        TextStyle(fontSize: 32.sp, fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    'Register now and get your benefit',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w200,
+                        color: const Color(0xff9D9B9B)),
+                  ),
+                  SizedBox(height: 20.h),
+                  Form(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Username',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        TextFormField(
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10).r,
+                            ),
+                            contentPadding: REdgeInsets.only(left: 20),
+                            hintText: 'Enter Username',
+                          ),
+                        ),
+                        SizedBox(height: 15.h),
+                        Text(
+                          'Email',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        TextFormField(
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10).r,
+                            ),
+                            contentPadding: REdgeInsets.only(left: 20),
+                            hintText: 'Enter Email',
+                          ),
+                        ),
+                        SizedBox(height: 15.h),
+                        Text(
+                          'Password',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        TextFormField(
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            contentPadding: REdgeInsets.only(left: 20),
+                            hintText: 'Enter Password',
+                          ),
+                        ),
+                        SizedBox(height: 15.h),
+                        Text(
+                          'Confirm Password',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                        SizedBox(height: 10.h),
+                        TextFormField(
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10).r,
+                            ),
+                            contentPadding: REdgeInsets.only(left: 20),
+                            hintText: 'Enter Confirm Password',
+                          ),
+                        ),
+                        SizedBox(height: 25.h),
+                        ElevatedButton(
+                          onPressed: () => Get.offAllNamed('/login'),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size.fromHeight(60.h),
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                          ),
+                          child: const Text('Sign Up'),
+                        ),
+                        SizedBox(height: 25.h),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.only(left: 20),
-                      hintText: 'Enter Username',
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Email',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.only(left: 20),
-                      hintText: 'Enter Email',
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Password',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.only(left: 20),
-                      hintText: 'Enter Password',
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  const Text(
-                    'Confirm Password',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: const EdgeInsets.only(left: 20),
-                      hintText: 'Enter Confirm Password',
-                    ),
-                  ),
-                  const SizedBox(height: 25),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(60),
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
-                    ),
-                    child: const Text('Sign Up'),
-                  ),
-                  const SizedBox(height: 25),
                 ],
-              ),
-            ),
-          ],
+              );
+            },
+          ),
         ),
       ),
     );
