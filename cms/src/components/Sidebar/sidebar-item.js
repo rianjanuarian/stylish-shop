@@ -9,7 +9,8 @@ const SideBarItem = ({ item, active }) => {
   return (
     <Link
       to={item.path}
-      className={active ? "sidebar-item-active" : "sidebar-item"}
+      className={"sidebar-item"}
+      // className={active ? "sidebar-item-active" : "sidebar-item"}
     >
       <CustomIcon
         key={item.id}

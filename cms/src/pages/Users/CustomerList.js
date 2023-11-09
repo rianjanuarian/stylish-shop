@@ -51,7 +51,7 @@ const CustomerList = () => {
               <div className="dashboard-content-header">
                 <h2>User List</h2>
                 <Link to={"/addUser"} className="rows-btn" type="button">
-                  Add User
+                  Add Admin
                 </Link>
               </div>
               <p>Role : </p>

@@ -51,7 +51,7 @@ const AdminList = () => {
               <div className="dashboard-content-header">
                 <h2>Admin List</h2>
                 <Link to={"/addUser"} className="rows-btn" type="button">
-                  Add User
+                  Add Admin
                 </Link>
               </div>
               <p>Role : </p>
