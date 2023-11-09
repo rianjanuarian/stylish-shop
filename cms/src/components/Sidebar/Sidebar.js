@@ -61,14 +61,14 @@ function SideBar({ menu }) {
             ))}
           </div>
 
-          <div className="sidebar-footer" onClick={handleLogout}>
+          {/* <div className="sidebar-footer" onClick={handleLogout}>
             <span className="sidebar-item-label">Logout</span>
             <img
               src={LogoutIcon}
               alt="icon-logout"
               className="sidebar-item-icon"
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>

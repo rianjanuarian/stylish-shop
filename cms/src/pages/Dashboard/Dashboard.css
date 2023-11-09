@@ -28,13 +28,16 @@
 
 .container-chart {
   display: flex;
+
   background-color: white;
   margin: 20px;
   height: 100%;
+  width: 95%;
   border-radius: 10px;
 }
 
 .chart {
   margin-top: 2%;
-  margin-left: 10%;
+  width: 25%;
+  margin-left: 40%;
 }
