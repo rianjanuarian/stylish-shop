@@ -1,6 +1,6 @@
-import 'package:client/pages/auth/login_screen.dart';
-import 'package:client/pages/auth/login_signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class GetStartedTwoScreen extends StatelessWidget {
@@ -10,101 +10,57 @@ class GetStartedTwoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-                child: Image.asset(
-                  'assets/images/baju2.png',
-                  width: double.infinity,
-                  height: 450,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 120),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Discover New \nFashion',
-                    style: GoogleFonts.playfair(
-                        fontWeight: FontWeight.w900,
-                        color: Colors.black,
-                        fontSize: 36,
-                        height: 1),
-                    textAlign: TextAlign.end,
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'It brings your the latets trends and \nproducts from the world...',
-                    textAlign: TextAlign.end,
-                  )
-                ],
-              ),
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              bottomLeft: const Radius.circular(20).w,
+              bottomRight: const Radius.circular(20).w,
+            ),
+            child: Image.asset(
+              'assets/images/baju2.png',
+              width: double.infinity,
+              height: 0.65.sh,
+              fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Padding(
+            padding: REdgeInsets.only(right: 20, top: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 15,
-                      height: 15,
-                      decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 175, 172, 172),
-                          borderRadius: BorderRadius.circular(30)),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                      width: 40,
-                      height: 15,
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(30)),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.35,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginSignupScreen()),
-                    );
-                  },
-                  child: Container(
-                    width: 35,
-                    height: 35,
-                    decoration: const BoxDecoration(
-                        color: Colors.black, shape: BoxShape.circle),
-                    child: const Center(
-                      child: Icon(
-                        Icons.arrow_forward_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
+                Text(
+                  'Discover New \nFashion',
+                  style: GoogleFonts.playfair(
+                    fontWeight: FontWeight.w900,
+                    color: Colors.black,
+                    fontSize: 36.sp,
+                    height: 1.h,
                   ),
-                )
+                  textAlign: TextAlign.end,
+                ),
+                SizedBox(height: 20.h),
+                Text(
+                  'It brings your the latets trends and \nproducts from the world...',
+                  style: GoogleFonts.playfair(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                Padding(
+                  padding: REdgeInsets.only(top: 20),
+                  child: IconButton(
+                    onPressed: () => Get.offAllNamed('/auth'),
+                    icon: const Icon(Icons.arrow_forward),
+                    color: Colors.white,
+                    style: IconButton.styleFrom(backgroundColor: Colors.black),
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

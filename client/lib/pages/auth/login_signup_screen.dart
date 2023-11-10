@@ -1,6 +1,6 @@
-import 'package:client/pages/auth/login_screen.dart';
-import 'package:client/pages/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class LoginSignupScreen extends StatelessWidget {
   const LoginSignupScreen({super.key});
@@ -11,49 +11,40 @@ class LoginSignupScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
+          SizedBox(
+            height: 1.sh,
+            width: 1.sw,
+          ),
           Align(
             alignment: Alignment.center,
             child: Image.asset(
               'assets/logo/logo_dark.png',
-              height: 250,
+              width: 320.w,
             ),
           ),
           Positioned(
-            bottom: 30,
+            bottom: 0.05.sh,
             child: SizedBox(
-              height: 150,
-              width: MediaQuery.of(context).size.width,
+              width: 1.sw,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: REdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginScreen()),
-                        );
-                      },
+                      onPressed: () => Get.toNamed('/login'),
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(60),
+                        minimumSize: Size.fromHeight(60.h),
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.black,
                       ),
                       child: const Text('Login'),
                     ),
+                    SizedBox(height: 20.h),
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignupScreen()),
-                        );
-                      },
+                      onPressed: () => Get.toNamed('/signup'),
                       style: ElevatedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(60),
+                          minimumSize: Size.fromHeight(60.h),
                           backgroundColor: Colors.black,
                           foregroundColor: Colors.white,
                           shape: const StadiumBorder(
@@ -70,3 +61,5 @@ class LoginSignupScreen extends StatelessWidget {
     );
   }
 }
+
+//  
