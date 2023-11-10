@@ -40,6 +40,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   get: ^4.6.6
   flutter_keyboard_visibility: ^5.4.1
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:
