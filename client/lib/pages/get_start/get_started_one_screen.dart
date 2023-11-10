@@ -7,7 +7,7 @@ class GetStartedOneScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mediaQueryWidth = MediaQuery.of(context).size.width;
+   
     return Scaffold(
       body: PageView(
         scrollDirection: Axis.horizontal,
