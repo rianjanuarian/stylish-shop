@@ -1,14 +1,18 @@
-import 'package:client/pages/login/bindings/login_binding.dart';
-import 'package:client/pages/splash_screen/bindings/splash_screen_binding.dart';
+import 'package:client/pages/profile/about_service.dart';
+import 'package:client/pages/profile/change_password.dart';
+import 'package:client/pages/profile/order_ongoing.dart';
+import 'package:client/pages/profile/personal_details.dart';
+import 'package:client/pages/profile/privacy_policy.dart';
+import 'package:client/pages/profile/setting.dart';
+import 'package:client/pages/profile/term_condition.dart';
 import 'package:get/get.dart';
 
-import '../pages/login/views/login_screen.dart';
 import '../pages/auth/login_signup_screen.dart';
 import '../pages/auth/signup_screen.dart';
 import '../pages/common/unknown.dart';
 import '../pages/get_start/on_boarding_screen.dart';
 import '../pages/home_page/home_screen.dart';
-import '../pages/setting/setting.dart';
+import '../pages/splash_screen/bindings/splash_screen_binding.dart';
 import '../pages/splash_screen/views/splash_screen_view.dart';
 
 class AppPages {
@@ -19,6 +23,12 @@ class AppPages {
   static const signup = '/signup';
   static const home = '/home';
   static const setting = '/setting';
+  static const personalDetail = '/personal-detail';
+  static const orderOngoing = '/order-ongoing';
+  static const changePassword = '/change-password';
+  static const aboutService = '/about-service';
+  static const privacyPolicy = '/privacy-policy';
+  static const termCondition = '/term-condition';
 
   // Unknown
   static const unknown = '/unknown';
@@ -63,6 +73,30 @@ class AppPages {
     GetPage(
       name: setting,
       page: () => const Setting(),
+    ),
+    GetPage(
+      name: personalDetail,
+      page: () => const PersonalDetail(),
+    ),
+    GetPage(
+      name: orderOngoing,
+      page: () => const OrderOngoing(),
+    ),
+    GetPage(
+      name: changePassword,
+      page: () => const ChangePassword(),
+    ),
+    GetPage(
+      name: privacyPolicy,
+      page: () => const PrivacyPolicy(),
+    ),
+    GetPage(
+      name: termCondition,
+      page: () => const TermCondition(),
+    ),
+    GetPage(
+      name: aboutService,
+      page: () => const AboutService(),
     ),
   ];
 }
