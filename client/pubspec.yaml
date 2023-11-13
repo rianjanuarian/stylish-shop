@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^6.1.0
   flutter_screenutil: ^5.9.0
   smooth_page_indicator: ^1.1.0
+  dio: ^5.3.3
   get: ^4.6.6
   flutter_keyboard_visibility: ^5.4.1
   get_storage: ^2.1.1
