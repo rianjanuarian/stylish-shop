@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class Setting extends StatelessWidget {
   const Setting({super.key});
@@ -83,17 +84,17 @@ class Setting extends StatelessWidget {
                     IconText(
                       icon: Icons.person_2_outlined,
                       text: 'Personal Details',
-                      handleClick: () {},
+                      handleClick: () => Get.toNamed('/personal-detail'),
                     ),
                     IconText(
                       icon: Icons.list,
                       text: 'My Order',
-                      handleClick: () {},
+                      handleClick: () => Get.toNamed('/order-ongoing'),
                     ),
                     IconText(
                       icon: Icons.password,
                       text: 'Change Password',
-                      handleClick: () {},
+                      handleClick: () => Get.toNamed('/change-password'),
                     )
                   ],
                 ),
@@ -123,18 +124,18 @@ class Setting extends StatelessWidget {
                     ),
                     IconText(
                       icon: Icons.business,
-                      text: 'Personal Details',
-                      handleClick: () {},
+                      text: 'Privacy Policy',
+                      handleClick: () => Get.toNamed('/privacy-policy'),
                     ),
                     IconText(
                       icon: Icons.leaderboard_outlined,
                       text: 'Term & Conditions',
-                      handleClick: () {},
+                      handleClick: () => Get.toNamed('/term-condition'),
                     ),
                     IconText(
                       icon: Icons.list_alt_outlined,
                       text: 'About & Services',
-                      handleClick: () {},
+                      handleClick: () => Get.toNamed('/about-service'),
                     )
                   ],
                 ),

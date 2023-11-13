@@ -5,89 +5,22 @@ import 'package:intl/intl.dart';
 
 enum Gender { male, female }
 
-final _formKey = GlobalKey<FormState>();
-final TextEditingController _nameController = TextEditingController();
-Gender _gender = Gender.male;
-final TextEditingController _birthDateController = TextEditingController();
-final TextEditingController _phoneController = TextEditingController();
-final TextEditingController _addressController = TextEditingController();
-
-class PersonalDetail extends StatelessWidget {
+class PersonalDetail extends StatefulWidget {
   const PersonalDetail({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    void _saveProfile() {}
-
-    return Scaffold(
-      appBar: AppBar(
-        leadingWidth: 80.w,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Get.back(),
-          style: IconButton.styleFrom(
-              backgroundColor: Colors.black, foregroundColor: Colors.white),
-        ),
-        surfaceTintColor: Colors.white,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: REdgeInsets.symmetric(horizontal: 50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20.r),
-                child: Image.asset(
-                  'assets/images/user.png',
-                  height: 100.h,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              SizedBox(height: 20.h),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    const NameWithInput(),
-                    const _GenderWithCheck(),
-                    const _BirthDate(),
-                    const _PhoneWithInput(),
-                    const _AddresswithInput(),
-                    Padding(
-                      padding: REdgeInsets.symmetric(vertical: 30),
-                      child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _saveProfile();
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(60.r),
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10).r),
-                          ),
-                          child: const Text('Save')),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  State<PersonalDetail> createState() => _PersonalDetailState();
 }
 
-class NameWithInput extends StatelessWidget {
-  const NameWithInput({super.key});
+class _PersonalDetailState extends State<PersonalDetail> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  Gender _gender = Gender.male;
+  final TextEditingController _birthDateController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _nameWithInput() {
     return Padding(
       padding: REdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -128,18 +61,8 @@ class NameWithInput extends StatelessWidget {
       ),
     );
   }
-}
 
-class _GenderWithCheck extends StatefulWidget {
-  const _GenderWithCheck();
-
-  @override
-  State<_GenderWithCheck> createState() => _GenderWithCheckState();
-}
-
-class _GenderWithCheckState extends State<_GenderWithCheck> {
-  @override
-  Widget build(BuildContext context) {
+  Widget _genderWithCheck() {
     return Padding(
       padding: REdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -252,18 +175,8 @@ class _GenderWithCheckState extends State<_GenderWithCheck> {
       ),
     );
   }
-}
 
-class _BirthDate extends StatefulWidget {
-  const _BirthDate();
-
-  @override
-  State<_BirthDate> createState() => _BirthDateState();
-}
-
-class _BirthDateState extends State<_BirthDate> {
-  @override
-  Widget build(BuildContext context) {
+  Widget _birthDate() {
     return Padding(
       padding: REdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -318,13 +231,8 @@ class _BirthDateState extends State<_BirthDate> {
       ),
     );
   }
-}
 
-class _PhoneWithInput extends StatelessWidget {
-  const _PhoneWithInput();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _phoneNumber() {
     return Padding(
       padding: REdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -366,13 +274,8 @@ class _PhoneWithInput extends StatelessWidget {
       ),
     );
   }
-}
 
-class _AddresswithInput extends StatelessWidget {
-  const _AddresswithInput();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _addressWithInput() {
     return Padding(
       padding: REdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -412,6 +315,73 @@ class _AddresswithInput extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  void _saveProfile() {}
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leadingWidth: 80.w,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Get.back(),
+          style: IconButton.styleFrom(
+              backgroundColor: Colors.black, foregroundColor: Colors.white),
+        ),
+        surfaceTintColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: REdgeInsets.symmetric(horizontal: 50),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20.r),
+                child: Image.asset(
+                  'assets/images/user.png',
+                  height: 100.h,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(height: 20.h),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    _nameWithInput(),
+                    _genderWithCheck(),
+                    _birthDate(),
+                    _phoneNumber(),
+                    _addressWithInput(),
+                    Padding(
+                      padding: REdgeInsets.symmetric(vertical: 30),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _saveProfile();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size.fromHeight(60.r),
+                            backgroundColor: Colors.black,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10).r),
+                          ),
+                          child: const Text('Save')),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

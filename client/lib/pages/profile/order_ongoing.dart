@@ -34,7 +34,7 @@ class _OrderOngoingState extends State<OrderOngoing> {
     }
   ];
 
-  bool _isOngoing = false;
+  bool _isOngoing = true;
 
   void _switchTo(bool isOngoing) {
     setState(() {
