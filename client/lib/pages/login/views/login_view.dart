@@ -1,16 +1,12 @@
+import 'package:client/pages/login/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginView extends GetView<LoginController> {
+  const LoginView({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,17 +47,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(fontSize: 20.sp),
                     ),
                     SizedBox(height: 10.h),
-                    TextFormField(
-                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10).r,
-                        ),
-                        contentPadding: EdgeInsets.zero,
-                        hintText: 'Enter Email',
-                        prefixIcon: const Icon(
-                          Icons.alternate_email,
-                          color: Color(0xFF8C8C8C),
+                    Obx(
+                      () => TextFormField(
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
+                        controller: controller.email,
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: (value) {
+                          controller.emailChange.value = value;
+                          controller.emailValidation();
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10).r,
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          hintText: 'Enter Email',
+                          errorText: controller.emailError.value.isNotEmpty
+                              ? controller.emailError.value
+                              : null,
+                          prefixIcon: const Icon(
+                            Icons.alternate_email,
+                            color: Color(0xFF8C8C8C),
+                          ),
                         ),
                       ),
                     ),
@@ -71,27 +79,52 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(fontSize: 20.sp),
                     ),
                     SizedBox(height: 10.h),
-                    TextFormField(
-                      onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10).r,
+                    Obx(
+                      () => TextFormField(
+                        onTapOutside: (event) =>
+                            FocusScope.of(context).unfocus(),
+                        controller: controller.password,
+                        onChanged: (value) {
+                          controller.passwordChange.value = value;
+                          controller.passwordValidation();
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10).r,
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          hintText: 'Enter Password',
+                          errorText: controller.passwordError.value.isNotEmpty
+                              ? controller.passwordError.value
+                              : null,
+                          prefixIcon: const Icon(
+                            Icons.lock_outlined,
+                            color: Color(0xFF8C8C8C),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              controller.passwordObscure.value
+                                  ? Icons.remove_red_eye_outlined
+                                  : Icons.remove_red_eye,
+                            ),
+                            onPressed: () {
+                              controller.onObsecurePasswordTapped();
+                            },
+                          ),
                         ),
-                        contentPadding: EdgeInsets.zero,
-                        hintText: 'Enter Password',
-                        prefixIcon: const Icon(
-                          Icons.lock_outlined,
-                          color: Color(0xFF8C8C8C),
-                        ),
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.remove_red_eye_outlined),
-                          onPressed: () {},
-                        ),
+                        obscureText: controller.passwordObscure.value,
+                        keyboardType: TextInputType.visiblePassword,
                       ),
                     ),
                     SizedBox(height: 20.h),
                     ElevatedButton(
-                      onPressed: () => Get.offAllNamed('/home'),
+                      onPressed: () {
+                        controller.emailError.value == '' &&
+                                controller.passwordError.value == ''
+                            ? Get.offAllNamed('/home')
+                            : Get.snackbar(
+                                'Error', 'Email or Password is incorrect');
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
                           foregroundColor: Colors.white,
@@ -118,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     ElevatedButton(
-                      onPressed: ()  => Get.offAllNamed('/home'),
+                      onPressed: () => Get.offAllNamed('/home'),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                           foregroundColor: Colors.white,
