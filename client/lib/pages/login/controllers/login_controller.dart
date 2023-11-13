@@ -9,8 +9,14 @@ class LoginController extends GetxController {
   late FocusNode passwordFocusNode;
 
   var passwordObscure = true.obs;
+
+  // Email
   final emailError = RxString('');
   final emailChange = RxString('');
+
+  // Password
+  final passwordError = RxString('');
+  final passwordChange = RxString('');
 
   @override
   void onInit() {
@@ -21,6 +27,7 @@ class LoginController extends GetxController {
     password = TextEditingController();
 
     emailValidation();
+    passwordValidation();
   }
 
   @override
@@ -49,6 +56,16 @@ class LoginController extends GetxController {
       // Clear the error if email is valid
       emailChange.value = email.text;
       emailError.value = '';
+    }
+  }
+
+  void passwordValidation() {
+    if (password.text == '' || password.text.isEmpty) {
+      passwordError.value = 'Please enter password';
+    } else {
+      // Clear the error if password is valid
+      passwordChange.value = password.text;
+      passwordError.value = '';
     }
   }
 }

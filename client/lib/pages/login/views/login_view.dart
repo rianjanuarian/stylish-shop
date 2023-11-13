@@ -63,13 +63,13 @@ class LoginView extends GetView<LoginController> {
                           ),
                           contentPadding: EdgeInsets.zero,
                           hintText: 'Enter Email',
+                          errorText: controller.emailError.value.isNotEmpty
+                              ? controller.emailError.value
+                              : null,
                           prefixIcon: const Icon(
                             Icons.alternate_email,
                             color: Color(0xFF8C8C8C),
                           ),
-                          errorText: controller.emailError.value.isNotEmpty
-                              ? controller.emailError.value
-                              : null,
                         ),
                       ),
                     ),
@@ -84,12 +84,19 @@ class LoginView extends GetView<LoginController> {
                         onTapOutside: (event) =>
                             FocusScope.of(context).unfocus(),
                         controller: controller.password,
+                        onChanged: (value) {
+                          controller.passwordChange.value = value;
+                          controller.passwordValidation();
+                        },
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10).r,
                           ),
                           contentPadding: EdgeInsets.zero,
                           hintText: 'Enter Password',
+                          errorText: controller.passwordError.value.isNotEmpty
+                              ? controller.passwordError.value
+                              : null,
                           prefixIcon: const Icon(
                             Icons.lock_outlined,
                             color: Color(0xFF8C8C8C),
@@ -112,7 +119,8 @@ class LoginView extends GetView<LoginController> {
                     SizedBox(height: 20.h),
                     ElevatedButton(
                       onPressed: () {
-                        controller.emailError.value == ''
+                        controller.emailError.value == '' &&
+                                controller.passwordError.value == ''
                             ? Get.offAllNamed('/home')
                             : Get.snackbar(
                                 'Error', 'Email or Password is incorrect');
