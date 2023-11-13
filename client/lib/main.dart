@@ -1,10 +1,10 @@
 import 'package:client/routes/app_pages.dart';
 import 'package:client/services/storage_service/storage_service.dart';
+import 'package:client/themes/fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           title: 'Stylish Shop',
           theme: ThemeData(
             colorSchemeSeed: Colors.white,
-            fontFamily: GoogleFonts.poppins().fontFamily,
+            fontFamily: FontFamily.poppins,
             useMaterial3: true,
           ),
           initialRoute: AppPages.splash,
