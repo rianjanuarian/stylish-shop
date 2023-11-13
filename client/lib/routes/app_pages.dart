@@ -12,6 +12,8 @@ import '../pages/auth/signup_screen.dart';
 import '../pages/common/unknown.dart';
 import '../pages/get_start/on_boarding_screen.dart';
 import '../pages/home_page/home_screen.dart';
+import '../pages/login/bindings/login_binding.dart';
+import '../pages/login/views/login_view.dart';
 import '../pages/splash_screen/bindings/splash_screen_binding.dart';
 import '../pages/splash_screen/views/splash_screen_view.dart';
 
@@ -57,7 +59,7 @@ class AppPages {
     ),
     GetPage(
       name: login,
-      page: () => const LoginScreen(),
+      page: () => const LoginView(),
       transition: Transition.rightToLeft,
       binding: LoginBinding(),
     ),
