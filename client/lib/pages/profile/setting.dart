@@ -59,7 +59,7 @@ class Setting extends StatelessWidget {
               ),
               Container(
                 margin: REdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                padding: REdgeInsets.all(15),
+                padding: REdgeInsets.symmetric(vertical: 10),
                 height: 0.25.sh,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.r),
@@ -72,10 +72,13 @@ class Setting extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      'Account',
-                      style: TextStyle(
-                          fontSize: 15.sp, color: const Color(0xFF938585)),
+                    Padding(
+                      padding:  REdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        'Account',
+                        style: TextStyle(
+                            fontSize: 15.sp, color: const Color(0xFF938585)),
+                      ),
                     ),
                     IconText(
                       icon: Icons.person_2_outlined,
@@ -97,7 +100,7 @@ class Setting extends StatelessWidget {
               ),
               Container(
                 margin: REdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                padding: REdgeInsets.all(15),
+                padding: REdgeInsets.symmetric(vertical: 10),
                 height: 0.25.sh,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.r),
@@ -110,10 +113,13 @@ class Setting extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
-                      'Other Info',
-                      style: TextStyle(
-                          fontSize: 15.sp, color: const Color(0xFF938585)),
+                    Padding(
+                      padding: REdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        'Other Info',
+                        style: TextStyle(
+                            fontSize: 15.sp, color: const Color(0xFF938585)),
+                      ),
                     ),
                     IconText(
                       icon: Icons.business,
@@ -134,12 +140,16 @@ class Setting extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
-                child: ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(
-                  minimumSize: Size.fromHeight(60.h),
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white
-                ), child: const Text('Logout'),),
+                padding:
+                    REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: Size.fromHeight(60.h),
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white),
+                  child: const Text('Logout'),
+                ),
               )
             ],
           ),
@@ -161,22 +171,28 @@ class IconText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: handleClick,
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            size: 30.sp,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: handleClick,
+        child: Padding(
+          padding: REdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                size: 30.sp,
+              ),
+              SizedBox(width: 20.w),
+              Text(
+                text,
+                style: TextStyle(fontSize: 15.sp),
+              ),
+              const Spacer(),
+              Icon(Icons.chevron_right, size: 30.sp)
+            ],
           ),
-          SizedBox(width: 20.w),
-          Text(
-            text,
-            style: TextStyle(fontSize: 15.sp),
-          ),
-          const Spacer(),
-          Icon(Icons.chevron_right, size: 30.sp)
-        ],
+        ),
       ),
     );
   }
