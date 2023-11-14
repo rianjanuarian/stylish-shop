@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -184,10 +185,11 @@ class _OrderWidget extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5).r,
-                  child: Image.network(
-                    image,
-                    fit: BoxFit.cover,
+                  child: CachedNetworkImage(
+                    imageUrl: image,
                     width: 80.w,
+                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
                 ),
                 SizedBox(width: 15.w),
@@ -203,7 +205,8 @@ class _OrderWidget extends StatelessWidget {
                     ),
                     Text(
                       description,
-                      style: const TextStyle(fontSize: 12, color: Color(0xFF8E8E8E)),
+                      style: const TextStyle(
+                          fontSize: 12, color: Color(0xFF8E8E8E)),
                     )
                   ],
                 ),

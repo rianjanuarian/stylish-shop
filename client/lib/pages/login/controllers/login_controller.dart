@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
-  late TextEditingController email;
-  late TextEditingController password;
+  final formKey = GlobalKey<FormState>();
+  late final TextEditingController email;
+  late final TextEditingController password;
+
+  RxBool isLoading = false.obs;
 
   late FocusNode emailFocusNode;
   late FocusNode passwordFocusNode;
@@ -18,24 +21,6 @@ class LoginController extends GetxController {
   final passwordError = RxString('');
   final passwordChange = RxString('');
 
-  @override
-  void onInit() {
-    super.onInit();
-    emailFocusNode = FocusNode();
-    passwordFocusNode = FocusNode();
-    email = TextEditingController();
-    password = TextEditingController();
-
-    emailValidation();
-    passwordValidation();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    clearTextFieldProp();
-  }
-
   void clearTextFieldProp() {
     email.clear();
     password.clear();
@@ -47,23 +32,46 @@ class LoginController extends GetxController {
     passwordObscure.toggle();
   }
 
-  void emailValidation() {
-    if (email.text == '' || email.text.isEmpty) {
-      emailError.value = 'Please enter email';
-    } else if (!GetUtils.isEmail(email.text)) {
-      emailError.value = 'Please enter valid email';
-    } else {
-      // Clear the error if email is valid
-      emailError.value = '';
+  String? emailValidations(value) {
+    if (value.length == 0) {
+      return 'Please enter an email address';
+    }
+    if (!GetUtils.isEmail(value)) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
+
+  String? passwordValidations(value) {
+    if (value.length == 0) {
+      return 'Please enter a password';
+    }
+    return null;
+  }
+
+  void loginWithEmail() async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      isLoading.value = true;
+      await Future.delayed(const Duration(milliseconds: 5000));
+      Get.toNamed('/main-tab');
     }
   }
 
-  void passwordValidation() {
-    if (password.text == '' || password.text.isEmpty) {
-      passwordError.value = 'Please enter password';
-    } else {
-      // Clear the error if password is valid
-      passwordError.value = '';
-    }
+  @override
+  void onInit() {
+    super.onInit();
+    emailFocusNode = FocusNode();
+    passwordFocusNode = FocusNode();
+    email = TextEditingController();
+    password = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    email.dispose();
+    password.dispose();
+    clearTextFieldProp();
   }
 }

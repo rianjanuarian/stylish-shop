@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SignupController extends GetxController {
+  final formKey = GlobalKey<FormState>();
   late TextEditingController username;
   late TextEditingController email;
   late TextEditingController password;
@@ -15,6 +16,8 @@ class SignupController extends GetxController {
   var passwordObscure = true.obs;
   var confirmPasswordObscure = true.obs;
 
+  RxBool isLoading = false.obs;
+
   // Email
   final emailError = RxString('');
   final emailChange = RxString('');
@@ -26,27 +29,6 @@ class SignupController extends GetxController {
   // Confirm Password
   final confirmPasswordError = RxString('');
   final confirmPasswordChange = RxString('');
-
-  @override
-  void onInit() {
-    super.onInit();
-    emailFocusNode = FocusNode();
-    passwordFocusNode = FocusNode();
-    confirmPasswordFocusNode = FocusNode();
-    email = TextEditingController();
-    password = TextEditingController();
-    confirmPassword = TextEditingController();
-
-    emailValidation();
-    passwordValidation();
-    confirmPasswordValidation();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    clearTextFieldProp();
-  }
 
   void clearTextFieldProp() {
     username.clear();
@@ -97,5 +79,81 @@ class SignupController extends GetxController {
       // Clear the error if password is valid
       confirmPasswordError.value = '';
     }
+  }
+
+  String? usernameValidators(value) {
+    if (value.length == 0) {
+      return 'Please enter username';
+    }
+    return null;
+  }
+
+  String? emailValidations(value) {
+    if (value.length == 0) {
+      return 'Please enter an email';
+    }
+    if (!GetUtils.isEmail(value)) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
+
+  String? passwordValidations(value) {
+    if (value.length == 0) {
+      return 'Please enter a password';
+    }
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters';
+    }
+    return null;
+  }
+
+  String? confirmPasswordValidations(value) {
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters';
+    }
+    if (value != password.text) {
+      return 'Password does not match';
+    }
+    return null;
+  }
+
+  void signUp() async {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      isLoading.value = true;
+      await Future.delayed(const Duration(milliseconds: 5000));
+      Get.toNamed('/login');
+    }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    emailFocusNode = FocusNode();
+    passwordFocusNode = FocusNode();
+    confirmPasswordFocusNode = FocusNode();
+    username = TextEditingController();
+    email = TextEditingController();
+    password = TextEditingController();
+    confirmPassword = TextEditingController();
+
+    emailValidation();
+    passwordValidation();
+    confirmPasswordValidation();
+  }
+
+  @override
+  void dispose() {
+    username.dispose();
+    email.dispose();
+    password.dispose();
+    confirmPassword.dispose();
+    usernameFocusNode.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    confirmPasswordFocusNode.dispose();
+    super.dispose();
+    clearTextFieldProp();
   }
 }

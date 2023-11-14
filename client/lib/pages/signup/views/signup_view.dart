@@ -38,6 +38,7 @@ class SignupView extends GetView<SignupController> {
                   ),
                   SizedBox(height: 20.h),
                   Form(
+                    key: controller.formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -52,6 +53,7 @@ class SignupView extends GetView<SignupController> {
                         TextFormField(
                           onTapOutside: (event) =>
                               FocusScope.of(context).unfocus(),
+                          validator: controller.usernameValidators,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10).r,
@@ -69,27 +71,23 @@ class SignupView extends GetView<SignupController> {
                           ),
                         ),
                         SizedBox(height: 10.h),
-                        Obx(
-                          () => TextFormField(
-                            onTapOutside: (event) =>
-                                FocusScope.of(context).unfocus(),
-                            controller: controller.email,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10).r,
-                              ),
-                              contentPadding: REdgeInsets.only(left: 20),
-                              hintText: 'Enter Email',
-                              errorText: controller.emailError.value.isNotEmpty
-                                  ? controller.emailError.value
-                                  : null,
+                        TextFormField(
+                          onTapOutside: (event) =>
+                              FocusScope.of(context).unfocus(),
+                          controller: controller.email,
+                          validator: controller.emailValidations,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10).r,
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                            onChanged: (value) {
-                              controller.emailChange.value = value;
-                              controller.emailValidation();
-                            },
+                            contentPadding: REdgeInsets.only(left: 20),
+                            hintText: 'Enter Email',
                           ),
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (value) {
+                            controller.emailChange.value = value;
+                            controller.emailValidation();
+                          },
                         ),
                         SizedBox(height: 15.h),
                         Text(
@@ -105,16 +103,13 @@ class SignupView extends GetView<SignupController> {
                             onTapOutside: (event) =>
                                 FocusScope.of(context).unfocus(),
                             controller: controller.password,
+                            validator: controller.passwordValidations,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               contentPadding: REdgeInsets.only(left: 20),
                               hintText: 'Enter Password',
-                              errorText:
-                                  controller.passwordError.value.isNotEmpty
-                                      ? controller.passwordError.value
-                                      : null,
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   controller.passwordObscure.value
@@ -148,16 +143,13 @@ class SignupView extends GetView<SignupController> {
                             onTapOutside: (event) =>
                                 FocusScope.of(context).unfocus(),
                             controller: controller.confirmPassword,
+                            validator: controller.confirmPasswordValidations,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10).r,
                               ),
                               contentPadding: REdgeInsets.only(left: 20),
                               hintText: 'Enter Confirm Password',
-                              errorText: controller
-                                      .confirmPasswordError.value.isNotEmpty
-                                  ? controller.confirmPasswordError.value
-                                  : null,
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   controller.confirmPasswordObscure.value
@@ -179,14 +171,22 @@ class SignupView extends GetView<SignupController> {
                           ),
                         ),
                         SizedBox(height: 25.h),
-                        ElevatedButton(
-                          onPressed: () => Get.offAllNamed('/login'),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(60.h),
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
+                        Obx(
+                          () => ElevatedButton(
+                            onPressed: () => controller.isLoading.isTrue
+                                ? null
+                                : controller.signUp(),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size.fromHeight(60.h),
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white,
+                            ),
+                            child: controller.isLoading.isTrue
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : const Text('Sign Up'),
                           ),
-                          child: const Text('Sign Up'),
                         ),
                         SizedBox(height: 25.h),
                       ],
