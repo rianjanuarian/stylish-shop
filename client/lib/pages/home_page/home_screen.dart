@@ -1,6 +1,11 @@
 import 'package:client/controller/product_controller.dart';
 import 'package:client/models/products.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
+import '../../utils/bottom_navy_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       bottomNavigationBar: BottomNavyBar(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white70,
         containerHeight: 65.h,
         selectedIndex: _currentIndex,
         showElevation: true,
