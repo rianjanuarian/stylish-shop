@@ -1,5 +1,6 @@
 import 'package:client/controller/product_controller.dart';
 import 'package:client/models/products.dart';
+import 'package:client/pages/home_page/new_arrival.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -177,7 +178,7 @@ class HomeScreen extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                     ),
-                    InkWell(onTap: () {}, child: Text("View All"))
+                    InkWell(onTap: () {Get.to(() => NewArrival());}, child: Text("View All"))
                   ],
                 ),
                 const SizedBox(
