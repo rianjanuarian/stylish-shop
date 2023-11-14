@@ -14,8 +14,7 @@ class SignupController extends GetxController {
   late FocusNode confirmPasswordFocusNode;
 
   var passwordObscure = true.obs;
-  var confirmPasswordObscure = true.obs;
-
+  var isPasswordObscure = true.obs;
   RxBool isLoading = false.obs;
 
   // Email
@@ -45,7 +44,7 @@ class SignupController extends GetxController {
   }
 
   void onObsecureConfirmPasswordTapped() {
-    confirmPasswordObscure.toggle();
+    isPasswordObscure.toggle();
   }
 
   void emailValidation() {
@@ -124,6 +123,7 @@ class SignupController extends GetxController {
       isLoading.value = true;
       await Future.delayed(const Duration(milliseconds: 5000));
       Get.toNamed('/login');
+      isLoading.value = false;
     }
   }
 

@@ -11,7 +11,7 @@ class LoginController extends GetxController {
   late FocusNode emailFocusNode;
   late FocusNode passwordFocusNode;
 
-  var passwordObscure = true.obs;
+  var isPasswordObscure = true.obs;
 
   // Email
   final emailError = RxString('');
@@ -29,7 +29,7 @@ class LoginController extends GetxController {
   }
 
   void onObsecurePasswordTapped() {
-    passwordObscure.toggle();
+    isPasswordObscure.toggle();
   }
 
   String? emailValidations(value) {
@@ -55,6 +55,7 @@ class LoginController extends GetxController {
       isLoading.value = true;
       await Future.delayed(const Duration(milliseconds: 5000));
       Get.toNamed('/main-tab');
+      isLoading.value = false;
     }
   }
 

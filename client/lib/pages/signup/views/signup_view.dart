@@ -152,7 +152,7 @@ class SignupView extends GetView<SignupController> {
                               hintText: 'Enter Confirm Password',
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  controller.confirmPasswordObscure.value
+                                  controller.isPasswordObscure.value
                                       ? Icons.remove_red_eye_outlined
                                       : Icons.remove_red_eye,
                                 ),
@@ -165,17 +165,16 @@ class SignupView extends GetView<SignupController> {
                               controller.confirmPasswordChange.value = value;
                               controller.confirmPasswordValidation();
                             },
-                            obscureText:
-                                controller.confirmPasswordObscure.value,
+                            obscureText: controller.isPasswordObscure.value,
                             keyboardType: TextInputType.visiblePassword,
                           ),
                         ),
                         SizedBox(height: 25.h),
                         Obx(
                           () => ElevatedButton(
-                            onPressed: () => controller.isLoading.isTrue
+                            onPressed: controller.isLoading.isTrue
                                 ? null
-                                : controller.signUp(),
+                                : () => controller.signUp(),
                             style: ElevatedButton.styleFrom(
                               minimumSize: Size.fromHeight(60.h),
                               backgroundColor: Colors.black,

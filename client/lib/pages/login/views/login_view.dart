@@ -98,7 +98,7 @@ class LoginView extends GetView<LoginController> {
                             ),
                             suffixIcon: IconButton(
                               icon: Icon(
-                                controller.passwordObscure.value
+                                controller.isPasswordObscure.value
                                     ? Icons.remove_red_eye_outlined
                                     : Icons.remove_red_eye,
                               ),
@@ -107,7 +107,7 @@ class LoginView extends GetView<LoginController> {
                               },
                             ),
                           ),
-                          obscureText: controller.passwordObscure.value,
+                          obscureText: controller.isPasswordObscure.value,
                           keyboardType: TextInputType.visiblePassword,
                         ),
                         SizedBox(height: 20.h),
