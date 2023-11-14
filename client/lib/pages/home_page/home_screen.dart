@@ -1,13 +1,17 @@
+import 'package:client/controller/product_controller.dart';
+import 'package:client/models/products.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map> testProduct =
-        List.generate(10, (index) => {"id": index, "name": "Product $index"})
-            .toList();
+    final controller = Get.put<ProductController>(ProductController());
+    List<Products> productList = controller.productList;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -63,20 +67,100 @@ class HomeScreen extends StatelessWidget {
                           height: 180,
                           width: 300,
                           decoration: BoxDecoration(
-                              color: Colors.amber,
+                              image: const DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage('assets/images/diskon1.png'),
+                              ),
+                              color: const Color.fromRGBO(219, 219, 219, 100),
                               borderRadius: BorderRadius.circular(10)),
-                          child: Text("diskon 1"),
+                          child: Stack(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "50% Off",
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      "On everything today",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10.0, bottom: 10.0),
+                                      child: Text("With code: FSCREATION"),
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {},
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.black),
+                                        child: Text(
+                                          "Get Now",
+                                          style: TextStyle(color: Colors.white),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 30,
                         ),
                         Container(
                           height: 180,
                           width: 300,
                           decoration: BoxDecoration(
-                              color: Colors.amber,
+                              image: const DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage('assets/images/diskon2.png'),
+                              ),
+                              color: const Color.fromRGBO(219, 219, 219, 100),
                               borderRadius: BorderRadius.circular(10)),
-                          child: Text("diskon2"),
+                          child: Stack(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "70% Off",
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      "On shirt today",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10.0, bottom: 10.0),
+                                      child: Text("With code: STYLECODE"),
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {},
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.black),
+                                        child: Text(
+                                          "Get Now",
+                                          style: TextStyle(color: Colors.white),
+                                        ))
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -90,33 +174,70 @@ class HomeScreen extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                     ),
-                    Text("View All")
+                    InkWell(onTap: () {}, child: Text("View All"))
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 1,
-                  child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 200,
-                        childAspectRatio: 3 / 2,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20,
-                      ),
-                      itemCount: testProduct.length,
-                      itemBuilder: (BuildContext ctx, index) {
-                        return Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Colors.amber,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Text(testProduct[index]["name"]),
-                        );
-                      }),
-                )
+                    height: MediaQuery.of(context).size.height * 0.75,
+                    child: Obx(
+                      () => controller.isLoading.value
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                childAspectRatio: 6 / 5,
+                                crossAxisSpacing: 20,
+                                mainAxisSpacing: 20,
+                              ),
+                              itemCount: 6,
+                              itemBuilder: (_, index) {
+                                return InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Column(
+                                      children: [
+                                        //http://192.168.0.104:3000/uploads/${product.image}
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Color.fromRGBO(
+                                                219, 219, 219, 100),
+                                                borderRadius: BorderRadius.circular(10)
+                                          ),
+                                          child: Image.network(
+                                            'http://192.168.0.104:3000/uploads/${productList[index].image!}',
+                                            width: 150,
+                                            height: 80,
+                                          ),
+                                        ),
+                                        Text(
+                                          productList[index].name!,
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                        Text(productList[index].description!,style: TextStyle(fontSize: 12),),
+                                        Text(NumberFormat.currency(
+                                                locale: 'id',
+                                                symbol: 'Rp ',
+                                                decimalDigits: 0)
+                                            .format(productList[index].price!),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),)
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
+                    ))
               ],
             ),
           ),
