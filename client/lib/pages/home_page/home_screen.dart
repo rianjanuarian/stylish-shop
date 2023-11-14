@@ -1,14 +1,79 @@
+import 'package:client/utils/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  // BottomNavigationBar
+  int _currentIndex = 0;
+  PageController? _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController!.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // TestProduct
     final List<Map> testProduct =
         List.generate(10, (index) => {"id": index, "name": "Product $index"})
             .toList();
+
     return Scaffold(
+      bottomNavigationBar: BottomNavyBar(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        backgroundColor: Colors.white,
+        containerHeight: 65.h,
+        selectedIndex: _currentIndex,
+        showElevation: true,
+        itemCornerRadius: 10,
+        curve: Curves.easeIn,
+        onItemSelected: (value) => setState(() => _currentIndex = value),
+        items: <BottomNavyBarItem>[
+          BottomNavyBarItem(
+            icon: const Icon(Icons.home),
+            title: const Text('Home'),
+            activeColor: Colors.black,
+            inactiveColor: Colors.grey,
+            textAlign: TextAlign.center,
+          ),
+          BottomNavyBarItem(
+            icon: const Icon(Icons.shopping_bag),
+            title: const Text('Cart'),
+            activeColor: Colors.black,
+            inactiveColor: Colors.grey,
+            textAlign: TextAlign.center,
+          ),
+          BottomNavyBarItem(
+            icon: const Icon(Icons.category),
+            title: const Text('Categories'),
+            activeColor: Colors.black,
+            inactiveColor: Colors.grey,
+            textAlign: TextAlign.center,
+          ),
+          BottomNavyBarItem(
+            icon: const Icon(Icons.person),
+            title: const Text('Profile'),
+            activeColor: Colors.black,
+            inactiveColor: Colors.grey,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
