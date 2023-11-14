@@ -9,7 +9,7 @@ import 'package:client/pages/signup/bindings/signup_binding.dart';
 import 'package:get/get.dart';
 
 import '../pages/auth/login_signup_screen.dart';
-import '../pages/signup/views/signup_screen.dart';
+import '../pages/signup/views/signup_view.dart';
 import '../pages/common/unknown.dart';
 import '../pages/get_start/on_boarding_screen.dart';
 import '../pages/home_page/home_screen.dart';
@@ -66,7 +66,7 @@ class AppPages {
     ),
     GetPage(
       name: signup,
-      page: () => const SignupScreen(),
+      page: () => const SignupView(),
       transition: Transition.rightToLeft,
       binding: SignupBinding(),
     ),
