@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10,top:10),
+                  padding: const EdgeInsets.only(bottom: 10, top: 10),
                   child: TextField(
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
@@ -213,12 +213,12 @@ class HomeScreen extends StatelessWidget {
                                         //http://192.168.0.104:3000/uploads/${product.image}
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Color.fromRGBO(
-                                                219, 219, 219, 100),
-                                                borderRadius: BorderRadius.circular(10)
-                                          ),
+                                              color: Color.fromRGBO(
+                                                  219, 219, 219, 100),
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
                                           child: Image.network(
-                                            'http://192.168.0.104:3000/uploads/${productList[index].image!}',
+                                            'http://192.168.1.12:3000/uploads/${productList[index].image!}',
                                             width: 150,
                                             height: 80,
                                           ),
@@ -229,12 +229,21 @@ class HomeScreen extends StatelessWidget {
                                               fontSize: 15,
                                               fontWeight: FontWeight.w700),
                                         ),
-                                        Text(productList[index].description!,style: TextStyle(fontSize: 12),),
-                                        Text(NumberFormat.currency(
-                                                locale: 'id',
-                                                symbol: 'Rp ',
-                                                decimalDigits: 0)
-                                            .format(productList[index].price!),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),)
+                                        Text(
+                                          productList[index].description!,
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                        Text(
+                                          NumberFormat.currency(
+                                                  locale: 'id',
+                                                  symbol: 'Rp ',
+                                                  decimalDigits: 0)
+                                              .format(
+                                                  productList[index].price!),
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700),
+                                        )
                                       ],
                                     ),
                                   ),

@@ -1,10 +1,6 @@
-
-
-import 'package:client/config.dart';
 import 'package:client/models/products.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-
 
 class ProductController extends GetxController {
   var productList = <Products>[].obs;
@@ -19,7 +15,8 @@ class ProductController extends GetxController {
 
   Future<void> getProducts() async {
     //'http://192.168.0.104:3000/products'
-    String url = Config.productsAPI ;
+    // String url = Config.productsAPI ;
+    String url = 'http://192.168.1.12:3000/products';
     try {
       final response = await Dio().get(
         url,
