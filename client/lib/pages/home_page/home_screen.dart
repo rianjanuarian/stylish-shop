@@ -45,15 +45,18 @@ class HomeScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: 'Search...',
-                    contentPadding: EdgeInsets.zero,
-                    fillColor: const Color(0xffF3F4F5),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10,top:10),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      hintText: 'Search...',
+                      contentPadding: EdgeInsets.zero,
+                      fillColor: const Color(0xffF3F4F5),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
                   ),
                 ),
@@ -94,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 10.0, bottom: 10.0),
+                                          top: 10.0, bottom: 15.0),
                                       child: Text("With code: FSCREATION"),
                                     ),
                                     ElevatedButton(
@@ -145,7 +148,7 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 10.0, bottom: 10.0),
+                                          top: 10.0, bottom: 15.0),
                                       child: Text("With code: STYLECODE"),
                                     ),
                                     ElevatedButton(
