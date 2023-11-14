@@ -5,10 +5,11 @@ import 'package:client/pages/profile/personal_details.dart';
 import 'package:client/pages/profile/privacy_policy.dart';
 import 'package:client/pages/profile/setting.dart';
 import 'package:client/pages/profile/term_condition.dart';
+import 'package:client/pages/signup/bindings/signup_binding.dart';
 import 'package:get/get.dart';
 
 import '../pages/auth/login_signup_screen.dart';
-import '../pages/auth/signup_screen.dart';
+import '../pages/signup/views/signup_screen.dart';
 import '../pages/common/unknown.dart';
 import '../pages/get_start/on_boarding_screen.dart';
 import '../pages/home_page/home_screen.dart';
@@ -67,6 +68,7 @@ class AppPages {
       name: signup,
       page: () => const SignupScreen(),
       transition: Transition.rightToLeft,
+      binding: SignupBinding(),
     ),
     GetPage(
       name: home,
