@@ -54,7 +54,6 @@ class LoginController extends GetxController {
       emailError.value = 'Please enter valid email';
     } else {
       // Clear the error if email is valid
-      emailChange.value = email.text;
       emailError.value = '';
     }
   }
@@ -64,7 +63,6 @@ class LoginController extends GetxController {
       passwordError.value = 'Please enter password';
     } else {
       // Clear the error if password is valid
-      passwordChange.value = password.text;
       passwordError.value = '';
     }
   }
