@@ -86,7 +86,6 @@ class SignupView extends GetView<SignupController> {
                           keyboardType: TextInputType.emailAddress,
                           onChanged: (value) {
                             controller.emailChange.value = value;
-                            controller.emailValidation();
                           },
                         ),
                         SizedBox(height: 15.h),
@@ -123,7 +122,6 @@ class SignupView extends GetView<SignupController> {
                             ),
                             onChanged: (value) {
                               controller.passwordChange.value = value;
-                              controller.passwordValidation();
                             },
                             obscureText: controller.passwordObscure.value,
                             keyboardType: TextInputType.visiblePassword,
@@ -163,7 +161,6 @@ class SignupView extends GetView<SignupController> {
                             ),
                             onChanged: (value) {
                               controller.confirmPasswordChange.value = value;
-                              controller.confirmPasswordValidation();
                             },
                             obscureText: controller.isPasswordObscure.value,
                             keyboardType: TextInputType.visiblePassword,
