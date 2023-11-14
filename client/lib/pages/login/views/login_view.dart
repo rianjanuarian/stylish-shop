@@ -121,7 +121,7 @@ class LoginView extends GetView<LoginController> {
                       onPressed: () {
                         controller.emailError.value == '' &&
                                 controller.passwordError.value == ''
-                            ? Get.offAllNamed('/home')
+                            ? Get.offAllNamed('/main-tab')
                             : Get.snackbar(
                                 'Error', 'Email or Password is incorrect');
                       },

@@ -1,35 +1,11 @@
 import 'package:client/controller/product_controller.dart';
 import 'package:client/models/products.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../utils/bottom_navy_bar.dart';
-
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  // BottomNavigationBar
-  int _currentIndex = 0;
-  PageController? _pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
-
-  @override
-  void dispose() {
-    _pageController!.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,46 +13,6 @@ class _HomeScreenState extends State<HomeScreen> {
     List<Products> productList = controller.productList;
 
     return Scaffold(
-      bottomNavigationBar: BottomNavyBar(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        backgroundColor: Colors.white70,
-        containerHeight: 65.h,
-        selectedIndex: _currentIndex,
-        showElevation: true,
-        itemCornerRadius: 10,
-        curve: Curves.easeIn,
-        onItemSelected: (value) => setState(() => _currentIndex = value),
-        items: <BottomNavyBarItem>[
-          BottomNavyBarItem(
-            icon: const Icon(Icons.home),
-            title: const Text('Home'),
-            activeColor: Colors.black,
-            inactiveColor: Colors.grey,
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: const Icon(Icons.shopping_bag),
-            title: const Text('Cart'),
-            activeColor: Colors.black,
-            inactiveColor: Colors.grey,
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: const Icon(Icons.category),
-            title: const Text('Categories'),
-            activeColor: Colors.black,
-            inactiveColor: Colors.grey,
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: const Icon(Icons.person),
-            title: const Text('Profile'),
-            activeColor: Colors.black,
-            inactiveColor: Colors.grey,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -110,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10,top:10),
+                  padding: const EdgeInsets.only(bottom: 10, top: 10),
                   child: TextField(
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.search),
@@ -282,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               borderRadius:
                                                   BorderRadius.circular(10)),
                                           child: Image.network(
-                                            'http://192.168.0.104:3000/uploads/${productList[index].image!}',
+                                            'http://192.168.1.12:3000/uploads/${productList[index].image!}',
                                             width: 150,
                                             height: 80,
                                           ),
