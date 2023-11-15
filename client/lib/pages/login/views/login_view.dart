@@ -60,9 +60,6 @@ class LoginView extends GetView<LoginController> {
                           controller: controller.email,
                           keyboardType: TextInputType.emailAddress,
                           validator: controller.emailValidations,
-                          onChanged: (value) {
-                            controller.emailChange.value = value;
-                          },
                           border: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.circular(defaultRadius).r,
@@ -86,9 +83,6 @@ class LoginView extends GetView<LoginController> {
                             controller: controller.password,
                             keyboardType: TextInputType.visiblePassword,
                             validator: controller.passwordValidations,
-                            onChanged: (value) {
-                              controller.passwordChange.value = value;
-                            },
                             border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.circular(defaultRadius).r,

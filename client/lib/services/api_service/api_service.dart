@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:client/services/api_service/api_service_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -30,26 +29,29 @@ abstract class ApiService {
     ));
 
     if (kDebugMode) {
-      dio.options.baseUrl = 'http://192.168.1.12:3000';
+      dio.options.baseUrl = 'http://localhost:3000';
     } else {
-      dio.options.baseUrl = 'http://192.168.1.12:3000';
+      dio.options.baseUrl = 'http://localhost:3000';
     }
   }
 
-  FutureOr<BaseResponse<LoginResponse>> auth(
+  FutureOr<BaseResponse<LoginResponse>> loginWithEmail(
     LoginRequest request, {
     CancelToken? cancelToken,
   }) async {
-    final Response<Map<String, dynamic>> result =
-        await dio.request('/users/login_with_email',
-            options: Options(
-              method: 'POST',
-            ),
-            data: request.toJson(),
-            cancelToken: cancelToken);
-    final value = BaseResponse.fromJson(
-        result.data!, (json) => LoginResponse.fromJson(json));
-    return Future.value(value);
+    try {
+      final Response<Map<String, dynamic>> result = await dio.request(
+          '/users/login_with_email',
+          options: Options(method: 'POST'),
+          data: request.toJson(),
+          cancelToken: cancelToken);
+
+      final value = BaseResponse.fromJson(
+          result.data!, (json) => LoginResponse.fromJson(json));
+      return value;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 
