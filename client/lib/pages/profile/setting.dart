@@ -144,7 +144,7 @@ class Setting extends StatelessWidget {
                 padding:
                     REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => Get.offAllNamed('/login'),
                   style: ElevatedButton.styleFrom(
                       minimumSize: Size.fromHeight(60.h),
                       backgroundColor: Colors.black,

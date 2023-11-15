@@ -49,7 +49,7 @@ class BaseResponse<T> {
       ..isSuccess = tempResponse.isSuccess
       ..message = tempResponse.message
       ..statusCode = tempResponse.statusCode;
-    response.payload = map(json['payload']);
+    response.payload = map(json);
     return response;
   }
 }

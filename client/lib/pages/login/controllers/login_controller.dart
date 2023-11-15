@@ -1,6 +1,7 @@
 import 'package:client/services/api_service/api_service.dart';
 import 'package:client/services/api_service/api_service_models.dart';
 import 'package:client/services/keys/get_storage_key.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,19 +10,12 @@ class LoginController extends GetxController {
   final formKey = GlobalKey<FormState>();
   late final TextEditingController email;
   late final TextEditingController password;
-
   RxBool isLoading = false.obs;
 
   late FocusNode emailFocusNode;
   late FocusNode passwordFocusNode;
 
   var isPasswordObscure = true.obs;
-
-  // Email
-  final emailChange = RxString('');
-
-  // Password
-  final passwordChange = RxString('');
 
   // storage
   final storage = GetStorage();
@@ -56,36 +50,30 @@ class LoginController extends GetxController {
 
   void loginWithEmail() async {
     if (formKey.currentState!.validate()) {
-      formKey.currentState!.save();
-      isLoading.value = true;
-      await Future.delayed(const Duration(milliseconds: 5000));
-      Get.offAllNamed('/main-tab');
-      isLoading.value = false;
-
-      // Masih error, tolong bantu yang ini ya :)
-      // try {
-      //   await Future.delayed(const Duration(milliseconds: 5000));
-      //   Get.put(ApiServiceImpl());
-      //   final response = await Get.find<ApiServiceImpl>().auth(
-      //     LoginRequest()
-      //       ..email = emailChange.value
-      //       ..password = passwordChange.value,
-      //   );
-
-      //   final loginPayload = response.payload;
-
-      //   if (response.payload != null) {
-      //     await storage.write(GetStorageKey.token, loginPayload!.access_token);
-      //     Get.offAllNamed('/main-tab');
-      //     isLoading.value = false;
-      //   } else {
-      //     Get.snackbar('Error', response.message!);
-      //     isLoading.value = false;
-      //   }
-      // } catch (e) {
-      //   Get.snackbar('Error', e.toString());
-      //   isLoading.value = false;
-      // }
+      try {
+        isLoading.value = true;
+        final apiService = Get.put(ApiServiceImpl());
+        final response = await apiService.loginWithEmail(
+          LoginRequest()
+            ..email = email.text
+            ..password = password.text,
+        );
+        final loginPayload = response.payload;
+        await storage.write(GetStorageKey.token, loginPayload!.access_token);
+        Get.offAllNamed('/main-tab');
+        isLoading.value = false;
+      } catch (e) {
+        if (e is DioException) {
+          final errorResponse = e.response;
+          if (errorResponse != null) {
+            final errorMessage = errorResponse.data?['message'];
+            Get.snackbar('Error', errorMessage ?? 'Unknown error');
+          } else {
+            Get.snackbar('Error', 'Unknown error occurred');
+          }
+          isLoading.value = false;
+        }
+      }
     }
   }
 
