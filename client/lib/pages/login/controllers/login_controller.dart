@@ -14,11 +14,9 @@ class LoginController extends GetxController {
   var isPasswordObscure = true.obs;
 
   // Email
-  final emailError = RxString('');
   final emailChange = RxString('');
 
   // Password
-  final passwordError = RxString('');
   final passwordChange = RxString('');
 
   void clearTextFieldProp() {
@@ -54,7 +52,7 @@ class LoginController extends GetxController {
       formKey.currentState!.save();
       isLoading.value = true;
       await Future.delayed(const Duration(milliseconds: 5000));
-      Get.toNamed('/main-tab');
+      Get.offAllNamed('/main-tab');
       isLoading.value = false;
     }
   }
