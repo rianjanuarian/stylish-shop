@@ -1,5 +1,6 @@
 import 'package:client/controller/product_controller.dart';
 import 'package:client/models/products.dart';
+import 'package:client/pages/home_page/detail_product.dart';
 import 'package:client/pages/home_page/home_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class NewArrival extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: () => Get.off(HomeScreen()),
+                    onPressed: () => Get.off(() => HomeScreen()),
                     icon: const Icon(Icons.arrow_back),
                     color: Colors.white,
                     style: IconButton.styleFrom(backgroundColor: Colors.black),
@@ -51,7 +52,7 @@ class NewArrival extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "New Arrival",
+                      "New Arrivals",
                       style:
                           TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                     ),
@@ -74,7 +75,13 @@ class NewArrival extends StatelessWidget {
                               itemCount: productList.length,
                               itemBuilder: (_, index) {
                                 return InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Get.to(() => DetailProduct(
+                                          productList[index].id,
+                                          productList[index].image,
+                                         
+                                        ));
+                                  },
                                   child: Container(
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
