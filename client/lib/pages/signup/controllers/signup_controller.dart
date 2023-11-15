@@ -1,5 +1,9 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../../services/api_service/api_service.dart';
+import '../../../services/api_service/api_service_models.dart';
 
 class SignupController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -86,11 +90,28 @@ class SignupController extends GetxController {
 
   void signUp() async {
     if (formKey.currentState!.validate()) {
-      formKey.currentState!.save();
-      isLoading.value = true;
-      await Future.delayed(const Duration(milliseconds: 5000));
-      Get.offNamed('/login');
-      isLoading.value = false;
+      try {
+        isLoading.value = true;
+        final apiService = Get.put(ApiServiceImpl());
+        await apiService.registerWithEmail(RegisterRequest(
+          name: username.text,
+          email: email.text,
+          password: password.text,
+        ));
+        Get.offNamed('/login');
+        isLoading.value = false;
+      } catch (e) {
+        if (e is DioException) {
+          final errorResponse = e.response;
+          if (errorResponse != null) {
+            final errorMessage = errorResponse.data?['message'];
+            Get.snackbar('Error', errorMessage ?? 'Unknown error');
+          } else {
+            Get.snackbar('Error', 'Unknown error occurred');
+          }
+          isLoading.value = false;
+        }
+      }
     }
   }
 

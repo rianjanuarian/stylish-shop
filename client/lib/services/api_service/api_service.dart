@@ -53,6 +53,25 @@ abstract class ApiService {
       rethrow;
     }
   }
+
+  FutureOr<Response> registerWithEmail(
+    RegisterRequest request, {
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      final Response result = await dio.request(
+        '/users/register_with_email',
+        options: Options(
+          method: 'POST',
+        ),
+        data: request.toJson(),
+        cancelToken: cancelToken,
+      );
+      return result;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 class ApiServiceImpl extends ApiService {}
