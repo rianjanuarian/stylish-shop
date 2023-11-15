@@ -26,6 +26,9 @@ class LoginController extends GetxController {
   // storage
   final storage = GetStorage();
 
+  // ApiService
+  final apiService = ApiServiceImpl();
+
   void clearTextFieldProp() {
     email.clear();
     password.clear();
@@ -58,34 +61,31 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       isLoading.value = true;
-      await Future.delayed(const Duration(milliseconds: 5000));
-      Get.offAllNamed('/main-tab');
-      isLoading.value = false;
 
       // Masih error, tolong bantu yang ini ya :)
-      // try {
-      //   await Future.delayed(const Duration(milliseconds: 5000));
-      //   Get.put(ApiServiceImpl());
-      //   final response = await Get.find<ApiServiceImpl>().auth(
-      //     LoginRequest()
-      //       ..email = emailChange.value
-      //       ..password = passwordChange.value,
-      //   );
+      try {
+        await Future.delayed(const Duration(milliseconds: 5000));
+        final response = await apiService.auth(
+          LoginRequest()
+            ..email = emailChange.value
+            ..password = passwordChange.value,
+        );
+        print("Response: ${response.statusCode}");
 
-      //   final loginPayload = response.payload;
+        final loginPayload = response.payload;
 
-      //   if (response.payload != null) {
-      //     await storage.write(GetStorageKey.token, loginPayload!.access_token);
-      //     Get.offAllNamed('/main-tab');
-      //     isLoading.value = false;
-      //   } else {
-      //     Get.snackbar('Error', response.message!);
-      //     isLoading.value = false;
-      //   }
-      // } catch (e) {
-      //   Get.snackbar('Error', e.toString());
-      //   isLoading.value = false;
-      // }
+        if (response.payload != null) {
+          await storage.write(GetStorageKey.token, loginPayload!.token);
+          Get.offAllNamed('/main-tab');
+          isLoading.value = false;
+        } else {
+          Get.snackbar('Error', response.message!);
+          isLoading.value = false;
+        }
+      } catch (e) {
+        Get.snackbar('Error', e.toString());
+        isLoading.value = false;
+      }
     }
   }
 

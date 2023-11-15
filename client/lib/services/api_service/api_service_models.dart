@@ -17,8 +17,7 @@ class LoginRequest {
 @JsonSerializable()
 class LoginResponse {
   String? message;
-  // ignore: non_constant_identifier_names
-  String? access_token;
+  String? token;
 
   LoginResponse();
 
@@ -49,7 +48,7 @@ class BaseResponse<T> {
       ..isSuccess = tempResponse.isSuccess
       ..message = tempResponse.message
       ..statusCode = tempResponse.statusCode;
-    response.payload = map(json['payload']);
+    response.payload = map(json);
     return response;
   }
 }

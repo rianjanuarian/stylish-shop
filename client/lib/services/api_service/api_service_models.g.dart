@@ -19,12 +19,12 @@ Map<String, dynamic> _$LoginRequestToJson(LoginRequest instance) =>
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse()
       ..message = json['message'] as String?
-      ..access_token = json['access_token'] as String?;
+      ..token = json['token'] as String?;
 
 Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
     <String, dynamic>{
       'message': instance.message,
-      'access_token': instance.access_token,
+      'token': instance.token,
     };
 
 BaseResponse<T> _$BaseResponseFromJson<T>(Map<String, dynamic> json) =>
