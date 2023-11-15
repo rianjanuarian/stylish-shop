@@ -1,3 +1,4 @@
+import 'package:client/pages/cart/cart_page.dart';
 import 'package:client/pages/categories/categories.dart';
 import 'package:client/pages/home_page/home_screen.dart';
 import 'package:client/pages/profile/setting.dart';
@@ -31,7 +32,7 @@ class _MainTabState extends State<MainTab> {
 
   final List<Widget> _pages = [
     const HomeScreen(),
-    const HomeScreen(),
+    const CartPage(),
     const CategoriesPage(),
     const Setting(),
   ];
