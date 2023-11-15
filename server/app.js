@@ -20,7 +20,7 @@ admin.initializeApp({
 
 const corsOptions = {
   allowedHeaders: 'Content-Type, Authorization', 
-  origin: 'http://localhost:3001', 
+  origin: '*', 
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, 
   optionsSuccessStatus: 204,

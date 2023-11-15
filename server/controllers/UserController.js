@@ -98,7 +98,10 @@ class UserController {
       res.setHeader("Authorization", `Bearer ${access_token}`);
       res
         .status(200)
-        .json({ message: "You are successfully logged in!", access_token });
+        .json({
+          message: "You are successfully logged in!",
+          access_token: access_token,
+        });
     } catch (err) {
       next(err);
     }
@@ -222,7 +225,7 @@ class UserController {
         password,
         uid,
         role: "admin",
-        image: req.file.filename
+        image: req.file.filename,
       });
 
       res
@@ -255,16 +258,15 @@ class UserController {
         );
       }
 
-      const { password, createdAt, updatedAt, ...userToSendToFrontend } = yuser.dataValues;
+      const { password, createdAt, updatedAt, ...userToSendToFrontend } =
+        yuser.dataValues;
       const accessToken = encodeTokenUsingJwt({ ...userToSendToFrontend });
       res.setHeader("Authorization", `Bearer ${accessToken}`);
-      res
-        .status(200)
-        .json({
-          message: "You are successfully logged in!",
-          accessToken,
-          currentUser: userToSendToFrontend,
-        });
+      res.status(200).json({
+        message: "You are successfully logged in!",
+        accessToken,
+        currentUser: userToSendToFrontend,
+      });
     } catch (err) {
       next(err);
     }
@@ -283,10 +285,10 @@ class UserController {
         name: req.body.name,
         email: req.body.email,
         image: req.file.filename,
-        address:req.body.address,
+        address: req.body.address,
         gender: req.body.gender,
-        birthday : req.body.birthday,
-        phone_number : req.body.phone_number,
+        birthday: req.body.birthday,
+        phone_number: req.body.phone_number,
       };
       const response = await adminAccount.update(updatedData);
 
