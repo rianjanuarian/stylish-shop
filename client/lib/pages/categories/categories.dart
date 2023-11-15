@@ -24,7 +24,7 @@ class CategoriesPage extends StatelessWidget {
             children: [
               TextField(
                 onTap: () {
-                  //pergi ke halaman login
+                  //pergi ke halaman search
                 },
                 decoration: InputDecoration(
                   prefixIcon: Padding(
@@ -58,21 +58,38 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: REdgeInsets.only(top: 20),
-        padding: REdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        height: 60.h,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.black,
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: Material(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(30).r,
+        child: InkWell(
           borderRadius: BorderRadius.circular(30).r,
+          onTap: () {
+            //detail category
+          },
+          child: Container(
+              padding: REdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              height: 60.h,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30).r,
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.radio_button_unchecked,
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 20.w),
+                  Text(
+                    categoryName,
+                    style: const TextStyle(color: Colors.white),
+                  )
+                ],
+              )),
         ),
-        child: Row(
-          children: [
-            const Icon(Icons.radio_button_unchecked, color: Colors.white,),
-            SizedBox(width: 20.w),
-            Text(categoryName, style: const TextStyle(color: Colors.white),)
-          ],
-        ));
+      ),
+    );
   }
 }
