@@ -5,7 +5,7 @@ import 'package:client/pages/profile/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../utils/bottom_navy_bar.dart';
+import '../../widgets/bottom_navy_bar.dart';
 
 class MainTab extends StatefulWidget {
   const MainTab({super.key});
