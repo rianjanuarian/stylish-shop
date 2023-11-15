@@ -17,6 +17,9 @@ class SignupController extends GetxController {
   var isPasswordObscure = true.obs;
   RxBool isLoading = false.obs;
 
+  // Username
+  final usernameChange = RxString('');
+
   // Email
   final emailChange = RxString('');
 

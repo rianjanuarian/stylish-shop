@@ -1,4 +1,6 @@
 import 'package:client/pages/signup/controllers/signup_controller.dart';
+import 'package:client/themes/const.dart';
+import 'package:client/utils/costom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -50,17 +52,21 @@ class SignupView extends GetView<SignupController> {
                           ),
                         ),
                         SizedBox(height: 10.h),
-                        TextFormField(
+                        CustomTextFormField(
                           onTapOutside: (event) =>
                               FocusScope.of(context).unfocus(),
+                          controller: controller.username,
+                          keyboardType: TextInputType.name,
                           validator: controller.usernameValidators,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            contentPadding: REdgeInsets.only(left: 20),
-                            hintText: 'Enter Username',
+                          onChanged: (value) {
+                            controller.usernameChange.value = value;
+                          },
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(defaultRadius).r,
                           ),
+                          hintText: 'Enter Username',
+                          contentPadding: const EdgeInsets.only(left: 20),
                         ),
                         SizedBox(height: 15.h),
                         Text(
@@ -71,22 +77,21 @@ class SignupView extends GetView<SignupController> {
                           ),
                         ),
                         SizedBox(height: 10.h),
-                        TextFormField(
+                        CustomTextFormField(
                           onTapOutside: (event) =>
                               FocusScope.of(context).unfocus(),
                           controller: controller.email,
-                          validator: controller.emailValidations,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            contentPadding: REdgeInsets.only(left: 20),
-                            hintText: 'Enter Email',
-                          ),
                           keyboardType: TextInputType.emailAddress,
+                          validator: controller.emailValidations,
                           onChanged: (value) {
                             controller.emailChange.value = value;
                           },
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(defaultRadius).r,
+                          ),
+                          hintText: 'Enter Email',
+                          contentPadding: const EdgeInsets.only(left: 20),
                         ),
                         SizedBox(height: 15.h),
                         Text(
@@ -98,33 +103,32 @@ class SignupView extends GetView<SignupController> {
                         ),
                         SizedBox(height: 10.h),
                         Obx(
-                          () => TextFormField(
+                          () => CustomTextFormField(
                             onTapOutside: (event) =>
                                 FocusScope.of(context).unfocus(),
                             controller: controller.password,
+                            keyboardType: TextInputType.visiblePassword,
                             validator: controller.passwordValidations,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              contentPadding: REdgeInsets.only(left: 20),
-                              hintText: 'Enter Password',
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  controller.passwordObscure.value
-                                      ? Icons.remove_red_eye_outlined
-                                      : Icons.remove_red_eye,
-                                ),
-                                onPressed: () {
-                                  controller.onObsecurePasswordTapped();
-                                },
-                              ),
-                            ),
                             onChanged: (value) {
                               controller.passwordChange.value = value;
                             },
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.circular(defaultRadius).r,
+                            ),
+                            contentPadding: const EdgeInsets.only(left: 20),
+                            hintText: 'Enter Password',
+                            suffix: IconButton(
+                              icon: Icon(
+                                controller.passwordObscure.value
+                                    ? Icons.remove_red_eye_outlined
+                                    : Icons.remove_red_eye,
+                              ),
+                              onPressed: () {
+                                controller.onObsecurePasswordTapped();
+                              },
+                            ),
                             obscureText: controller.passwordObscure.value,
-                            keyboardType: TextInputType.visiblePassword,
                           ),
                         ),
                         SizedBox(height: 15.h),
@@ -137,33 +141,32 @@ class SignupView extends GetView<SignupController> {
                         ),
                         SizedBox(height: 10.h),
                         Obx(
-                          () => TextFormField(
+                          () => CustomTextFormField(
                             onTapOutside: (event) =>
                                 FocusScope.of(context).unfocus(),
                             controller: controller.confirmPassword,
+                            keyboardType: TextInputType.visiblePassword,
                             validator: controller.confirmPasswordValidations,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10).r,
-                              ),
-                              contentPadding: REdgeInsets.only(left: 20),
-                              hintText: 'Enter Confirm Password',
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  controller.isPasswordObscure.value
-                                      ? Icons.remove_red_eye_outlined
-                                      : Icons.remove_red_eye,
-                                ),
-                                onPressed: () {
-                                  controller.onObsecureConfirmPasswordTapped();
-                                },
-                              ),
-                            ),
                             onChanged: (value) {
                               controller.confirmPasswordChange.value = value;
                             },
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.circular(defaultRadius).r,
+                            ),
+                            contentPadding: const EdgeInsets.only(left: 20),
+                            hintText: 'Enter Confirm Password',
+                            suffix: IconButton(
+                              icon: Icon(
+                                controller.isPasswordObscure.value
+                                    ? Icons.remove_red_eye_outlined
+                                    : Icons.remove_red_eye,
+                              ),
+                              onPressed: () {
+                                controller.onObsecureConfirmPasswordTapped();
+                              },
+                            ),
                             obscureText: controller.isPasswordObscure.value,
-                            keyboardType: TextInputType.visiblePassword,
                           ),
                         ),
                         SizedBox(height: 25.h),

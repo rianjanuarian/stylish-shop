@@ -1,4 +1,7 @@
 import 'package:client/pages/login/controllers/login_controller.dart';
+import 'package:client/themes/color.dart';
+import 'package:client/themes/const.dart';
+import 'package:client/utils/costom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,7 +54,7 @@ class LoginView extends GetView<LoginController> {
                           style: TextStyle(fontSize: 20.sp),
                         ),
                         SizedBox(height: 10.h),
-                        TextFormField(
+                        CustomTextFormField(
                           onTapOutside: (event) =>
                               FocusScope.of(context).unfocus(),
                           controller: controller.email,
@@ -60,16 +63,14 @@ class LoginView extends GetView<LoginController> {
                           onChanged: (value) {
                             controller.emailChange.value = value;
                           },
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            contentPadding: EdgeInsets.zero,
-                            hintText: 'Enter Email',
-                            prefixIcon: const Icon(
-                              Icons.alternate_email,
-                              color: Color(0xFF8C8C8C),
-                            ),
+                          border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.circular(defaultRadius).r,
+                          ),
+                          hintText: 'Enter Email',
+                          prefix: Icon(
+                            Icons.alternate_email,
+                            color: CustomColor.iconColor,
                           ),
                         ),
                         SizedBox(height: 20.h),
@@ -78,25 +79,26 @@ class LoginView extends GetView<LoginController> {
                           style: TextStyle(fontSize: 20.sp),
                         ),
                         SizedBox(height: 10.h),
-                        TextFormField(
-                          onTapOutside: (event) =>
-                              FocusScope.of(context).unfocus(),
-                          controller: controller.password,
-                          validator: controller.passwordValidations,
-                          onChanged: (value) {
-                            controller.passwordChange.value = value;
-                          },
-                          decoration: InputDecoration(
+                        Obx(
+                          () => CustomTextFormField(
+                            onTapOutside: (event) =>
+                                FocusScope.of(context).unfocus(),
+                            controller: controller.password,
+                            keyboardType: TextInputType.visiblePassword,
+                            validator: controller.passwordValidations,
+                            onChanged: (value) {
+                              controller.passwordChange.value = value;
+                            },
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10).r,
+                              borderRadius:
+                                  BorderRadius.circular(defaultRadius).r,
                             ),
-                            contentPadding: EdgeInsets.zero,
                             hintText: 'Enter Password',
-                            prefixIcon: const Icon(
+                            prefix: Icon(
                               Icons.lock_outlined,
-                              color: Color(0xFF8C8C8C),
+                              color: CustomColor.iconColor,
                             ),
-                            suffixIcon: IconButton(
+                            suffix: IconButton(
                               icon: Icon(
                                 controller.isPasswordObscure.value
                                     ? Icons.remove_red_eye_outlined
@@ -106,9 +108,8 @@ class LoginView extends GetView<LoginController> {
                                 controller.onObsecurePasswordTapped();
                               },
                             ),
+                            obscureText: controller.isPasswordObscure.value,
                           ),
-                          obscureText: controller.isPasswordObscure.value,
-                          keyboardType: TextInputType.visiblePassword,
                         ),
                         SizedBox(height: 20.h),
                         Obx(
@@ -130,18 +131,22 @@ class LoginView extends GetView<LoginController> {
                         Row(
                           children: [
                             Expanded(
-                              child: Container(
-                                margin: REdgeInsets.symmetric(horizontal: 10),
-                                height: 1.h,
+                              child: Divider(
                                 color: Colors.black,
+                                height: 1.h,
+                                thickness: 2,
+                                indent: 10,
+                                endIndent: 10,
                               ),
                             ),
                             const Text('Or'),
                             Expanded(
-                              child: Container(
-                                margin: REdgeInsets.symmetric(horizontal: 10),
-                                height: 1.h,
+                              child: Divider(
                                 color: Colors.black,
+                                height: 1.h,
+                                thickness: 2,
+                                indent: 10,
+                                endIndent: 10,
                               ),
                             ),
                           ],
