@@ -1,5 +1,6 @@
 import 'package:client/controller/product_controller.dart';
 import 'package:client/models/products.dart';
+import 'package:client/pages/home_page/detail_product.dart';
 import 'package:client/pages/home_page/new_arrival.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -203,7 +204,13 @@ class HomeScreen extends StatelessWidget {
                               itemCount: 6,
                               itemBuilder: (_, index) {
                                 return InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                     Get.to(() => DetailProduct(
+                                          productList[index].id,
+                                          productList[index].image,
+                                         
+                                        ));
+                                  },
                                   child: Container(
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(

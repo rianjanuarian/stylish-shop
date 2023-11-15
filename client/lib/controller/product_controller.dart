@@ -1,15 +1,13 @@
-
-
 import 'package:client/config.dart';
 import 'package:client/models/products.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
-
 class ProductController extends GetxController {
   var productList = <Products>[].obs;
   var isLoading = true.obs;
-var productId = <Products>[].obs;
+  var productId = <Products>[].obs;
+  RxInt counter = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,7 +17,7 @@ var productId = <Products>[].obs;
 
   Future<void> getProducts() async {
     //'http://192.168.0.104:3000/products'
-    String url = Config.productsAPI ;
+    String url = Config.productsAPI;
     try {
       final response = await Dio().get(
         url,
@@ -40,17 +38,18 @@ var productId = <Products>[].obs;
       print(e);
     }
   }
-   Future<void> getProductById(int id) async {
+
+  Future<void> getProductById(int id) async {
     //'http://192.168.0.104:3000/products'
     String url = 'http://192.168.0.104:3000/products/detail/$id';
     try {
       final response = await Dio().get(url);
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic>  data = response.data;
+        final Map<String, dynamic> data = response.data;
         productId.value = [Products.fromJson(data)];
         isLoading.value = false;
-    print(data);
+        print(data);
         update();
       } else {
         Get.snackbar(
@@ -60,6 +59,18 @@ var productId = <Products>[].obs;
       }
     } catch (e) {
       print('error : ${e}');
+    }
+  }
+
+  void increment(int stock) {
+    if (counter < stock) {
+      counter++;
+    }
+  }
+
+  void decrement() {
+    if (counter > 0) {
+      counter--;
     }
   }
 }
