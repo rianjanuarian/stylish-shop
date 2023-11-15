@@ -27,6 +27,20 @@ Map<String, dynamic> _$LoginResponseToJson(LoginResponse instance) =>
       'access_token': instance.access_token,
     };
 
+RegisterRequest _$RegisterRequestFromJson(Map<String, dynamic> json) =>
+    RegisterRequest(
+      name: json['name'] as String?,
+      email: json['email'] as String?,
+      password: json['password'] as String?,
+    );
+
+Map<String, dynamic> _$RegisterRequestToJson(RegisterRequest instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'email': instance.email,
+      'password': instance.password,
+    };
+
 BaseResponse<T> _$BaseResponseFromJson<T>(Map<String, dynamic> json) =>
     BaseResponse<T>()
       ..isSuccess = json['isSuccess'] as bool?
