@@ -12,7 +12,7 @@ class SplashController extends GetxController {
     Future.delayed(const Duration(seconds: 3), () {
       getToken() == null
           ? Get.offAllNamed(AppPages.onBoarding)
-          : Get.offAllNamed(AppPages.home);
+          : Get.offAllNamed(AppPages.mainTab);
     });
   }
 

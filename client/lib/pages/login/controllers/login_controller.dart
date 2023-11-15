@@ -62,7 +62,6 @@ class LoginController extends GetxController {
       formKey.currentState!.save();
       isLoading.value = true;
 
-      // Masih error, tolong bantu yang ini ya :)
       try {
         await Future.delayed(const Duration(milliseconds: 5000));
         final response = await apiService.auth(
@@ -70,7 +69,6 @@ class LoginController extends GetxController {
             ..email = emailChange.value
             ..password = passwordChange.value,
         );
-        print("Response: ${response.statusCode}");
 
         final loginPayload = response.payload;
 
