@@ -192,9 +192,10 @@ class HomeScreen extends StatelessWidget {
                           ? const Center(
                               child: CircularProgressIndicator(),
                             )
+                          
                           : ListView.builder(
                             scrollDirection: Axis.horizontal,
-                              physics: const NeverScrollableScrollPhysics(),
+                          
                         
                               itemCount: 6,
                               itemBuilder: (_, index) {
@@ -211,7 +212,9 @@ class HomeScreen extends StatelessWidget {
                                     decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(10)),
-                                    child: Column(
+                                    child: 
+                                    productList.isNotEmpty? 
+                                    Column(
                                       children: [
                                         //http://192.168.0.104:3000/uploads/${product.image}
                                         Container(
@@ -220,8 +223,10 @@ class HomeScreen extends StatelessWidget {
                                                   219, 219, 219, 100),
                                               borderRadius:
                                                   BorderRadius.circular(10)),
-                                          child: Image.network(
-                                            'http://192.168.1.12:3000/uploads/${productList[index].image!}',
+                                          child: 
+                                          
+                                          Image.network(
+                                            'http://192.168.0.104:3000/uploads/${productList[index].image!}',
                                             width: 150,
                                             height: 80,
                                           ),
@@ -248,7 +253,7 @@ class HomeScreen extends StatelessWidget {
                                               fontWeight: FontWeight.w700),
                                         )
                                       ],
-                                    ),
+                                    ) : Container()
                                   ),
                                 );
                               }),
