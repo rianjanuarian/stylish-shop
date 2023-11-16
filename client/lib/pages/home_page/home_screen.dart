@@ -192,15 +192,10 @@ class HomeScreen extends StatelessWidget {
                           ? const Center(
                               child: CircularProgressIndicator(),
                             )
-                          : GridView.builder(
+                          : ListView.builder(
+                            scrollDirection: Axis.horizontal,
                               physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 200,
-                                childAspectRatio: 6 / 5,
-                                crossAxisSpacing: 20,
-                                mainAxisSpacing: 20,
-                              ),
+                        
                               itemCount: 6,
                               itemBuilder: (_, index) {
                                 return InkWell(

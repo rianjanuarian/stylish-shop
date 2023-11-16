@@ -68,7 +68,7 @@ class ProductController extends GetxController {
   }
 
   void decrement() {
-    if (counter > 0) {
+    if (counter > 1) {
       counter--;
     }
   }
