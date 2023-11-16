@@ -29,9 +29,9 @@ abstract class ApiService {
     ));
 
     if (kDebugMode) {
-      dio.options.baseUrl = 'http://localhost:3000';
+      dio.options.baseUrl = 'https://stylish-shop.vercel.app';
     } else {
-      dio.options.baseUrl = 'http://localhost:3000';
+      dio.options.baseUrl = 'https://stylish-shop.vercel.app';
     }
   }
 
