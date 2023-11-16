@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "./app.js",
-      "use": "@vercel/node"
+      "src": "app.js",
+      "use": "@now/node-server"
     }
   ],
   "routes": [
     {
-      "src": "./routes/index.js",
-      "dest": "/"
+      "src": "/(.*)",
+      "dest": "/app.js"
     }
   ]
 }
