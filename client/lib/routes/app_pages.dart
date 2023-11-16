@@ -5,14 +5,17 @@ import 'package:client/pages/profile/personal_details.dart';
 import 'package:client/pages/profile/privacy_policy.dart';
 import 'package:client/pages/profile/setting.dart';
 import 'package:client/pages/profile/term_condition.dart';
+import 'package:client/pages/signup/bindings/signup_binding.dart';
 import 'package:get/get.dart';
 
-import '../pages/auth/login_screen.dart';
 import '../pages/auth/login_signup_screen.dart';
-import '../pages/auth/signup_screen.dart';
+import '../pages/main_tab/main_tab.dart';
+import '../pages/signup/views/signup_view.dart';
 import '../pages/common/unknown.dart';
 import '../pages/get_start/on_boarding_screen.dart';
 import '../pages/home_page/home_screen.dart';
+import '../pages/login/bindings/login_binding.dart';
+import '../pages/login/views/login_view.dart';
 import '../pages/splash_screen/bindings/splash_screen_binding.dart';
 import '../pages/splash_screen/views/splash_screen_view.dart';
 
@@ -22,6 +25,7 @@ class AppPages {
   static const auth = '/auth';
   static const login = '/login';
   static const signup = '/signup';
+  static const mainTab = '/main-tab';
   static const home = '/home';
   static const setting = '/setting';
   static const personalDetail = '/personal-detail';
@@ -58,13 +62,19 @@ class AppPages {
     ),
     GetPage(
       name: login,
-      page: () => const LoginScreen(),
+      page: () => const LoginView(),
       transition: Transition.rightToLeft,
+      binding: LoginBinding(),
     ),
     GetPage(
       name: signup,
-      page: () => const SignupScreen(),
+      page: () => const SignupView(),
       transition: Transition.rightToLeft,
+      binding: SignupBinding(),
+    ),
+    GetPage(
+      name: mainTab,
+      page: () => const MainTab(),
     ),
     GetPage(
       name: home,
@@ -74,7 +84,7 @@ class AppPages {
       name: setting,
       page: () => const Setting(),
     ),
-     GetPage(
+    GetPage(
       name: personalDetail,
       page: () => const PersonalDetail(),
     ),
