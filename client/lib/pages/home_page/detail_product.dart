@@ -252,8 +252,11 @@ class DetailProduct extends StatelessWidget {
                                                           locale: 'id',
                                                           symbol: 'Rp ',
                                                           decimalDigits: 0)
-                                                      .format(productController
-                                                          .productId[0].price!),
+                                                      .format(
+                                                        productController.counter.value == 0 ?
+                                                        productController
+                                                          .productId[0].price! : productController
+                                                          .productId[0].price! * productController.counter.value),
                                                   style: TextStyle(
                                                       fontSize: 15,
                                                       fontWeight:
