@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const Sequelize = require("sequelize");
-const postgre = require("../database");
+const { pool } = require("../database");
 const process = require("process");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
@@ -12,7 +12,7 @@ const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
-  sequelize = new Sequelize(postgre);
+  sequelize = new Sequelize(pool, config);
 } else {
   sequelize = new Sequelize(
     config.database,
