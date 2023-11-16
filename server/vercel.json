@@ -11,5 +11,9 @@
       "src": "/(.*)",
       "dest": "/app.js"
     }
-  ]
+  ],
+  "env": {
+    "FIREBASE_DATABASE_URL": "https://stylishshop-562a7.firebaseio.com",
+    "POSTGRES_URL": "postgres://default:i2FV9KLUERrd@ep-long-darkness-95255354-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"
+  }
 }
