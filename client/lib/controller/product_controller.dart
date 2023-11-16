@@ -40,7 +40,7 @@ class ProductController extends GetxController {
 
   Future<void> getProductById(int id) async {
     //'http://192.168.0.104:3000/products'
-    String url = 'http://192.168.0.104:3000/products/detail/$id';
+    String url = 'https://stylish-shop.vercel.app/products/detail/$id';
     try {
       final response = await Dio().get(url);
 
