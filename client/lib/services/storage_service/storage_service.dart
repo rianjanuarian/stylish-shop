@@ -14,4 +14,8 @@ class StorageService extends GetxService {
   dynamic read(String key) {
     return GetStorage().read(key);
   }
+
+  dynamic remove(String key) {
+    return GetStorage().remove(key);
+  }
 }
