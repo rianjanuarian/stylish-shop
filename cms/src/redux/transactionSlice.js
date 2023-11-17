@@ -8,7 +8,7 @@ import axios from "axios";
 export const getTransactions = createAsyncThunk(
   "transactions/getTransactions",
   async () => {
-    const response = await axios.get("http://localhost:3000/transactions");
+    const response = await axios.get("https://stylish-shop.vercel.app/transactions");
     return response.data;
   }
 );

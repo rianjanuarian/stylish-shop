@@ -8,16 +8,21 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
-class DetailProduct extends StatelessWidget {
+class DetailProduct extends StatefulWidget {
   int? id, price;
   String? imageUrl;
   DetailProduct(this.id, this.imageUrl, {super.key});
 
-  final ProductController productController = Get.put(ProductController());
+  @override
+  State<DetailProduct> createState() => _DetailProductState();
+}
 
+class _DetailProductState extends State<DetailProduct> {
+  final ProductController productController = Get.put(ProductController());
+  Color? selectedColor;
   @override
   Widget build(BuildContext context) {
-    productController.getProductById(id!);
+    productController.getProductById(widget.id!);
     return Scaffold(
         body: Column(
       children: [
@@ -28,7 +33,7 @@ class DetailProduct extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.5,
               color: Color.fromRGBO(219, 219, 219, 100),
               child: Image.network(
-                'http://192.168.0.104:3000/uploads/$imageUrl',
+                'http://192.168.0.104:3000/uploads/${widget.imageUrl}',
                 fit: BoxFit.fill,
               ),
             ),
@@ -39,7 +44,7 @@ class DetailProduct extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                     Get.back();
+                      Get.back();
                     },
                     icon: const Icon(Icons.arrow_back),
                     color: Colors.white,
@@ -98,22 +103,30 @@ class DetailProduct extends StatelessWidget {
                                           children: [
                                             productController
                                                     .productId.isNotEmpty
-                                                ? Text(
-                                                    productController
-                                                            .productId[0]
-                                                            .name ??
-                                                        " ",
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w700),
-                                                  )
+                                                ? Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                   
+                                                    Text(
+                                                        productController
+                                                                .productId[0]
+                                                                .name ??
+                                                            " ",
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.w700),
+                                                      ),
+                                                       Text(productController.productId[0].brands![0].name ?? " " ),
+                                                  ],
+                                                )
                                                 : Container(),
+                                            
                                             Column(
                                               children: [
                                                 Container(
                                                   width: 100,
-                                                  height: 30,
+                                                  height: 35,
                                                   decoration: BoxDecoration(
                                                       color: Color.fromRGBO(
                                                           219, 219, 219, 100),
@@ -126,14 +139,27 @@ class DetailProduct extends StatelessWidget {
                                                             .spaceEvenly,
                                                     children: [
                                                       InkWell(
-                                                          onTap: () {productController.decrement();},
-                                                          child: Text("-")),
-                                                      Text(productController.counter.value.toString()),
-                                                        productController
-                                                        .productId.isNotEmpty ?
-                                                      InkWell(
-                                                          onTap: () {productController.increment(productController.productId[0].stock!);},
-                                                          child: Text("+")): Container()
+                                                          onTap: () {
+                                                            productController
+                                                                .decrement();
+                                                          },
+                                                          child: Icon(Icons.remove,size: 15,)),
+                                                      Text(productController
+                                                          .counter.value
+                                                          .toString()),
+                                                      productController
+                                                              .productId
+                                                              .isNotEmpty
+                                                          ? InkWell(
+                                                              onTap: () {
+                                                                productController.increment(
+                                                                    productController
+                                                                        .productId[
+                                                                            0]
+                                                                        .stock!);
+                                                              },
+                                                              child: Icon(Icons.add,size: 15,))
+                                                          : Container()
                                                     ],
                                                   ),
                                                 ),
@@ -148,6 +174,7 @@ class DetailProduct extends StatelessWidget {
                                           ],
                                         ),
                                         //red green blue yellow
+                               
                                         SizedBox(
                                           height: 10,
                                         ),
@@ -187,7 +214,14 @@ class DetailProduct extends StatelessWidget {
                                                           getColorFromString(
                                                               colorlist);
                                                       return InkWell(
-                                                        onTap: () {},
+                                                        onTap: () {
+                                                          setState(() {
+                                                            selectedColor =
+                                                                color;
+                                                          });
+                                                        },
+                                                        highlightColor:
+                                                            Colors.red,
                                                         child: Container(
                                                           width: 50,
                                                           height: 50,
@@ -196,6 +230,14 @@ class DetailProduct extends StatelessWidget {
                                                           decoration:
                                                               BoxDecoration(
                                                             color: color,
+                                                            border: Border.all(
+                                                                width: 2,
+                                                                color: selectedColor ==
+                                                                        color
+                                                                    ? Colors
+                                                                        .black
+                                                                    : Colors
+                                                                        .white),
                                                             shape:
                                                                 BoxShape.circle,
                                                           ),
@@ -216,15 +258,15 @@ class DetailProduct extends StatelessWidget {
                                         SizedBox(
                                           height: 15,
                                         ),
-                                        productController
-                                                            .productId
-                                                            .isNotEmpty ?
-                                        Text(
-                                          productController
-                                              .productId[0].description!,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w400),
-                                        ) : Container(),
+                                        productController.productId.isNotEmpty
+                                            ? Text(
+                                                productController
+                                                    .productId[0].description!,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              )
+                                            : Container(),
                                         SizedBox(
                                           height: MediaQuery.of(context)
                                                   .size
@@ -244,35 +286,58 @@ class DetailProduct extends StatelessWidget {
                                                           FontWeight.w300,
                                                       fontSize: 10),
                                                 ),
-                                                 productController
-                                                            .productId
-                                                            .isNotEmpty ?
-                                                Text(
-                                                  NumberFormat.currency(
-                                                          locale: 'id',
-                                                          symbol: 'Rp ',
-                                                          decimalDigits: 0)
-                                                      .format(
-                                                        productController.counter.value == 0 ?
-                                                        productController
-                                                          .productId[0].price! : productController
-                                                          .productId[0].price! * productController.counter.value),
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                ) : Container()
+                                                productController
+                                                        .productId.isNotEmpty
+                                                    ? Text(
+                                                        NumberFormat.currency(
+                                                                locale: 'id',
+                                                                symbol: 'Rp ',
+                                                                decimalDigits:
+                                                                    0)
+                                                            .format(productController
+                                                                        .counter
+                                                                        .value ==
+                                                                    0
+                                                                ? productController
+                                                                    .productId[
+                                                                        0]
+                                                                    .price!
+                                                                : productController
+                                                                        .productId[
+                                                                            0]
+                                                                        .price! *
+                                                                    productController
+                                                                        .counter
+                                                                        .value),
+                                                        style: TextStyle(
+                                                            fontSize: 15,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                      )
+                                                    : Container()
                                               ],
                                             ),
                                             ElevatedButton(
                                                 onPressed: () {},
-                                                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.black),
                                                 child: Row(
                                                   children: [
-                                                    Icon(Icons
-                                                        .shopping_basket_outlined,color: Colors.white,),
-                                                        SizedBox(width: 10,),
-                                                        Text("Add to cart",style: TextStyle(color: Colors.white),)
+                                                    Icon(
+                                                      Icons
+                                                          .shopping_basket_outlined,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      "Add to cart",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    )
                                                   ],
                                                 ))
                                           ],

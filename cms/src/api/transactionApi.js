@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const transactionApi = axios.create({
-  baseURL: "http://localhost:3000/transactions",
+  baseURL: "https://stylish-shop.vercel.app/transactions",
 });
 
 export default transactionApi;
