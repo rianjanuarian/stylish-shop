@@ -112,10 +112,11 @@ const UserList = () => {
                           <span>
                           {/* https://storage.cloud.google.com/stylish-shop/users/0aaeb9e729ebd4b12d1e3a400954f697 */}
                             <img
-                              src={`https://storage.cloud.google.com/sylish-shop/users/${user.image}`}
+                              src={`https://storage.cloud.google.com/${user.image}`}
                               style={{ width: "100px", height: "100px" }}
                               alt="user"
                             ></img>
+                            <p>{user.image}</p>
                           </span>
                         </td>
                         <td>
