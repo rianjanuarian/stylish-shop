@@ -215,6 +215,12 @@ class UserController {
         );
       }
 
+      const bucketName = 'stylish-shop';
+
+      const destination = `users/${req.file.filename}`;
+      await storage.bucket(bucketName).upload(req.file.path, {
+        destination,
+      });
       password = await encryptPassword(password);
       const newUser = await admin.auth().createUser({
         name,
@@ -229,7 +235,7 @@ class UserController {
         password,
         uid,
         role: "admin",
-        image: req.file.filename,
+        image: `${bucketName}/${destination}`,
       });
 
       res
