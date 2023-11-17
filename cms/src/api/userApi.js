@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const userApi = axios.create({
-  baseURL: "http://localhost:3000/users",
+  baseURL: "https://stylish-shop.vercel.app/users",
 });
 
 export default userApi;

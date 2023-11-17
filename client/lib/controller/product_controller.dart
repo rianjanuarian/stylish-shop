@@ -1,3 +1,4 @@
+import 'package:client/config.dart';
 import 'package:client/models/products.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
@@ -6,7 +7,7 @@ class ProductController extends GetxController {
   var productList = <Products>[].obs;
   var isLoading = true.obs;
   var productId = <Products>[].obs;
-  RxInt counter = 0.obs;
+  RxInt counter = 1.obs;
   @override
   void onInit() {
     super.onInit();
@@ -15,7 +16,7 @@ class ProductController extends GetxController {
   }
 
   Future<void> getProducts() async {
-    String url = 'https://stylish-shop.vercel.app/products';
+    String url = Config.productsAPI;
 
     try {
       final response = await Dio().get(
@@ -40,7 +41,7 @@ class ProductController extends GetxController {
 
   Future<void> getProductById(int id) async {
     //'http://192.168.0.104:3000/products'
-    String url = 'https://stylish-shop.vercel.app/products/detail/$id';
+    String url = 'http://192.168.0.104:3000/products/detail/$id';
     try {
       final response = await Dio().get(url);
 

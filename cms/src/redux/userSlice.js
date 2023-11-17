@@ -17,7 +17,7 @@ const config = {
 };
 
 export const getUsers = createAsyncThunk("users/getUsers", async () => {
-  const response = await axios.get("http://localhost:3000/users", config);
+  const response = await axios.get("https://stylish-shop.vercel.app/users", config);
   return response.data;
 });
 
@@ -32,7 +32,7 @@ export const saveUsers = createAsyncThunk(
     formData.append("images", image);
 
     const response = await axios.post(
-      "http://localhost:3000/users/create_admin",
+      "https://stylish-shop.vercel.app/users/create_admin",
       formData,
       config
     );
@@ -42,7 +42,7 @@ export const saveUsers = createAsyncThunk(
 
 export const deleteUsers = createAsyncThunk("users/deleteUsers", async (id) => {
   await axios.delete(
-    `http://localhost:3000/users/delete_account/${id}`,
+    `https://stylish-shop.vercel.app/users/delete_account/${id}`,
     config
   );
   return id;
@@ -61,7 +61,7 @@ export const updateUsers = createAsyncThunk(
     formData.append("phone_number", phone_number);
     // formData.append("password", password);
     const response = await axios.put(
-      `http://localhost:3000/users/update_admin/${id}`,
+      `https://stylish-shop.vercel.app/users/update_admin/${id}`,
       formData,
       config
     );

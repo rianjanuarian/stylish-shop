@@ -27,7 +27,7 @@ class NewArrival extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: () => Get.off(() => HomeScreen()),
+                    onPressed: () => Get.back(),
                     icon: const Icon(Icons.arrow_back),
                     color: Colors.white,
                     style: IconButton.styleFrom(backgroundColor: Colors.black),

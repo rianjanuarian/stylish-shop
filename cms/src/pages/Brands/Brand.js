@@ -111,11 +111,12 @@ const Brand = () => {
                         </td>
                         <td>
                           <span>
-                            <img
-                              src={`http://localhost:3000/uploads/${e.image}`}
+                        {    <img
+                              src={`https://stylish-shop.vercel.app/tmp/${e.image}`}
                               style={{ width: "100px", height: "100px" }}
                               alt="Brand"
-                            ></img>
+                            ></img>}
+                            <p>{e.image}</p>
                           </span>
                         </td>
                         <td>
