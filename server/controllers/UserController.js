@@ -8,8 +8,20 @@ const { user } = require("../models");
 const admin = require("firebase-admin");
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage({
-  keyFilename: 'var/cloud-storage.json', 
-  projectId: '7c8c89da30790dc43d65677a33d2b042d6b3e7b3', 
+  projectId: '7c8c89da30790dc43d65677a33d2b042d6b3e7b3',
+  credentials: {
+    "type": "service_account",
+    "project_id": "eastern-dream-272111",
+    "private_key_id": "7c8c89da30790dc43d65677a33d2b042d6b3e7b3",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCYjGhb4OdDgM5g\nJSToOdUyJ5OQqgjYKtoGXMHjGkHh/9NEd0EzoIRcx/E8rE4lFxHIt3yIbRq9WbS7\nyv+GShmCBd95cPrqnblT5tfQu7XZiqPWqnGRNQyWcG4EV80DdgpO0muLkkPaP2Su\n/q0HdstQVtX47J3xlqrvQhuf4Rm863pvH/tRTKcsHPS5jXtIX4Vc0qPGp0kwNxUz\n5PMuX2QaJtDN7G9l1Orvr/88CLzuyEYMsYC1O4Nm2tgOPg25MT3UZUxkZFPC73Fz\nHvQOOpffKNzPfI97wdRAZQ+XehJ1JstInhJ5oP3cgvFhu5MQ9k8JX2w2nZVEBJPM\n40ndIxL3AgMBAAECggEADxLwzQNwVs9HlWCWQQxV8NrQTh8/OH0jhjVsQ1C46egp\nrD5Mhxl5euGXCPPN1QRukXLwL1r4pXVT0qrAjTiNRLfn2Uw8vypOweexs8KYuaJl\nhjTZfAvN7p+1f2BdtdXYNum8DtKpOcvB2zj3SCGI/atXAX4ALXtB8NqLeET6Ehzb\nlHoEbsq/oUKD9jf1oKod5kdJ2ciQ/ac49ciBScg53rFx9B4/BwFT0k4Yp2rHBFkh\nzjgx8rU71uXLA9PCaufUkZ6p149sbOm7EdVdMBDRZV2waJvxW6vL/WLp7ooftLdC\nRNxa9kFxtRTywPHA+136slQA729IhUPJeY4UPOrjgQKBgQDVcbZKLL0p11HKCf2K\nLAMygm/xgZFVHbgiXfkAHxv8n2ywtrDHEQegBl2pSVN/4D17HWxSipw/4EmO1+kM\nA/eDlda22SWSmzw8SSWKbjIcdVYayvjF95IJBBa9BuE2pvXDFvDGy0OWSwNvZzCb\nfjr8LCdkM7ifcaGxaNbj3vw+ZwKBgQC29ozq01Fo7uDH/QuZfIJUay24ZO5QK3iF\nN5VVy69qXkrIHOrkDVEODIHQRmCL/pDf1RnZI9ru7M7gyZelQlcAPDcp7s/pTgnc\nAA4B1yN2lVfTovB/X0xtbBorSwVmXc64Vmpqul245sd1unu2EPRTApZNIgksCT4X\nd4PeNJSM8QKBgDzLrduE0MCZNw+wNspjbOm3I4GLoUS4OVl4oNL7CXK0SjYvYzzg\nSea3yXfNjf4PdhOaNt9v4b+D+A+6ygOFIbwWMtlUEpKmqsqVHx9F8foPJd5tz9w7\nfxoYUw22ZvG1Lq1J3H0TKoYlia3ym3K+yrhHL1UoMj8gE6k/rm2rdvejAoGAFDCg\n3Ej1ct7pbyg9X3Kd7zLkmLSKl840Pn8ju5P+h35gQjTutrvBdgtrR9B8VvaAhjK9\n53hNcJAxRBz63wGzGBONAtOXnec+r0hSQ2G6SBuy1WfloiiiBnEnch+VOPahGTZw\nB9cJAJ525Ebv3+d/Dqn6bAiVeoaKk4xcwOiMfAECgYEAjjGx7wnAmo+Dq2vmYCKL\n+Ls0xDQVB91EGkcB+jrg18dgjkCwmbfikL2zLyy4GMbc8NvrBXjPQF7jgvh4WIPo\niB+Jd3Iz2OHzUUjwitSlwKouHBi+sSz42FjS0BuBqLRJgqwnINcqeSUTA2CGANIV\nT3ut7QRUWnML5MEfpThILrk=\n-----END PRIVATE KEY-----\n",
+    "client_email": "rianjanuarian@eastern-dream-272111.iam.gserviceaccount.com",
+    "client_id": "115909661453997430090",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/rianjanuarian%40eastern-dream-272111.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  }
 });
 class UserController {
   //User Authentication
