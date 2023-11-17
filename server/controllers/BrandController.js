@@ -1,5 +1,11 @@
 const createError = require("../middlewares/createError");
 const { brand } = require("../models");
+const { Storage } = require('@google-cloud/storage');
+const storage = new Storage({
+  keyFilename: 'cloud-storage.json', 
+  projectId: '7c8c89da30790dc43d65677a33d2b042d6b3e7b3', 
+});
+
 
 class BrandControllers {
   static async getBrands(req, res, next) {
@@ -13,8 +19,18 @@ class BrandControllers {
 
   static async create(req, res, next) {
     try {
+
+ 
+    const bucketName = 'stylish-shop';
+
+    const destination = `brands/${req.file.filename}`;
+
+    await storage.bucket(bucketName).upload(req.file.path, {
+      destination,
+    });
+
       const { name } = req.body;
-      const newBrand = await brand.create({ name, image: req.file.filename });
+      const newBrand = await brand.create({ name, image: `${bucketName}/${destination}` });
       console.log(req.file);
       res.status(201).json({ message: "Brand has been created!", newBrand });
     } catch (err) {
@@ -31,10 +47,16 @@ class BrandControllers {
       if (!currentBrand) {
         return next(createError(404, "Brand does not exist!"));
       }
+      const bucketName = 'stylish-shop';
 
+      const destination = `brands/${req.file.filename}`;
+  
+      await storage.bucket(bucketName).upload(req.file.path, {
+        destination,
+      });
       const updatedData = {
         name: req.body.name,
-        image: req.file.filename,
+        image: `${bucketName}/${destination}`,
       };
       const response = await currentBrand.update(updatedData);
       response.dataValues

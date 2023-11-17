@@ -6,6 +6,11 @@ const {
   categoryproduct,
   brandproduct,
 } = require("../models");
+const { Storage } = require('@google-cloud/storage');
+const storage = new Storage({
+  keyFilename: 'cloud-storage.json', 
+  projectId: '7c8c89da30790dc43d65677a33d2b042d6b3e7b3', 
+});
 
 const { Op } = require("sequelize");
 
@@ -126,16 +131,20 @@ class ProductControllers {
   }
 
   //only admin can access part
+
+
   static async create(req, res, next) {
     try {
+      const bucketName = 'stylish-shop';
+      const destination = `products/${req.file.filename}`;
       let { categoryId, brandId, colors, ...otherDetails } = req.body;
       categoryId = parseInt(categoryId);
       brandId = parseInt(brandId);
 
       colors = colors.split(",");
-
+      await storage.bucket(bucketName).upload(req.file.path, {destination,});
       const image = req.file
-        ? req.file.filename
+        ? `${bucketName}/${destination}`
         : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png";
 
       const newProduct = await product.create({
@@ -180,6 +189,8 @@ class ProductControllers {
   static async update(req, res, next) {
     try {
       const id = parseInt(req.params.id);
+      const bucketName = 'stylish-shop';
+      const destination = `products/${req.file.filename}`;
       let { categoryId, brandId, colors, ...otherDetails } = req.body;
 
       colors = colors.split(",");
@@ -189,9 +200,9 @@ class ProductControllers {
       if (!currentProduct) {
         return next(createError(404, "Product not found!"));
       }
-
+      await storage.bucket(bucketName).upload(req.file.path, {destination,});
       const image = req.file
-        ? req.file.filename
+        ? `${bucketName}/${destination}`
         : currentProduct.dataValues.image;
 
       const updatedData = {

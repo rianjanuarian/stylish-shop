@@ -6,7 +6,11 @@ const {
 const createError = require("../middlewares/createError");
 const { user } = require("../models");
 const admin = require("firebase-admin");
-
+const { Storage } = require('@google-cloud/storage');
+const storage = new Storage({
+  keyFilename: 'cloud-storage.json', 
+  projectId: '7c8c89da30790dc43d65677a33d2b042d6b3e7b3', 
+});
 class UserController {
   //User Authentication
   static async registerWithEmail(req, res, next) {
@@ -274,17 +278,23 @@ class UserController {
 
   static async updateAdminV2(req, res, next) {
     try {
+      
       const id = parseInt(req.params.id);
 
       const adminAccount = await user.findByPk(id);
+   const bucketName = 'stylish-shop';
 
+    const destination = `users/${req.file.filename}`;
       if (!adminAccount) {
         return next(createError(404, "User not found!"));
       }
+        await storage.bucket(bucketName).upload(req.file.path, {
+      destination,
+    });
       const updatedData = {
         name: req.body.name,
         email: req.body.email,
-        image: req.file.filename,
+        image: `${bucketName}/${destination}`,
         address: req.body.address,
         gender: req.body.gender,
         birthday: req.body.birthday,
