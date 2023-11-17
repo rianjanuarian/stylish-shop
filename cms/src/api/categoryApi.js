@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const categoryApi = axios.create({
-  baseURL: "http://localhost:3000/categories",
+  baseURL: "https://stylish-shop.vercel.app/categories",
 });
 
 export default categoryApi;

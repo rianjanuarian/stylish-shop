@@ -20,12 +20,11 @@ function DashboardHeader() {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(logout()).then(() => {
-          navigate('/');
+          navigate("/");
         });
       }
     });
-
-  }
+  };
   return (
     <div className="dashbord-header-container">
       <div className="dashbord-header-right">
@@ -34,23 +33,20 @@ function DashboardHeader() {
             <h3>Hi {currentUser.name}!</h3>
             <div className="dropdown">
               <div>
-            <img
-              className="dashbord-header-avatar"
-              src={!currentUser.image.startsWith("http") ? `http://localhost:3000/uploads/${currentUser.image}` : `${currentUser.image}`}
-              alt="Profile">
-                 </img>
+                <img
+                  className="dashbord-header-avatar"
+                  src={`https://stylish-shop.vercel.app/tmp/${currentUser.image}`}
+                  // src={!currentUser.image.startsWith("https") ? `https://stylish-shop.vercel.app/tmp/${currentUser.image}` : `${currentUser.image}`}
+                  alt="Profile"
+                ></img>
                 <div className="dropdown-content">
-
-                <a onClick={handleLogout}>Logout 
-                </a>
-             {/* <img
+                  <a onClick={handleLogout}>Logout</a>
+                  {/* <img
               src={LogoutIcon}
               alt="icon-logout"
               className="sidebar-item-icon"
             />  */}
-
                 </div>
-             
               </div>
             </div>
           </>
@@ -60,12 +56,14 @@ function DashboardHeader() {
   );
 }
 
-{/* <div class="dropdown">
+{
+  /* <div class="dropdown">
   <button class="dropbtn">Dropdown</button>
   <div class="dropdown-content">
     <a href="#">Link 1</a>
     <a href="#">Link 2</a>
     <a href="#">Link 3</a>
   </div>
-</div> */}
+</div> */
+}
 export default DashboardHeader;
