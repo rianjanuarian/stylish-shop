@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const routes = require("./routes/index.js");
 const cors = require("cors");
-const { Storage } = require('@google-cloud/storage');
+
 // Swagger
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocs = require("./json/swagger.json");
@@ -19,12 +19,7 @@ admin.initializeApp({
 });
 
 //template
-const storage = new Storage({
-  keyFilename: 'cloud-storage.json', 
-  projectId: '7c8c89da30790dc43d65677a33d2b042d6b3e7b3', 
-});
 
-const bucket = storage.bucket('stylish-shop'); 
 
 const corsOptions = {
   allowedHeaders: 'Content-Type, Authorization', 
