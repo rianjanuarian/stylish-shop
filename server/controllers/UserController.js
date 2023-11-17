@@ -8,7 +8,7 @@ const { user } = require("../models");
 const admin = require("firebase-admin");
 const { Storage } = require('@google-cloud/storage');
 const storage = new Storage({
-  keyFilename: 'cloud-storage.json', 
+  keyFilename: '../cloud-storage.json', 
   projectId: '7c8c89da30790dc43d65677a33d2b042d6b3e7b3', 
 });
 class UserController {
