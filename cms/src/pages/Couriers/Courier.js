@@ -127,8 +127,9 @@ const Courier = () => {
                                 alt="courier"
                               />
                             ) : (
+                                {/* stylish-shop/brands/88a61745866d5fa3d20db2658ca7466f */},
                               <img
-                                src={`http://localhost:3000/uploads/${courier.image}`}
+                                src={`https://storage.cloud.google.com/${courier.image}`}
                                 style={{ width: "100px", height: "100px" }}
                                 alt="courier"
                               />
