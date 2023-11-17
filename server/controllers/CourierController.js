@@ -1,5 +1,10 @@
 const createError = require("../middlewares/createError");
 const { courier } = require("../models");
+const { Storage } = require('@google-cloud/storage');
+const storage = new Storage({
+  projectId: '7c8c89da30790dc43d65677a33d2b042d6b3e7b3',
+  credentials: require("../helpers/cloud-storage.json")
+});
 
 class CourierController {
   static async getCouriers(req, res, next) {
@@ -10,10 +15,16 @@ class CourierController {
       next(err);
     }
   }
+  
   static async create(req, res, next) {
     try {
       const { name, price } = req.body;
-      const image = req.file.filename;
+      const bucketName = 'stylish-shop';
+      const destination = `courier/${req.file.filename}`;
+        await storage.bucket(bucketName).upload(req.file.path, {
+      destination,
+    });
+      const image = `${bucketName}/${destination}`;
       const newCourier = await courier.create({ name, price, image });
       res.status(201).json({
         message: "Courier has been created!",
@@ -33,9 +44,13 @@ class CourierController {
       if (!currentCourier) {
         return next(createError(404, "Courier does not exist!"));
       }
-
+      const bucketName = 'stylish-shop';
+      const destination = `courier/${req.file.filename}`;
+      await storage.bucket(bucketName).upload(req.file.path, {
+        destination,
+      });
       const { name, price } = req.body;
-      const image = req.file.filename;
+      const image = `${bucketName}/${destination}`;
 
       const response = await currentCourier.update({ name, price, image });
       response.dataValues

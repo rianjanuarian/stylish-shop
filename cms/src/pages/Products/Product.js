@@ -140,8 +140,9 @@ const Product = () => {
                                 alt="Product"
                               />
                             ) : (
+                              //`https://storage.cloud.google.com/${e.image}`
                               <img
-                                src={`http://localhost:3000/uploads/${product.image}`}
+                                src={`https://storage.cloud.google.com/${product.image}`}
                                 style={{ width: "100px", height: "100px" }}
                                 alt="Product"
                               />
