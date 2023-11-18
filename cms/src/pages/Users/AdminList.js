@@ -108,7 +108,7 @@ const AdminList = () => {
                         <td>
                         <span>
                             <img
-                              src={e.image && !e.image.startsWith('http') ? `http://localhost:3000/uploads/${e.image}` : `${e.image}`}
+                              src={`https://storage.cloud.google.com/${e.image}`}
                               style={{ width: "100px", height: "100px" }}
                               alt="Brand"
                             ></img>

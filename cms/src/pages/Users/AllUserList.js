@@ -116,7 +116,7 @@ const UserList = () => {
                               style={{ width: "100px", height: "100px" }}
                               alt="user"
                             ></img>
-                            <p>{user.image}</p>
+                      
                           </span>
                         </td>
                         <td>
