@@ -108,10 +108,11 @@ const CustomerList = () => {
                         <td>
                         <span>
                             <img
-                              src={admin.image && !admin.image.startsWith('http') ? `http://localhost:3000/uploads/${admin.image}` : `${admin.image}`}
+                             src={`https://storage.cloud.google.com/${admin.image}`}
                               style={{ width: "100px", height: "100px" }}
                               alt="Brand"
                             ></img>
+                           
                           </span>
                         </td>
                         <td>

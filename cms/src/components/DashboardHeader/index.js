@@ -35,7 +35,8 @@ function DashboardHeader() {
               <div>
                 <img
                   className="dashbord-header-avatar"
-                  src={`https://stylish-shop.vercel.app/tmp/${currentUser.image}`}
+          
+                  src={`https://storage.cloud.google.com/${currentUser.image}`}
                   // src={!currentUser.image.startsWith("https") ? `https://stylish-shop.vercel.app/tmp/${currentUser.image}` : `${currentUser.image}`}
                   alt="Profile"
                 ></img>
