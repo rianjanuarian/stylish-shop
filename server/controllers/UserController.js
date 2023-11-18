@@ -297,10 +297,13 @@ class UserController {
         await storage.bucket(bucketName).upload(req.file.path, {
       destination,
     });
+    const image = req.file
+    ? `${bucketName}/${destination}`
+    : currentProduct.dataValues.image;
       const updatedData = {
         name: req.body.name,
         email: req.body.email,
-        image: `${bucketName}/${destination}`,
+        image: image,
         address: req.body.address,
         gender: req.body.gender,
         birthday: req.body.birthday,
