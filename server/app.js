@@ -21,10 +21,10 @@ admin.initializeApp({
 //template
 
 const corsOptions = {
-  allowedHeaders: 'Content-Type, Authorization', 
-  origin: 'https://stylish-shop-web.vercel.app/', 
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, 
+  allowedHeaders: "Content-Type, Authorization",
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
   optionsSuccessStatus: 204,
 };
 app.use(cors(corsOptions));
