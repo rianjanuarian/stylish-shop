@@ -14,8 +14,9 @@ class HomeScreen extends StatelessWidget {
     final controller = Get.put<ProductController>(ProductController());
     List<Products> productList = controller.productList;
 
-
-  final List<Products> trendingProducts = []..addAll(productList)..shuffle();
+    final List<Products> trendingProducts = []
+      ..addAll(productList)
+      ..shuffle();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -52,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all( 10),
+                padding: const EdgeInsets.all(10),
                 child: TextField(
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.search),
@@ -193,7 +194,6 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-   
               SizedBox(
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: Obx(
@@ -203,14 +203,19 @@ class HomeScreen extends StatelessWidget {
                           )
                         : ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: 6,
+                            itemCount: productList.length == 6
+                                ? 6
+                                : productList.length,
                             itemBuilder: (_, index) {
                               return InkWell(
                                 onTap: () {
                                   Get.to(() => DetailProduct(
-                                        productList[index].id,
-                                        productList[index].image,
-                                      ));
+                                      productList.isNotEmpty
+                                          ? productList[index].id
+                                          : 0,
+                                      productList.isNotEmpty
+                                          ? productList[index].image
+                                          : ''));
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -222,20 +227,23 @@ class HomeScreen extends StatelessWidget {
                                       child: productList.isNotEmpty
                                           ? Column(
                                               children: [
-                                                //http://192.168.0.104:3000/uploads/${product.image}
                                                 Container(
-                                                  decoration: BoxDecoration(
-                                                      color: Color.fromRGBO(
-                                                          219, 219, 219, 100),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10)),
-                                                  child: Image.network(
-                                                    'http://192.168.0.104:3000/uploads/${productList[index].image!}',
-                                                    width: 150,
-                                                    height: 80,
-                                                  ),
-                                                ),
+                                                    decoration: BoxDecoration(
+                                                        color: Color.fromRGBO(
+                                                            219, 219, 219, 100),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10)),
+                                                    child: Image.network(
+                                                      productList[index]
+                                                              .image!
+                                                              .isNotEmpty
+                                                          // https://storage.googleapis.com/stylish-shop/users/2512fe3caa196490104f9955da092536
+                                                          ? 'https://storage.googleapis.com/${productList[index].image!}'
+                                                          : "",
+                                                      width: 150,
+                                                      height: 80,
+                                                    )),
                                                 Text(
                                                   productList[index].name!,
                                                   style: const TextStyle(
@@ -268,7 +276,7 @@ class HomeScreen extends StatelessWidget {
                               );
                             }),
                   )),
-                       Padding(
+              Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -278,11 +286,7 @@ class HomeScreen extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                     ),
-                    InkWell(
-                        onTap: () {
-                          
-                        },
-                        child: Text("View All"))
+                    InkWell(onTap: () {}, child: Text("View All"))
                   ],
                 ),
               ),
@@ -295,13 +299,19 @@ class HomeScreen extends StatelessWidget {
                           )
                         : ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: 6,
+                            itemCount: trendingProducts.length == 6
+                                ? 6
+                                : trendingProducts.length,
                             itemBuilder: (_, index) {
                               return InkWell(
                                 onTap: () {
                                   Get.to(() => DetailProduct(
-                                        trendingProducts[index].id,
-                                        trendingProducts[index].image,
+                                        trendingProducts.isNotEmpty
+                                            ? trendingProducts[index].id
+                                            : 0,
+                                        trendingProducts.isNotEmpty
+                                            ? trendingProducts[index].image
+                                            : '',
                                       ));
                                 },
                                 child: Padding(
@@ -314,7 +324,6 @@ class HomeScreen extends StatelessWidget {
                                       child: trendingProducts.isNotEmpty
                                           ? Column(
                                               children: [
-                                                //http://192.168.0.104:3000/uploads/${product.image}
                                                 Container(
                                                   decoration: BoxDecoration(
                                                       color: Color.fromRGBO(
@@ -323,7 +332,12 @@ class HomeScreen extends StatelessWidget {
                                                           BorderRadius.circular(
                                                               10)),
                                                   child: Image.network(
-                                                    'http://192.168.0.104:3000/uploads/${trendingProducts[index].image!}',
+                                                    productList[index]
+                                                            .image!
+                                                            .isNotEmpty
+                                                        
+                                                        ? 'https://storage.googleapis.com/${productList[index].image!}'
+                                                        : "",
                                                     width: 150,
                                                     height: 80,
                                                   ),
@@ -346,7 +360,8 @@ class HomeScreen extends StatelessWidget {
                                                           locale: 'id',
                                                           symbol: 'Rp ',
                                                           decimalDigits: 0)
-                                                      .format(trendingProducts[index]
+                                                      .format(trendingProducts[
+                                                              index]
                                                           .price!),
                                                   style: TextStyle(
                                                       fontSize: 15,
