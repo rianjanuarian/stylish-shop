@@ -33,7 +33,8 @@ class _DetailProductState extends State<DetailProduct> {
               height: MediaQuery.of(context).size.height * 0.5,
               color: Color.fromRGBO(219, 219, 219, 100),
               child: Image.network(
-                'http://192.168.0.104:3000/uploads/${widget.imageUrl}',
+               
+                'https://storage.googleapis.com/${widget.imageUrl}',
                 fit: BoxFit.fill,
               ),
             ),

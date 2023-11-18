@@ -78,8 +78,7 @@ class NewArrival extends StatelessWidget {
                                   onTap: () {
                                     Get.to(() => DetailProduct(
                                           productList[index].id,
-                                          productList[index].image,
-                                         
+                                          productList[index].image
                                         ));
                                   },
                                   child: Container(
@@ -97,7 +96,8 @@ class NewArrival extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(10)),
                                           child: Image.network(
-                                            'http://192.168.0.104:3000/uploads/${productList[index].image!}',
+                                            
+                                            'https://storage.googleapis.com/${productList[index].image!}',
                                             width: 132,
                                             height: 132,
                                           ),
