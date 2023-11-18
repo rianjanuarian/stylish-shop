@@ -22,7 +22,14 @@ admin.initializeApp({
 
 const corsOptions = {
   allowedHeaders: "Content-Type, Authorization",
-  origin: "*",
+  origin: function (origin, callback) {
+    const allowedOrigins = ["https://stylish-shop-web.vercel.app"];
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
