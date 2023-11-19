@@ -1,5 +1,7 @@
+import 'package:client/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class CategoriesPage extends StatelessWidget {
   const CategoriesPage({super.key});
@@ -7,7 +9,7 @@ class CategoriesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const List<String> categoryDummies = [
-      'New Arivals',
+      'New Arrival',
       'Clothes',
       'Bags',
       'Shoes',
@@ -66,7 +68,12 @@ class CategoryItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(30).r,
           onTap: () {
-            //detail category
+            // Tidak udah ke detail category, tetapi melalui switch case saja.
+            switch (categoryName) {
+              case 'New Arrival':
+                Get.toNamed(AppPages.newArrival);
+                break;
+            }
           },
           child: Container(
               padding: REdgeInsets.symmetric(vertical: 10, horizontal: 20),
