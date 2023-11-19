@@ -1,10 +1,12 @@
 import 'package:client/controller/product_controller.dart';
 import 'package:client/models/products.dart';
 import 'package:client/pages/home_page/detail_product.dart';
-import 'package:client/routes/app_pages.dart';
+import 'package:client/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../../routes/app_pages.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -176,23 +178,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "New Arrivals",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                    ),
-                    InkWell(
-                        onTap: () {
-                          Get.toNamed(AppPages.newArrival);
-                        },
-                        child: Text("View All"))
-                  ],
-                ),
+              CustomText(
+                textNamed: 'New Arrivals',
+                onTap: () => Get.toNamed(AppPages.newArrival),
               ),
               SizedBox(
                   height: MediaQuery.of(context).size.height * 0.25,
@@ -275,19 +263,9 @@ class HomeScreen extends StatelessWidget {
                               );
                             }),
                   )),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Trending Products",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                    ),
-                    InkWell(onTap: () {}, child: Text("View All"))
-                  ],
-                ),
+              CustomText(
+                textNamed: 'Trending Products',
+                onTap: () {},
               ),
               SizedBox(
                   height: MediaQuery.of(context).size.height * 0.25,
