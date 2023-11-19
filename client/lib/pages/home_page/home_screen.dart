@@ -1,7 +1,7 @@
 import 'package:client/controller/product_controller.dart';
 import 'package:client/models/products.dart';
 import 'package:client/pages/home_page/detail_product.dart';
-import 'package:client/pages/home_page/new_arrival.dart';
+import 'package:client/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -188,7 +188,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     InkWell(
                         onTap: () {
-                          Get.to(() => NewArrival());
+                          Get.toNamed(AppPages.newArrival);
                         },
                         child: Text("View All"))
                   ],
@@ -238,7 +238,6 @@ class HomeScreen extends StatelessWidget {
                                                       productList[index]
                                                               .image!
                                                               .isNotEmpty
-                                                          // https://storage.googleapis.com/stylish-shop/users/2512fe3caa196490104f9955da092536
                                                           ? 'https://storage.googleapis.com/${productList[index].image!}'
                                                           : "",
                                                       width: 150,
@@ -335,7 +334,6 @@ class HomeScreen extends StatelessWidget {
                                                     productList[index]
                                                             .image!
                                                             .isNotEmpty
-                                                        
                                                         ? 'https://storage.googleapis.com/${productList[index].image!}'
                                                         : "",
                                                     width: 150,

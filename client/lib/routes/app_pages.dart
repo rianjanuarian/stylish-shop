@@ -9,6 +9,7 @@ import 'package:client/pages/signup/bindings/signup_binding.dart';
 import 'package:get/get.dart';
 
 import '../pages/auth/login_signup_screen.dart';
+import '../pages/home_page/new_arrival.dart';
 import '../pages/main_tab/main_tab.dart';
 import '../pages/signup/views/signup_view.dart';
 import '../pages/common/unknown.dart';
@@ -27,6 +28,7 @@ class AppPages {
   static const signup = '/signup';
   static const mainTab = '/main-tab';
   static const home = '/home';
+  static const newArrival = '/new-arrival';
   static const setting = '/setting';
   static const personalDetail = '/personal-detail';
   static const orderOngoing = '/order-ongoing';
@@ -79,6 +81,10 @@ class AppPages {
     GetPage(
       name: home,
       page: () => const HomeScreen(),
+    ),
+    GetPage(
+      name: newArrival,
+      page: () => const NewArrival(),
     ),
     GetPage(
       name: setting,
