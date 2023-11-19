@@ -1,6 +1,7 @@
 import 'package:client/controller/product_controller.dart';
 import 'package:client/models/products.dart';
 import 'package:client/pages/home_page/detail_product.dart';
+import 'package:client/widgets/app_shimmer.dart';
 import 'package:client/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -186,9 +187,39 @@ class HomeScreen extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: Obx(
                     () => controller.isLoading.value
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
+                        ? ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: 6,
+                            itemBuilder: (_, index) {
+                              return AppShimmer(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                              decoration: BoxDecoration(
+                                                  color: Color.fromRGBO(
+                                                      219, 219, 219, 100),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                              child: const SizedBox(
+                                                width: 150,
+                                                height: 80,
+                                              )),
+                                          const ShimmerText(),
+                                          const ShimmerText(),
+                                          const ShimmerText(),
+                                        ],
+                                      )),
+                                ),
+                              );
+                            })
                         : ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: productList.length == 6
