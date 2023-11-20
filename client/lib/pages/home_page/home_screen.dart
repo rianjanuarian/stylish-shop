@@ -17,9 +17,7 @@ class HomeScreen extends StatelessWidget {
     final controller = Get.put<ProductController>(ProductController());
     List<Products> productList = controller.productList;
 
-    final List<Products> trendingProducts = []
-      ..addAll(productList)
-      ..shuffle();
+    final List<Products> trendingProducts = productList..shuffle();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -187,39 +185,7 @@ class HomeScreen extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: Obx(
                     () => controller.isLoading.value
-                        ? ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 6,
-                            itemBuilder: (_, index) {
-                              return AppShimmer(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                              decoration: BoxDecoration(
-                                                  color: Color.fromRGBO(
-                                                      219, 219, 219, 100),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                              child: const SizedBox(
-                                                width: 150,
-                                                height: 80,
-                                              )),
-                                          const ShimmerText(),
-                                          const ShimmerText(),
-                                          const ShimmerText(),
-                                        ],
-                                      )),
-                                ),
-                              );
-                            })
+                        ? createShimmerApp()
                         : ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: productList.length == 6
@@ -302,9 +268,7 @@ class HomeScreen extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: Obx(
                     () => controller.isLoading.value
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
+                        ? createShimmerApp()
                         : ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: trendingProducts.length == 6
@@ -340,10 +304,10 @@ class HomeScreen extends StatelessWidget {
                                                           BorderRadius.circular(
                                                               10)),
                                                   child: Image.network(
-                                                    productList[index]
+                                                    trendingProducts[index]
                                                             .image!
                                                             .isNotEmpty
-                                                        ? 'https://storage.googleapis.com/${productList[index].image!}'
+                                                        ? 'https://storage.googleapis.com/${trendingProducts[index].image!}'
                                                         : "",
                                                     width: 150,
                                                     height: 80,
@@ -387,5 +351,37 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget createShimmerApp() {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 6,
+        itemBuilder: (_, index) {
+          return AppShimmer(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                  alignment: Alignment.center,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    children: [
+                      Container(
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(219, 219, 219, 100),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const SizedBox(
+                            width: 150,
+                            height: 80,
+                          )),
+                      const ShimmerText(),
+                      const ShimmerText(),
+                      const ShimmerText(),
+                    ],
+                  )),
+            ),
+          );
+        });
   }
 }
