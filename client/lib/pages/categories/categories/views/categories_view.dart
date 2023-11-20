@@ -1,22 +1,12 @@
-import 'package:client/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../controllers/categories_controller.dart';
 
-class CategoriesPage extends StatelessWidget {
-  const CategoriesPage({super.key});
-
+class CategoriesView extends GetView<CategoriesController> {
+  const CategoriesView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    const List<String> categoryDummies = [
-      'New Arrival',
-      'Clothes',
-      'Bags',
-      'Shoes',
-      'Electronics',
-      'Jewelery'
-    ];
-
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -25,9 +15,7 @@ class CategoriesPage extends StatelessWidget {
           child: Column(
             children: [
               TextField(
-                onTap: () {
-                  //pergi ke halaman search
-                },
+                onTap: () => controller.goToSearch(),
                 decoration: InputDecoration(
                   prefixIcon: Padding(
                     padding: REdgeInsets.symmetric(horizontal: 30.0),
@@ -43,8 +31,10 @@ class CategoriesPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20.h),
-              ...categoryDummies
-                  .map((category) => CategoryItem(categoryName: category))
+              ...controller.categoryDummies
+                  .map(
+                    (category) => CategoryItem(categoryName: category, goToSpecificCategory: () => controller.goToSpecificCategory(category)),
+                  )
                   .toList()
             ],
           ),
@@ -55,8 +45,9 @@ class CategoriesPage extends StatelessWidget {
 }
 
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({super.key, required this.categoryName});
+  const CategoryItem({super.key, required this.categoryName, required this.goToSpecificCategory});
   final String categoryName;
+  final VoidCallback goToSpecificCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -67,34 +58,28 @@ class CategoryItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(30).r,
         child: InkWell(
           borderRadius: BorderRadius.circular(30).r,
-          onTap: () {
-            // Tidak udah ke detail category, tetapi melalui switch case saja.
-            switch (categoryName) {
-              case 'New Arrival':
-                Get.toNamed(AppPages.newArrival);
-                break;
-            }
-          },
+          onTap: () => goToSpecificCategory(),
           child: Container(
-              padding: REdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              height: 60.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30).r,
-              ),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.radio_button_unchecked,
-                    color: Colors.white,
-                  ),
-                  SizedBox(width: 20.w),
-                  Text(
-                    categoryName,
-                    style: const TextStyle(color: Colors.white),
-                  )
-                ],
-              )),
+            padding: REdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            height: 60.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30).r,
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.radio_button_unchecked,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 20.w),
+                Text(
+                  categoryName,
+                  style: const TextStyle(color: Colors.white),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
