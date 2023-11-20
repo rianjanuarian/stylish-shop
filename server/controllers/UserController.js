@@ -348,12 +348,13 @@ class UserController {
 
   static async getOneUser(req, res, next) {
     try {
-      const id = parseInt(req.user.dataValues.id);
+      const id = parseInt(req.user.id);
       const currentUser = await user.findByPk(id);
 
       if (!currentUser) {
         return next(createError(404, "User not found!"));
       }
+      
       res.status(200).json(currentUser);
     } catch (error) {
       next(error);
