@@ -1,14 +1,14 @@
-import 'package:client/services/keys/get_storage_key.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
-class Setting extends StatelessWidget {
-  const Setting({super.key});
+import '../../../../services/keys/get_storage_key.dart';
+import '../controllers/setting_controller.dart';
 
+class SettingView extends GetView<SettingController> {
+  const SettingView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,17 +85,17 @@ class Setting extends StatelessWidget {
                             fontSize: 15.sp, color: const Color(0xFF938585)),
                       ),
                     ),
-                    IconText(
+                    _IconText(
                       icon: Icons.person_2_outlined,
                       text: 'Personal Details',
                       handleClick: () => Get.toNamed('/personal-detail'),
                     ),
-                    IconText(
+                    _IconText(
                       icon: Icons.list,
                       text: 'My Order',
                       handleClick: () => Get.toNamed('/order-ongoing'),
                     ),
-                    IconText(
+                    _IconText(
                       icon: Icons.password,
                       text: 'Change Password',
                       handleClick: () => Get.toNamed('/change-password'),
@@ -126,17 +126,17 @@ class Setting extends StatelessWidget {
                             fontSize: 15.sp, color: const Color(0xFF938585)),
                       ),
                     ),
-                    IconText(
+                    _IconText(
                       icon: Icons.business,
                       text: 'Privacy Policy',
                       handleClick: () => Get.toNamed('/privacy-policy'),
                     ),
-                    IconText(
+                    _IconText(
                       icon: Icons.leaderboard_outlined,
                       text: 'Term & Conditions',
                       handleClick: () => Get.toNamed('/term-condition'),
                     ),
-                    IconText(
+                    _IconText(
                       icon: Icons.list_alt_outlined,
                       text: 'About & Services',
                       handleClick: () => Get.toNamed('/about-service'),
@@ -149,8 +149,6 @@ class Setting extends StatelessWidget {
                     REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
                 child: ElevatedButton(
                   onPressed: () async {
-                    await GoogleSignIn().signOut();
-                    await FirebaseAuth.instance.signOut();
                     await GetStorage().remove(GetStorageKey.token);
                     Get.offAllNamed('/login');
                   },
@@ -169,12 +167,9 @@ class Setting extends StatelessWidget {
   }
 }
 
-class IconText extends StatelessWidget {
-  const IconText(
-      {super.key,
-      required this.icon,
-      required this.text,
-      required this.handleClick});
+class _IconText extends StatelessWidget {
+  const _IconText(
+      {required this.icon, required this.text, required this.handleClick});
   final IconData icon;
   final String text;
   final VoidCallback handleClick;
