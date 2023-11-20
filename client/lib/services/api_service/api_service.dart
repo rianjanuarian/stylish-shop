@@ -72,6 +72,24 @@ abstract class ApiService {
       rethrow;
     }
   }
+
+  FutureOr<Response<dynamic>> loginWithGoogle(
+    String? email,
+    String? uid, {
+    CancelToken? cancelToken,
+  }) async {
+    try {
+      final result = dio.get('/users/login_with_google',
+          cancelToken: cancelToken,
+          queryParameters: {
+            'email': email,
+            'uid': uid,
+          });
+      return result;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 class ApiServiceImpl extends ApiService {}

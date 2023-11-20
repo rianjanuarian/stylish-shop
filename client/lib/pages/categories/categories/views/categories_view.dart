@@ -7,6 +7,7 @@ class CategoriesView extends GetView<CategoriesController> {
   const CategoriesView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    Get.put(CategoriesController());
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -33,7 +34,10 @@ class CategoriesView extends GetView<CategoriesController> {
               SizedBox(height: 20.h),
               ...controller.categoryDummies
                   .map(
-                    (category) => CategoryItem(categoryName: category, goToSpecificCategory: () => controller.goToSpecificCategory(category)),
+                    (category) => CategoryItem(
+                        categoryName: category,
+                        goToSpecificCategory: () =>
+                            controller.goToSpecificCategory(category)),
                   )
                   .toList()
             ],
@@ -45,7 +49,10 @@ class CategoriesView extends GetView<CategoriesController> {
 }
 
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({super.key, required this.categoryName, required this.goToSpecificCategory});
+  const CategoryItem(
+      {super.key,
+      required this.categoryName,
+      required this.goToSpecificCategory});
   final String categoryName;
   final VoidCallback goToSpecificCategory;
 

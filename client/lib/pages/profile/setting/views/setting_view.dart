@@ -8,6 +8,7 @@ class SettingView extends GetView<SettingController> {
   const SettingView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    Get.put(SettingController());
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(

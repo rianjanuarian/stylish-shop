@@ -6,10 +6,10 @@ const {
 const createError = require("../middlewares/createError");
 const { user } = require("../models");
 const admin = require("firebase-admin");
-const { Storage } = require('@google-cloud/storage');
+const { Storage } = require("@google-cloud/storage");
 const storage = new Storage({
-  projectId: '7c8c89da30790dc43d65677a33d2b042d6b3e7b3',
-  credentials: require("../helpers/cloud-storage.json")
+  projectId: "7c8c89da30790dc43d65677a33d2b042d6b3e7b3",
+  credentials: require("../helpers/cloud-storage.json"),
 });
 class UserController {
   //User Authentication
@@ -100,12 +100,10 @@ class UserController {
 
       const access_token = encodeTokenUsingJwt({ ...otherDetails });
       res.setHeader("Authorization", `Bearer ${access_token}`);
-      res
-        .status(200)
-        .json({
-          message: "You are successfully logged in!",
-          access_token: access_token,
-        });
+      res.status(200).json({
+        message: "You are successfully logged in!",
+        access_token: access_token,
+      });
     } catch (err) {
       next(err);
     }
@@ -113,8 +111,28 @@ class UserController {
 
   static async loginWithGoogle(req, res, next) {
     try {
-      const { credentials } = req.body;
-      const access_token = encodeTokenUsingJwt(credentials);
+      const { email, uid } = req.query;
+
+      const isEmailExist = await user.findOne({
+        where: {
+          email,
+        },
+      });
+
+      if (isEmailExist) {
+        const access_token = encodeTokenUsingJwt(isEmailExist);
+        res.status(200).json({
+          message: "You are successfully logged in!",
+          access_token,
+        });
+      }
+
+      const response = await user.create({
+        uid,
+        email,
+      });
+
+      const access_token = encodeTokenUsingJwt(response);
       res.setHeader("Authorization", `Bearer ${access_token}`);
       res
         .status(200)
@@ -215,7 +233,7 @@ class UserController {
         );
       }
 
-      const bucketName = 'stylish-shop';
+      const bucketName = "stylish-shop";
 
       const destination = `users/${req.file.filename}`;
       await storage.bucket(bucketName).upload(req.file.path, {
@@ -284,22 +302,21 @@ class UserController {
 
   static async updateAdminV2(req, res, next) {
     try {
-      
       const id = parseInt(req.params.id);
 
       const adminAccount = await user.findByPk(id);
-   const bucketName = 'stylish-shop';
+      const bucketName = "stylish-shop";
 
-    const destination = `users/${req.file.filename}`;
+      const destination = `users/${req.file.filename}`;
       if (!adminAccount) {
         return next(createError(404, "User not found!"));
       }
-        await storage.bucket(bucketName).upload(req.file.path, {
-      destination,
-    });
-    const image = req.file
-    ? `${bucketName}/${destination}`
-    : currentProduct.dataValues.image;
+      await storage.bucket(bucketName).upload(req.file.path, {
+        destination,
+      });
+      const image = req.file
+        ? `${bucketName}/${destination}`
+        : currentProduct.dataValues.image;
       const updatedData = {
         name: req.body.name,
         email: req.body.email,
@@ -354,7 +371,7 @@ class UserController {
       if (!currentUser) {
         return next(createError(404, "User not found!"));
       }
-      
+
       res.status(200).json(currentUser);
     } catch (error) {
       next(error);
