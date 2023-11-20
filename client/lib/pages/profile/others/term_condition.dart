@@ -1,10 +1,10 @@
-import 'package:client/pages/profile/privacy_policy.dart';
+import 'package:client/pages/profile/others/privacy_policy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class AboutService extends StatelessWidget {
-  const AboutService({super.key});
+class TermCondition extends StatelessWidget {
+  const TermCondition({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class AboutService extends StatelessWidget {
         ),
         surfaceTintColor: Colors.white,
         title: Text(
-          'About & Services',
+          'Term & Conditions',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.sp),
         ),
       ),
@@ -37,13 +37,13 @@ class AboutService extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Tentang & Pelayanan',
+                'Ketentuan Hukum',
                 style:
                     TextStyle(fontSize: 14.sp, color: const Color(0xFF595959)),
               ),
               SizedBox(height: 10.h),
               Text(
-                'About & Services',
+                'Term Condition',
                 style: TextStyle(fontSize: 25.sp, fontWeight: FontWeight.w700),
               ),
               SizedBox(height: 20.h),
