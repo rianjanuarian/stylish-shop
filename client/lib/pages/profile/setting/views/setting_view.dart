@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-
-import '../../../../services/keys/get_storage_key.dart';
 import '../controllers/setting_controller.dart';
 
 class SettingView extends GetView<SettingController> {
   const SettingView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -148,10 +145,7 @@ class SettingView extends GetView<SettingController> {
                 padding:
                     REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    await GetStorage().remove(GetStorageKey.token);
-                    Get.offAllNamed('/login');
-                  },
+                  onPressed: () => controller.logOut(),
                   style: ElevatedButton.styleFrom(
                       minimumSize: Size.fromHeight(60.h),
                       backgroundColor: Colors.black,
@@ -169,10 +163,7 @@ class SettingView extends GetView<SettingController> {
 
 class _IconText extends StatelessWidget {
   const _IconText(
-      {
-      required this.icon,
-      required this.text,
-      required this.handleClick});
+      {required this.icon, required this.text, required this.handleClick});
   final IconData icon;
   final String text;
   final VoidCallback handleClick;
