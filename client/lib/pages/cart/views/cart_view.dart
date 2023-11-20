@@ -11,6 +11,7 @@ class CartView extends GetView<CartController> {
   const CartView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    Get.put(CartController());
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

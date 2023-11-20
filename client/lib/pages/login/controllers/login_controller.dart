@@ -89,13 +89,25 @@ class LoginController extends GetxController {
     try {
       final googleUser = await googleSignIn.signIn();
       if (googleUser != null) {
-        final response =
-            await apiService.loginWithGoogle(googleUser.email, googleUser.id);
-        final loginPayload = response.data;
+        final authentication = await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: authentication.accessToken,
+          idToken: authentication.idToken,
+        );
+
+        await auth.signInWithCredential(credential);
+
+        await storage.write(GetStorageKey.token, auth.currentUser!.uid);
+
+        // final response =
+        //     await apiService.loginWithGoogle(googleUser.email, googleUser.id);
+        // final loginPayload = response.data;
 
         // Handle the response as needed
-        await storage.write(GetStorageKey.token, loginPayload['access_token']);
+        // await storage.write(GetStorageKey.token, loginPayload['access_token']);
         Get.offAllNamed('/main-tab');
+      } else {
+        return null;
       }
     } catch (e) {
       if (e is DioException) {
