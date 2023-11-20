@@ -146,7 +146,7 @@ class LoginView extends GetView<LoginController> {
                           ],
                         ),
                         ElevatedButton(
-                          onPressed: () => Get.offAllNamed('/home'),
+                          onPressed: () => controller.loginWithGoogle(),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
                               foregroundColor: Colors.white,

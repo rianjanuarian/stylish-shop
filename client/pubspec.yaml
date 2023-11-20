@@ -46,6 +46,9 @@ dependencies:
   pretty_dio_logger: ^1.3.1
   flutter_slidable: ^3.0.1
   shimmer: ^3.0.0
+  firebase_auth: ^4.14.0
+  firebase_core: ^2.22.0
+  google_sign_in: ^6.1.6
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,10 @@
 import 'package:client/services/keys/get_storage_key.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Setting extends StatelessWidget {
   const Setting({super.key});
@@ -147,6 +149,8 @@ class Setting extends StatelessWidget {
                     REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
                 child: ElevatedButton(
                   onPressed: () async {
+                    await GoogleSignIn().signOut();
+                    await FirebaseAuth.instance.signOut();
                     await GetStorage().remove(GetStorageKey.token);
                     Get.offAllNamed('/login');
                   },

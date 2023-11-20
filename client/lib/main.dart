@@ -1,6 +1,7 @@
 import 'package:client/routes/app_pages.dart';
 import 'package:client/services/storage_service/storage_service.dart';
 import 'package:client/themes/fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,14 @@ import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+    apiKey: 'AIzaSyC5zv7y30pJU6i80SutR-vFiuyIallnTXI',
+    appId: '1:648705838513:android:ba1224299a7056d5f7c190',
+    messagingSenderId: '648705838513',
+    projectId: 'stylishshop-562a7',
+    storageBucket: 'stylishshop-562a7.appspot.com',
+  ));
   await initialConfig();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
