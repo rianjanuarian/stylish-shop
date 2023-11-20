@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import '../pages/profile/setting/bindings/setting_binding.dart';
-import '../pages/profile/setting/views/setting_view.dart';
+import '../pages/profile/order_ongoing/bindings/order_ongoing_binding.dart';
+import '../pages/profile/order_ongoing/views/order_ongoing_view.dart';
 import '../pages/auth/login_signup_screen.dart';
 import '../pages/common/unknown.dart';
 import '../pages/get_start/on_boarding_screen.dart';
@@ -9,12 +9,15 @@ import '../pages/home_page/new_arrival.dart';
 import '../pages/login/bindings/login_binding.dart';
 import '../pages/login/views/login_view.dart';
 import '../pages/main_tab/main_tab.dart';
-import '../pages/profile/about_service.dart';
-import '../pages/profile/change_password.dart';
-import '../pages/profile/order_ongoing.dart';
-import '../pages/profile/personal_details.dart';
-import '../pages/profile/privacy_policy.dart';
-import '../pages/profile/term_condition.dart';
+import '../pages/profile/change_password/bindings/change_password_binding.dart';
+import '../pages/profile/change_password/views/change_password_view.dart';
+import '../pages/profile/others/about_service.dart';
+import '../pages/profile/others/privacy_policy.dart';
+import '../pages/profile/others/term_condition.dart';
+import '../pages/profile/personal_detail/bindings/personal_detail_binding.dart';
+import '../pages/profile/personal_detail/views/personal_detail_view.dart';
+import '../pages/profile/setting/bindings/setting_binding.dart';
+import '../pages/profile/setting/views/setting_view.dart';
 import '../pages/signup/bindings/signup_binding.dart';
 import '../pages/signup/views/signup_view.dart';
 import '../pages/splash_screen/bindings/splash_screen_binding.dart';
@@ -93,15 +96,18 @@ class AppPages {
     ),
     GetPage(
       name: personalDetail,
-      page: () => const PersonalDetail(),
+      page: () => const PersonalDetailView(),
+      binding: PersonalDetailBinding(),
     ),
     GetPage(
       name: orderOngoing,
-      page: () => const OrderOngoing(),
+      page: () => const OrderOngoingView(),
+      binding: OrderOngoingBinding(),
     ),
     GetPage(
       name: changePassword,
-      page: () => const ChangePassword(),
+      page: () => const ChangePasswordView(),
+      binding: ChangePasswordBinding(),
     ),
     GetPage(
       name: privacyPolicy,
@@ -115,5 +121,5 @@ class AppPages {
       name: aboutService,
       page: () => const AboutService(),
     ),
-  ];
+    ];
 }
