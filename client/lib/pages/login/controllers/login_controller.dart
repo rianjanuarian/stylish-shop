@@ -26,6 +26,9 @@ class LoginController extends GetxController {
   // storage
   final storage = GetStorage();
 
+  // ApiService Init
+  final apiService = Get.put(ApiServiceImpl());
+
   void clearTextFieldProp() {
     email.clear();
     password.clear();
@@ -58,7 +61,6 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       try {
         isLoading.value = true;
-        final apiService = Get.put(ApiServiceImpl());
         final response = await apiService.loginWithEmail(
           LoginRequest()
             ..email = email.text
@@ -87,13 +89,12 @@ class LoginController extends GetxController {
     try {
       final googleUser = await googleSignIn.signIn();
       if (googleUser != null) {
-        final googleAuth = await googleUser.authentication;
-        final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-        await auth.signInWithCredential(credential);
-        await storage.write(GetStorageKey.token, auth.currentUser!.uid);
+        final response =
+            await apiService.loginWithGoogle(googleUser.email, googleUser.id);
+        final loginPayload = response.data;
+
+        // Handle the response as needed
+        await storage.write(GetStorageKey.token, loginPayload['access_token']);
         Get.offAllNamed('/main-tab');
       }
     } catch (e) {
@@ -105,6 +106,7 @@ class LoginController extends GetxController {
         } else {
           Get.snackbar('Error', 'Unknown error occurred');
         }
+        isLoading.value = false;
       }
     }
   }
