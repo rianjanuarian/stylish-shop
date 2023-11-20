@@ -1,7 +1,7 @@
 import 'package:client/pages/cart/cart_page.dart';
 import 'package:client/pages/categories/categories.dart';
 import 'package:client/pages/home_page/home_screen.dart';
-import 'package:client/pages/profile/setting.dart';
+import 'package:client/pages/profile/setting/views/setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -34,7 +34,7 @@ class _MainTabState extends State<MainTab> {
     const HomeScreen(),
     const CartPage(),
     const CategoriesPage(),
-    const Setting(),
+    const SettingView(),
   ];
 
   @override
