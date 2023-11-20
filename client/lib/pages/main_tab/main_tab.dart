@@ -1,10 +1,9 @@
-import 'package:client/pages/cart/cart_page.dart';
-import 'package:client/pages/categories/categories.dart';
+import 'package:client/pages/cart/views/cart_view.dart';
+import 'package:client/pages/categories/categories/views/categories_view.dart';
 import 'package:client/pages/home_page/home_screen.dart';
 import 'package:client/pages/profile/setting/views/setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../widgets/bottom_navy_bar.dart';
 
 class MainTab extends StatefulWidget {
@@ -32,8 +31,8 @@ class _MainTabState extends State<MainTab> {
 
   final List<Widget> _pages = [
     const HomeScreen(),
-    const CartPage(),
-    const CategoriesPage(),
+    const CartView(),
+    const CategoriesView(),
     const SettingView(),
   ];
 
