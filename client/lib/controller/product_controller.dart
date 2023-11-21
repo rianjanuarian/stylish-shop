@@ -24,7 +24,7 @@ class ProductController extends GetxController {
 
       if (response.statusCode == 200) {
         final List<dynamic> result = response.data;
-        print(result);
+        // print(result);
         productList.value = result.map((e) => Products.fromJson(e)).toList();
         isLoading.value = false;
 
@@ -57,7 +57,7 @@ class ProductController extends GetxController {
         );
       }
     } catch (e) {
-      print('error : ${e}');
+      print('error : $e');
     }
   }
 

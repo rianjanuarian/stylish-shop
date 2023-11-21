@@ -364,8 +364,8 @@ class UserController {
       if (!currentUser) {
         return next(createError(404, "User not found!"));
       }
-
-      res.status(200).json(currentUser);
+      const { password, ...otherDetails } = currentUser.dataValues;
+      res.status(200).json({ ...otherDetails });
     } catch (error) {
       next(error);
     }
