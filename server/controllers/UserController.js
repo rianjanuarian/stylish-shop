@@ -105,21 +105,6 @@ class UserController {
   static async loginWithGoogle(req, res, next) {
     try {
       const { email, uid } = req.query;
-
-      const isEmailExist = await user.findOne({
-        where: {
-          email,
-        },
-      });
-
-      if (isEmailExist) {
-        const access_token = encodeTokenUsingJwt(isEmailExist);
-        res.status(200).json({
-          message: "You are successfully logged in!",
-          access_token,
-        });
-      }
-
       const response = await user.create({
         uid,
         email,
