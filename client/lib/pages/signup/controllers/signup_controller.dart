@@ -86,9 +86,6 @@ class SignupController extends GetxController {
   }
 
   String? confirmPasswordValidations(value) {
-    if (value.length < 8) {
-      return 'Password must be at least 8 characters';
-    }
     if (value != password.text) {
       return 'Password does not match';
     }

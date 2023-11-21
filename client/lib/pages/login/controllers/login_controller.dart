@@ -61,7 +61,7 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       try {
         isLoading.value = true;
-        await auth.signInWithEmailAndPassword(
+        auth.signInWithEmailAndPassword(
           email: email.text,
           password: password.text,
         );
@@ -101,29 +101,16 @@ class LoginController extends GetxController {
 
         await auth.signInWithCredential(credential);
 
-        await storage.write(GetStorageKey.token, auth.currentUser!.uid);
+        final payload = await apiService.loginWithGoogle(
+            googleUser.email, auth.currentUser!.uid);
 
-        // final response =
-        //     await apiService.loginWithGoogle(googleUser.email, googleUser.id);
-        // final loginPayload = response.data;
-
-        // Handle the response as needed
-        // await storage.write(GetStorageKey.token, loginPayload['access_token']);
+        await storage.write(GetStorageKey.token, payload.data['access_token']);
         Get.offAllNamed('/main-tab');
       } else {
         return null;
       }
     } catch (e) {
-      if (e is DioException) {
-        final errorResponse = e.response;
-        if (errorResponse != null) {
-          final errorMessage = errorResponse.data?['message'];
-          Get.snackbar('Error', errorMessage ?? 'Unknown error');
-        } else {
-          Get.snackbar('Error', 'Unknown error occurred');
-        }
-        isLoading.value = false;
-      }
+      print(e);
     }
   }
 
