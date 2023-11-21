@@ -61,6 +61,10 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       try {
         isLoading.value = true;
+        await auth.signInWithEmailAndPassword(
+          email: email.text,
+          password: password.text,
+        );
         final response = await apiService.loginWithEmail(
           LoginRequest()
             ..email = email.text
