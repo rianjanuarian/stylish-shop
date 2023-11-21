@@ -2,47 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../controllers/order_ongoing_controller.dart';
 
-class OrderOngoing extends StatefulWidget {
-  const OrderOngoing({super.key});
-
-  @override
-  State<OrderOngoing> createState() => _OrderOngoingState();
-}
-
-class _OrderOngoingState extends State<OrderOngoing> {
-  final List _orderOnGoing = [
-    {
-      'image': 'http://via.placeholder.com/200',
-      'title': 'Adibas',
-      'description': 'Adibas good shoes',
-      'price': 150,
-    },
-    {
-      'image': 'http://via.placeholder.com/200',
-      'title': 'Mike',
-      'description': 'Mike good shoes',
-      'price': 170,
-    }
-  ];
-
-  final List _orderCompleted = [
-    {
-      'image': 'http://via.placeholder.com/200',
-      'title': 'Swallaw',
-      'description': 'Swallaw good sandals',
-      'price': 150,
-    }
-  ];
-
-  bool _isOngoing = true;
-
-  void _switchTo(bool isOngoing) {
-    setState(() {
-      _isOngoing = isOngoing;
-    });
-  }
-
+class OrderOngoingView extends GetView<OrderOngoingController> {
+  const OrderOngoingView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,75 +36,86 @@ class _OrderOngoingState extends State<OrderOngoing> {
               decoration: BoxDecoration(
                   color: const Color(0xFFf0f0f0),
                   borderRadius: BorderRadius.circular(10).r),
-              child: Padding(
-                padding: REdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () => _switchTo(true),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        decoration: BoxDecoration(
-                          color: _isOngoing ? Colors.black : null,
-                          borderRadius: BorderRadius.circular(7).r,
-                        ),
-                        width: 165.w,
-                        height: 40.h,
-                        child: Center(
-                          child: Text(
-                            'Ongoing',
-                            style: TextStyle(
-                              color: _isOngoing ? Colors.white : Colors.black,
+              child: Obx(
+                () => Padding(
+                  padding: REdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => controller.switchTo(true),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          decoration: BoxDecoration(
+                            color: controller.isOngoing.isTrue
+                                ? Colors.black
+                                : null,
+                            borderRadius: BorderRadius.circular(7).r,
+                          ),
+                          width: 165.w,
+                          height: 40.h,
+                          child: Center(
+                            child: Text(
+                              'Ongoing',
+                              style: TextStyle(
+                                color: controller.isOngoing.isTrue
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () => _switchTo(false),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        decoration: BoxDecoration(
-                          color: !_isOngoing ? Colors.black : null,
-                          borderRadius: BorderRadius.circular(7).r,
-                        ),
-                        width: 165.w,
-                        height: 40.h,
-                        child: Center(
-                          child: Text(
-                            'Completed',
-                            style: TextStyle(
-                              color: !_isOngoing ? Colors.white : Colors.black,
+                      GestureDetector(
+                        onTap: () => controller.switchTo(false),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          decoration: BoxDecoration(
+                            color: controller.isOngoing.isFalse
+                                ? Colors.black
+                                : null,
+                            borderRadius: BorderRadius.circular(7).r,
+                          ),
+                          width: 165.w,
+                          height: 40.h,
+                          child: Center(
+                            child: Text(
+                              'Completed',
+                              style: TextStyle(
+                                color: controller.isOngoing.isFalse
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
             SizedBox(height: 20.h),
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: _isOngoing
-                      ? _orderOnGoing
-                          .map((order) => _OrderWidget(
-                                title: order['title'],
-                                description: order['description'],
-                                image: order['image'],
-                                price: order['price'],
-                              ))
-                          .toList()
-                      : _orderCompleted
-                          .map((order) => _OrderWidget(
-                                title: order['title'],
-                                description: order['description'],
-                                image: order['image'],
-                                price: order['price'],
-                              ))
-                          .toList(),
+                child: Obx( () => Column(
+                    children: controller.isOngoing.isTrue
+                        ? controller.orderOnGoing
+                            .map((order) => _OrderWidget(
+                                  title: order['title'],
+                                  description: order['description'],
+                                  image: order['image'],
+                                  price: order['price'],
+                                ))
+                            .toList()
+                        : controller.orderCompleted
+                            .map((order) => _OrderWidget(
+                                  title: order['title'],
+                                  description: order['description'],
+                                  image: order['image'],
+                                  price: order['price'],
+                                ))
+                            .toList(),
+                  ),
                 ),
               ),
             ),
@@ -188,8 +162,10 @@ class _OrderWidget extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: image,
                     width: 80.w,
-                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    placeholder: (context, url) =>
+                        const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
                 ),
                 SizedBox(width: 15.w),

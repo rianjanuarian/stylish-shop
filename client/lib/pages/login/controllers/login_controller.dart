@@ -2,9 +2,11 @@ import 'package:client/services/api_service/api_service.dart';
 import 'package:client/services/api_service/api_service_models.dart';
 import 'package:client/services/keys/get_storage_key.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -17,8 +19,15 @@ class LoginController extends GetxController {
 
   var isPasswordObscure = true.obs;
 
+  // Firebase
+  final auth = FirebaseAuth.instance;
+  final googleSignIn = GoogleSignIn();
+
   // storage
   final storage = GetStorage();
+
+  // ApiService Init
+  final apiService = Get.put(ApiServiceImpl());
 
   void clearTextFieldProp() {
     email.clear();
@@ -52,7 +61,10 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       try {
         isLoading.value = true;
-        final apiService = Get.put(ApiServiceImpl());
+        await auth.signInWithEmailAndPassword(
+          email: email.text,
+          password: password.text,
+        );
         final response = await apiService.loginWithEmail(
           LoginRequest()
             ..email = email.text
@@ -73,6 +85,44 @@ class LoginController extends GetxController {
           }
           isLoading.value = false;
         }
+      }
+    }
+  }
+
+  void loginWithGoogle() async {
+    try {
+      final googleUser = await googleSignIn.signIn();
+      if (googleUser != null) {
+        final authentication = await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: authentication.accessToken,
+          idToken: authentication.idToken,
+        );
+
+        await auth.signInWithCredential(credential);
+
+        await storage.write(GetStorageKey.token, auth.currentUser!.uid);
+
+        // final response =
+        //     await apiService.loginWithGoogle(googleUser.email, googleUser.id);
+        // final loginPayload = response.data;
+
+        // Handle the response as needed
+        // await storage.write(GetStorageKey.token, loginPayload['access_token']);
+        Get.offAllNamed('/main-tab');
+      } else {
+        return null;
+      }
+    } catch (e) {
+      if (e is DioException) {
+        final errorResponse = e.response;
+        if (errorResponse != null) {
+          final errorMessage = errorResponse.data?['message'];
+          Get.snackbar('Error', errorMessage ?? 'Unknown error');
+        } else {
+          Get.snackbar('Error', 'Unknown error occurred');
+        }
+        isLoading.value = false;
       }
     }
   }

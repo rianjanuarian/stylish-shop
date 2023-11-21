@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,6 +33,12 @@ class SignupController extends GetxController {
 
   // Confirm Password
   final confirmPasswordChange = RxString('');
+
+  // ApiService Init
+  final apiService = Get.put(ApiServiceImpl());
+
+  // Firebase init
+  final auth = FirebaseAuth.instance;
 
   void clearTextFieldProp() {
     username.clear();
@@ -92,11 +99,15 @@ class SignupController extends GetxController {
     if (formKey.currentState!.validate()) {
       try {
         isLoading.value = true;
-        final apiService = Get.put(ApiServiceImpl());
+
+        await auth.createUserWithEmailAndPassword(
+            email: email.text, password: password.text);
+
         await apiService.registerWithEmail(RegisterRequest(
           name: username.text,
           email: email.text,
           password: password.text,
+          uid: auth.currentUser!.uid,
         ));
         Get.offNamed('/login');
         isLoading.value = false;
