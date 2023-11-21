@@ -32,6 +32,7 @@ RegisterRequest _$RegisterRequestFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String?,
       email: json['email'] as String?,
       password: json['password'] as String?,
+      uid: json['uid'] as String?,
     );
 
 Map<String, dynamic> _$RegisterRequestToJson(RegisterRequest instance) =>
@@ -39,6 +40,7 @@ Map<String, dynamic> _$RegisterRequestToJson(RegisterRequest instance) =>
       'name': instance.name,
       'email': instance.email,
       'password': instance.password,
+      'uid': instance.uid,
     };
 
 BaseResponse<T> _$BaseResponseFromJson<T>(Map<String, dynamic> json) =>
