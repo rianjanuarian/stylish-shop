@@ -6,6 +6,7 @@ class ProductController extends GetxController {
   var productList = <Products>[].obs;
   var isLoading = true.obs;
   var productId = <Products>[].obs;
+  var trendingList = <Products>[].obs;
   RxInt counter = 1.obs;
   @override
   void onInit() {
@@ -24,8 +25,8 @@ class ProductController extends GetxController {
 
       if (response.statusCode == 200) {
         final List<dynamic> result = response.data;
-        // print(result);
         productList.value = result.map((e) => Products.fromJson(e)).toList();
+        trendingList.value = result.map((e) => Products.fromJson(e)).toList();
         isLoading.value = false;
 
         update();
@@ -59,6 +60,10 @@ class ProductController extends GetxController {
     } catch (e) {
       print('error : $e');
     }
+  }
+
+  void trendingProducts() {
+    trendingList.shuffle();
   }
 
   void increment(int stock) {

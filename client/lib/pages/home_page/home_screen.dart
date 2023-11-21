@@ -1,8 +1,10 @@
 import 'package:client/controller/product_controller.dart';
 import 'package:client/models/products.dart';
 import 'package:client/pages/home_page/detail_product.dart';
+import 'package:client/pages/search_page/views/search_page_view.dart';
 import 'package:client/widgets/app_shimmer.dart';
 import 'package:client/widgets/custom_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,10 +17,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<ProductController>(ProductController());
+    controller.trendingProducts();
     List<Products> productList = controller.productList;
 
-    final List<Products> trendingProducts = productList..shuffle();
-
+    List<Products> trendingProducts = controller.trendingList;
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -28,12 +30,28 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.asset('assets/images/user.png'),
-                    ),
+                    StreamBuilder<User?>(
+                        stream: FirebaseAuth.instance.userChanges(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.network(
+                                FirebaseAuth.instance.currentUser!.photoURL!,
+                                width: 65,
+                                height: 65,
+                              ),
+                            );
+                          } else {
+                            //masukin data yg login pake akun postgre
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: Image.asset('assets/images/user.png'),
+                            );
+                          }
+                        }),
                     const SizedBox(width: 20),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -41,13 +59,29 @@ class HomeScreen extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.w700),
                         ),
-                        Text(
-                          'Sarah Ann',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF666666)),
-                        ),
+                        StreamBuilder<User?>(
+                            stream: FirebaseAuth.instance.userChanges(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                  FirebaseAuth
+                                      .instance.currentUser!.displayName!,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF666666)),
+                                );
+                              } else {
+                                //masukin data yg login pake akun postgre
+                                return Text(
+                                  'Sarah Ann',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF666666)),
+                                );
+                              }
+                            }),
                       ],
                     )
                   ],
@@ -55,21 +89,30 @@ class HomeScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    hintText: 'Search...',
-                    contentPadding: EdgeInsets.zero,
-                    fillColor: const Color(0xffF3F4F5),
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                ),
+                child: ElevatedButton(onPressed: (){
+                  Get.to(() => SearchPageView());
+                }, child: Row(
+                  children: [
+                    Icon(Icons.search,color: Colors.black,),
+                    SizedBox(width: 15,),
+                    Text("Search...",style: TextStyle(color: Colors.black),),
+                  ],
+                ))
               ),
+              // TextField(
+              //     decoration: InputDecoration(
+              //       prefixIcon: const Icon(Icons.search),
+              //       hintText: 'Search...',
+              //       contentPadding: EdgeInsets.zero,
+              //       fillColor: const Color(0xffF3F4F5),
+              //       filled: true,
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(20),
+              //       ),
+              //     ),
+              //   ),
               Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 15),
+                padding: const EdgeInsets.only(top: 10, bottom: 15),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
