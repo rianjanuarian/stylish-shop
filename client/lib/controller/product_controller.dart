@@ -25,7 +25,7 @@ class ProductController extends GetxController {
 
       if (response.statusCode == 200) {
         final List<dynamic> result = response.data;
-        print(result);
+   
         productList.value = result.map((e) => Products.fromJson(e)).toList();
         trendingList.value = result.map((e) => Products.fromJson(e)).toList();
         isLoading.value = false;
