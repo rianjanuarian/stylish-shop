@@ -332,11 +332,11 @@ class HomeScreen extends StatelessWidget {
                                                           BorderRadius.circular(
                                                               10)),
                                                   child: Image.network(
-                                                    productList[index]
+                                                    trendingProducts[index]
                                                             .image!
                                                             .isNotEmpty
                                                         
-                                                        ? 'https://storage.googleapis.com/${productList[index].image!}'
+                                                        ? 'https://storage.googleapis.com/${trendingProducts[index].image!}'
                                                         : "",
                                                     width: 150,
                                                     height: 80,
