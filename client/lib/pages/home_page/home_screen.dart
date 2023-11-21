@@ -1,10 +1,13 @@
 import 'package:client/controller/product_controller.dart';
 import 'package:client/models/products.dart';
 import 'package:client/pages/home_page/detail_product.dart';
-import 'package:client/pages/home_page/new_arrival.dart';
+import 'package:client/widgets/app_shimmer.dart';
+import 'package:client/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../../routes/app_pages.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -14,9 +17,7 @@ class HomeScreen extends StatelessWidget {
     final controller = Get.put<ProductController>(ProductController());
     List<Products> productList = controller.productList;
 
-    final List<Products> trendingProducts = []
-      ..addAll(productList)
-      ..shuffle();
+    final List<Products> trendingProducts = productList..shuffle();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -176,31 +177,15 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "New Arrivals",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                    ),
-                    InkWell(
-                        onTap: () {
-                          Get.to(() => NewArrival());
-                        },
-                        child: Text("View All"))
-                  ],
-                ),
+              CustomText(
+                textNamed: 'New Arrivals',
+                onTap: () => Get.toNamed(AppPages.newArrival),
               ),
               SizedBox(
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: Obx(
                     () => controller.isLoading.value
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
+                        ? createShimmerApp()
                         : ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: productList.length == 6
@@ -238,7 +223,6 @@ class HomeScreen extends StatelessWidget {
                                                       productList[index]
                                                               .image!
                                                               .isNotEmpty
-                                                          // https://storage.googleapis.com/stylish-shop/users/2512fe3caa196490104f9955da092536
                                                           ? 'https://storage.googleapis.com/${productList[index].image!}'
                                                           : "",
                                                       width: 150,
@@ -276,27 +260,15 @@ class HomeScreen extends StatelessWidget {
                               );
                             }),
                   )),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Trending Products",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                    ),
-                    InkWell(onTap: () {}, child: Text("View All"))
-                  ],
-                ),
+              CustomText(
+                textNamed: 'Trending Products',
+                onTap: () {},
               ),
               SizedBox(
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: Obx(
                     () => controller.isLoading.value
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
+                        ? createShimmerApp()
                         : ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: trendingProducts.length == 6
@@ -335,7 +307,6 @@ class HomeScreen extends StatelessWidget {
                                                     trendingProducts[index]
                                                             .image!
                                                             .isNotEmpty
-                                                        
                                                         ? 'https://storage.googleapis.com/${trendingProducts[index].image!}'
                                                         : "",
                                                     width: 150,
@@ -380,5 +351,37 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget createShimmerApp() {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: 6,
+        itemBuilder: (_, index) {
+          return AppShimmer(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                  alignment: Alignment.center,
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  child: Column(
+                    children: [
+                      Container(
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(219, 219, 219, 100),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: const SizedBox(
+                            width: 150,
+                            height: 80,
+                          )),
+                      const ShimmerText(),
+                      const ShimmerText(),
+                      const ShimmerText(),
+                    ],
+                  )),
+            ),
+          );
+        });
   }
 }

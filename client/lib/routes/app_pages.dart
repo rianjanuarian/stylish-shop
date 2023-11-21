@@ -1,21 +1,32 @@
-import 'package:client/pages/profile/about_service.dart';
-import 'package:client/pages/profile/change_password.dart';
-import 'package:client/pages/profile/order_ongoing.dart';
-import 'package:client/pages/profile/personal_details.dart';
-import 'package:client/pages/profile/privacy_policy.dart';
-import 'package:client/pages/profile/setting.dart';
-import 'package:client/pages/profile/term_condition.dart';
-import 'package:client/pages/signup/bindings/signup_binding.dart';
 import 'package:get/get.dart';
 
+import '../pages/cart/bindings/cart_binding.dart';
+import '../pages/cart/views/cart_view.dart';
 import '../pages/auth/login_signup_screen.dart';
-import '../pages/main_tab/main_tab.dart';
-import '../pages/signup/views/signup_view.dart';
+import '../pages/categories/categories/bindings/categories_binding.dart';
+import '../pages/categories/categories/views/categories_view.dart';
 import '../pages/common/unknown.dart';
 import '../pages/get_start/on_boarding_screen.dart';
 import '../pages/home_page/home_screen.dart';
+import '../pages/home_page/new_arrival.dart';
 import '../pages/login/bindings/login_binding.dart';
 import '../pages/login/views/login_view.dart';
+import '../pages/main_tab/main_tab.dart';
+import '../pages/profile/change_password/bindings/change_password_binding.dart';
+import '../pages/profile/change_password/views/change_password_view.dart';
+import '../pages/profile/order_ongoing/bindings/order_ongoing_binding.dart';
+import '../pages/profile/order_ongoing/views/order_ongoing_view.dart';
+import '../pages/profile/others/about_service.dart';
+import '../pages/profile/others/privacy_policy.dart';
+import '../pages/profile/others/term_condition.dart';
+import '../pages/profile/personal_detail/bindings/personal_detail_binding.dart';
+import '../pages/profile/personal_detail/views/personal_detail_view.dart';
+import '../pages/profile/setting/bindings/setting_binding.dart';
+import '../pages/profile/setting/views/setting_view.dart';
+import '../pages/search_page/bindings/search_page_binding.dart';
+import '../pages/search_page/views/search_page_view.dart';
+import '../pages/signup/bindings/signup_binding.dart';
+import '../pages/signup/views/signup_view.dart';
 import '../pages/splash_screen/bindings/splash_screen_binding.dart';
 import '../pages/splash_screen/views/splash_screen_view.dart';
 
@@ -27,6 +38,7 @@ class AppPages {
   static const signup = '/signup';
   static const mainTab = '/main-tab';
   static const home = '/home';
+  static const newArrival = '/new-arrival';
   static const setting = '/setting';
   static const personalDetail = '/personal-detail';
   static const orderOngoing = '/order-ongoing';
@@ -34,6 +46,9 @@ class AppPages {
   static const aboutService = '/about-service';
   static const privacyPolicy = '/privacy-policy';
   static const termCondition = '/term-condition';
+  static const categories = '/categories';
+  static const search = '/search';
+  static const cart = '/cart';
 
   // Unknown
   static const unknown = '/unknown';
@@ -81,20 +96,28 @@ class AppPages {
       page: () => const HomeScreen(),
     ),
     GetPage(
+      name: newArrival,
+      page: () => const NewArrival(),
+    ),
+    GetPage(
       name: setting,
-      page: () => const Setting(),
+      page: () => const SettingView(),
+      binding: SettingBinding(),
     ),
     GetPage(
       name: personalDetail,
-      page: () => const PersonalDetail(),
+      page: () => const PersonalDetailView(),
+      binding: PersonalDetailBinding(),
     ),
     GetPage(
       name: orderOngoing,
-      page: () => const OrderOngoing(),
+      page: () => const OrderOngoingView(),
+      binding: OrderOngoingBinding(),
     ),
     GetPage(
       name: changePassword,
-      page: () => const ChangePassword(),
+      page: () => const ChangePasswordView(),
+      binding: ChangePasswordBinding(),
     ),
     GetPage(
       name: privacyPolicy,
@@ -107,6 +130,21 @@ class AppPages {
     GetPage(
       name: aboutService,
       page: () => const AboutService(),
+    ),
+    GetPage(
+      name: categories,
+      page: () => const CategoriesView(),
+      binding: CategoriesBinding(),
+    ),
+    GetPage(
+      name: search,
+      page: () => const SearchPageView(),
+      binding: SearchPageBinding(),
+    ),
+    GetPage(
+      name: cart,
+      page: () => const CartView(),
+      binding: CartBinding(),
     ),
   ];
 }
