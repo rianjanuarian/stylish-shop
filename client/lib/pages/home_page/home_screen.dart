@@ -3,6 +3,7 @@ import 'package:client/models/products.dart';
 import 'package:client/pages/home_page/detail_product.dart';
 import 'package:client/widgets/app_shimmer.dart';
 import 'package:client/widgets/custom_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -15,10 +16,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<ProductController>(ProductController());
+    controller.trendingProducts();
     List<Products> productList = controller.productList;
 
-    final List<Products> trendingProducts = productList..shuffle();
-
+    List<Products> trendingProducts = controller.trendingList;
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -33,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                       child: Image.asset('assets/images/user.png'),
                     ),
                     const SizedBox(width: 20),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -41,13 +42,22 @@ class HomeScreen extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.w700),
                         ),
-                        Text(
-                          'Sarah Ann',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF666666)),
-                        ),
+                        StreamBuilder<User?>(
+                            stream: FirebaseAuth.instance.userChanges(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                  FirebaseAuth
+                                      .instance.currentUser!.displayName!,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400,
+                                      color: Color(0xFF666666)),
+                                );
+                              } else {
+                                return Container();
+                              }
+                            }),
                       ],
                     )
                   ],

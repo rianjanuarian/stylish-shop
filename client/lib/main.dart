@@ -9,14 +9,15 @@ import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      options: const FirebaseOptions(
-    apiKey: 'AIzaSyC5zv7y30pJU6i80SutR-vFiuyIallnTXI',
-    appId: '1:648705838513:android:ba1224299a7056d5f7c190',
-    messagingSenderId: '648705838513',
-    projectId: 'stylishshop-562a7',
-    storageBucket: 'stylishshop-562a7.appspot.com',
-  ));
+  await Firebase.initializeApp();
+  // await Firebase.initializeApp(
+  //     options: const FirebaseOptions(
+  //   apiKey: 'AIzaSyC5zv7y30pJU6i80SutR-vFiuyIallnTXI',
+  //   appId: '1:648705838513:android:ba1224299a7056d5f7c190',
+  //   messagingSenderId: '648705838513',
+  //   projectId: 'stylishshop-562a7',
+  //   storageBucket: 'stylishshop-562a7.appspot.com',
+  // ));
   await initialConfig();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
