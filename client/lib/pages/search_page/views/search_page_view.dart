@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import '../controllers/search_page_controller.dart';
 import 'package:client/pages/home_page/detail_product.dart';
 class SearchPageView extends GetView<SearchPageController> {
-  // final ProductController productController = Get.put(ProductController());
+
   final SearchPageController searchController = Get.put(SearchPageController());
   TextEditingController textController = TextEditingController();
   SearchPageView({Key? key}) : super(key: key);

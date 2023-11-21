@@ -3,30 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
 class SearchPageController extends GetxController {
-  // var isLoading = true.obs;
-  // var productId = <Products>[].obs;
-  //  Future<void> getProductById(int id) async {
-  //   //'http://192.168.0.104:3000/products'
-  //   String url = 'https://stylish-shop.vercel.app/products/detail/$id';
-  //   try {
-  //     final response = await Dio().get(url);
 
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> data = response.data;
-  //       productId.value = [Products.fromJson(data)];
-  //       isLoading.value = false;
-  //       print(data);
-  //       update();
-  //     } else {
-  //       Get.snackbar(
-  //         'Error Fetching Product by ID',
-  //         'Error: ${response.statusCode.toString()}',
-  //       );
-  //     }
-  //   } catch (e) {
-  //     print('error : ${e}');
-  //   }
-  // }
   var isLoading = true.obs;
   var productName = <Products>[].obs;
   Future<void> searchProducts(String name) async{
