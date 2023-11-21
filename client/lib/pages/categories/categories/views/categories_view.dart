@@ -32,10 +32,10 @@ class CategoriesView extends GetView<CategoriesController> {
                 ),
               ),
               SizedBox(height: 20.h),
-              ...controller.categoryDummies
+              ...controller.categoriesList
                   .map(
                     (category) => CategoryItem(
-                        categoryName: category,
+                        categoryName: category.name!,
                         goToSpecificCategory: () =>
                             controller.goToSpecificCategory(category)),
                   )

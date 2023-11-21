@@ -138,7 +138,7 @@ class AppPages {
     ),
     GetPage(
       name: search,
-      page: () => const SearchPageView(),
+      page: () =>  SearchPageView(),
       binding: SearchPageBinding(),
     ),
     GetPage(
