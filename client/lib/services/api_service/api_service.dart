@@ -79,7 +79,10 @@ abstract class ApiService {
     CancelToken? cancelToken,
   }) async {
     try {
-      final result = dio.get('/users/login_with_google',
+      final result = dio.request('/users/login_with_google',
+          options: Options(
+            method: 'POST',
+          ),
           cancelToken: cancelToken,
           queryParameters: {
             'email': email,
