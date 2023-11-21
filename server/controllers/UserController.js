@@ -15,7 +15,7 @@ class UserController {
   //User Authentication
   static async registerWithEmail(req, res, next) {
     try {
-      let { name, email, password } = req.body;
+      let { name, email, password, uid } = req.body;
 
       const isEmailExist = await user.findOne({
         where: {
@@ -36,13 +36,6 @@ class UserController {
       }
 
       password = await encryptPassword(password);
-
-      const newUser = await admin.auth().createUser({
-        name,
-        email,
-        password,
-      });
-      const uid = newUser.uid;
 
       const response = await user.create({
         name,
