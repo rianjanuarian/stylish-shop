@@ -145,7 +145,9 @@ class UserController {
   //User Data
   static async changePassword(req, res, next) {
     try {
-      const currentPasswords = req.user.dataValues.password;
+      const currentUser = await user.findByPk(req.user.id);
+      const currentPasswords = currentUser.dataValues.password;
+
       const { oldPassword, newPassword, confirmPassword } = req.body;
 
       if (newPassword !== confirmPassword) {
@@ -161,14 +163,7 @@ class UserController {
       }
 
       const password = await encryptPassword(newPassword);
-      const response = await user.update(
-        { password },
-        {
-          where: {
-            uid: req.user.dataValues.uid,
-          },
-        }
-      );
+      const response = await currentUser.update({ password });
 
       if (response[0] !== 1) {
         res.json({ message: "Password has not been changed!" });

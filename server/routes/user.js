@@ -29,7 +29,7 @@ userRoutes.put(
   "/update_admin/:id",
   verifyAdmin,
   upload.single("images"),
-  UserControllers.updateAdminV2
+  UserControllers.updateAdmin
 );
 userRoutes.delete(
   "/delete_account/:id",
