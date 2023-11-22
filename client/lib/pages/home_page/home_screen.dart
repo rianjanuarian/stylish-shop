@@ -54,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Happy Shopping!',
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.w700),
@@ -66,14 +66,14 @@ class HomeScreen extends StatelessWidget {
                                 return Text(
                                   FirebaseAuth
                                       .instance.currentUser!.displayName!,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w400,
                                       color: Color(0xFF666666)),
                                 );
                               } else {
                                 //masukin data yg login pake akun postgre
-                                return Text(
+                                return const Text(
                                   'Sarah Ann',
                                   style: TextStyle(
                                       fontSize: 20,
@@ -91,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 child: ElevatedButton(onPressed: (){
                   Get.to(() => SearchPageView());
-                }, child: Row(
+                }, child: const Row(
                   children: [
                     Icon(Icons.search,color: Colors.black,),
                     SizedBox(width: 15,),
@@ -130,24 +130,24 @@ class HomeScreen extends StatelessWidget {
                         child: Stack(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "50% Off",
                                     style: TextStyle(
                                         fontSize: 30,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  Text(
+                                  const Text(
                                     "On everything today",
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
+                                  const Padding(
+                                    padding: EdgeInsets.only(
                                         top: 10.0, bottom: 15.0),
                                     child: Text("With code: FSCREATION"),
                                   ),
@@ -155,7 +155,7 @@ class HomeScreen extends StatelessWidget {
                                       onPressed: () {},
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.black),
-                                      child: Text(
+                                      child: const Text(
                                         "Get Now",
                                         style: TextStyle(color: Colors.white),
                                       ))
@@ -181,24 +181,24 @@ class HomeScreen extends StatelessWidget {
                         child: Stack(
                           children: [
                             Padding(
-                              padding: EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                  const Text(
                                     "70% Off",
                                     style: TextStyle(
                                         fontSize: 30,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  Text(
+                                  const Text(
                                     "On shirt today",
                                     style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w500),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
+                                  const Padding(
+                                    padding: EdgeInsets.only(
                                         top: 10.0, bottom: 15.0),
                                     child: Text("With code: STYLECODE"),
                                   ),
@@ -206,7 +206,7 @@ class HomeScreen extends StatelessWidget {
                                       onPressed: () {},
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.black),
-                                      child: Text(
+                                      child: const Text(
                                         "Get Now",
                                         style: TextStyle(color: Colors.white),
                                       ))
@@ -257,7 +257,7 @@ class HomeScreen extends StatelessWidget {
                                               children: [
                                                 Container(
                                                     decoration: BoxDecoration(
-                                                        color: Color.fromRGBO(
+                                                        color: const Color.fromRGBO(
                                                             219, 219, 219, 100),
                                                         borderRadius:
                                                             BorderRadius
@@ -282,7 +282,7 @@ class HomeScreen extends StatelessWidget {
                                                   productList[index]
                                                       .description!,
                                                   style:
-                                                      TextStyle(fontSize: 12),
+                                                      const TextStyle(fontSize: 12),
                                                 ),
                                                 Text(
                                                   NumberFormat.currency(
@@ -291,7 +291,7 @@ class HomeScreen extends StatelessWidget {
                                                           decimalDigits: 0)
                                                       .format(productList[index]
                                                           .price!),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.w700),
@@ -341,7 +341,7 @@ class HomeScreen extends StatelessWidget {
                                               children: [
                                                 Container(
                                                   decoration: BoxDecoration(
-                                                      color: Color.fromRGBO(
+                                                      color: const Color.fromRGBO(
                                                           219, 219, 219, 100),
                                                       borderRadius:
                                                           BorderRadius.circular(
@@ -367,7 +367,7 @@ class HomeScreen extends StatelessWidget {
                                                   trendingProducts[index]
                                                       .description!,
                                                   style:
-                                                      TextStyle(fontSize: 12),
+                                                      const TextStyle(fontSize: 12),
                                                 ),
                                                 Text(
                                                   NumberFormat.currency(
@@ -377,7 +377,7 @@ class HomeScreen extends StatelessWidget {
                                                       .format(trendingProducts[
                                                               index]
                                                           .price!),
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.w700),
@@ -412,7 +412,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Container(
                           decoration: BoxDecoration(
-                              color: Color.fromRGBO(219, 219, 219, 100),
+                              color: const Color.fromRGBO(219, 219, 219, 100),
                               borderRadius: BorderRadius.circular(10)),
                           child: const SizedBox(
                             width: 150,

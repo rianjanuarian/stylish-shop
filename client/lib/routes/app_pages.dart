@@ -1,13 +1,16 @@
 import 'package:get/get.dart';
 
+import '../pages/home_page/detailProduct/bindings/detail_product_binding.dart';
+import '../pages/home_page/detailProduct/views/detail_product_view.dart';
+import '../pages/auth/login_signup_screen.dart';
 import '../pages/cart/bindings/cart_binding.dart';
 import '../pages/cart/views/cart_view.dart';
-import '../pages/auth/login_signup_screen.dart';
 import '../pages/categories/categories/bindings/categories_binding.dart';
 import '../pages/categories/categories/views/categories_view.dart';
 import '../pages/common/unknown.dart';
 import '../pages/get_start/on_boarding_screen.dart';
-import '../pages/home_page/home_screen.dart';
+import '../pages/home_page/home_screen/bindings/home_screen_binding.dart';
+import '../pages/home_page/home_screen/views/home_screen_view.dart';
 import '../pages/home_page/new_arrival.dart';
 import '../pages/login/bindings/login_binding.dart';
 import '../pages/login/views/login_view.dart';
@@ -49,6 +52,7 @@ class AppPages {
   static const categories = '/categories';
   static const search = '/search';
   static const cart = '/cart';
+  static const detail = '/detail';
 
   // Unknown
   static const unknown = '/unknown';
@@ -93,7 +97,8 @@ class AppPages {
     ),
     GetPage(
       name: home,
-      page: () => const HomeScreen(),
+      page: () => const HomeScreenView(),
+      binding: HomeScreenBinding(),
     ),
     GetPage(
       name: newArrival,
@@ -138,13 +143,18 @@ class AppPages {
     ),
     GetPage(
       name: search,
-      page: () =>  SearchPageView(),
+      page: () => SearchPageView(),
       binding: SearchPageBinding(),
     ),
     GetPage(
       name: cart,
       page: () => const CartView(),
       binding: CartBinding(),
+    ),
+    GetPage(
+      name: detail,
+      page: () => const DetailProductView(),
+      binding: DetailProductBinding(),
     ),
   ];
 }

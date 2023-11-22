@@ -1,4 +1,3 @@
-import 'package:client/services/api_service/user/user_service_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
