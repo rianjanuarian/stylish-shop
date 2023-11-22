@@ -101,16 +101,15 @@ class LoginController extends GetxController {
 
         await auth.signInWithCredential(credential);
 
-        final payload = await apiService.loginWithGoogle(
-            googleUser.email, auth.currentUser!.uid);
-
-        await storage.write(GetStorageKey.token, payload.data['access_token']);
+        final response = await apiService.loginWithGoogle(
+            googleUser.email, auth.currentUser!.uid, googleUser.displayName);
+        await storage.write(GetStorageKey.token, response.data["access_token"]);
         Get.offAllNamed('/main-tab');
-      } else {
-        return null;
       }
     } catch (e) {
-      print(e);
+      if (e is FirebaseAuthException) {
+        Get.snackbar('Error', e.message ?? 'Unknown error');
+      }
     }
   }
 

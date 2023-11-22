@@ -73,22 +73,21 @@ abstract class ApiService {
     }
   }
 
-  FutureOr<Response<dynamic>> loginWithGoogle(
+  FutureOr<Response> loginWithGoogle(
     String? email,
-    String? uid, {
+    String? uid,
+    String? name, {
     CancelToken? cancelToken,
   }) async {
     try {
-      final result = dio.request('/users/login_with_google',
-          options: Options(
-            method: 'POST',
-          ),
-          cancelToken: cancelToken,
-          queryParameters: {
-            'email': email,
-            'uid': uid,
-          });
-      return result;
+      final response = await dio
+          .post('/users/login_with_google', cancelToken: cancelToken, data: {
+        'name': name,
+      }, queryParameters: {
+        'email': email,
+        'uid': uid,
+      });
+      return response;
     } catch (e) {
       rethrow;
     }
