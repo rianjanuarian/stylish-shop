@@ -115,8 +115,10 @@ class UserController {
       if (isEmailExist) {
         const access_token = encodeTokenUsingJwt(isEmailExist);
         return res.status(200).json({
-          message: "You are successfully logged in!",
-          access_token: access_token,
+          payload: {
+            message: "You are successfully logged in!",
+            access_token: access_token,
+          },
         });
       }
 
@@ -127,12 +129,12 @@ class UserController {
 
       const access_token = encodeTokenUsingJwt(response);
       res.setHeader("Authorization", `Bearer ${access_token}`);
-      res
-        .status(200)
-        .json({
+      res.status(200).json({
+        payload: {
           message: "You are successfully logged in!",
           access_token: access_token,
-        });
+        },
+      });
     } catch (error) {
       next(error);
     }
