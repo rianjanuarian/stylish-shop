@@ -1,12 +1,17 @@
+import 'package:client/services/api_service/user/user_service_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+import '../../../../services/keys/get_storage_key.dart';
 
 class ChangePasswordController extends GetxController {
   final formKey = GlobalKey<FormState>();
   late final TextEditingController oldPasswordController;
   late final TextEditingController newPasswordController;
   late final TextEditingController confirmPasswordController;
+  final storage = GetStorage();
 
   RxBool isLoading = RxBool(false);
   RxBool isOldPasswordShow = RxBool(false);
@@ -14,18 +19,21 @@ class ChangePasswordController extends GetxController {
   RxBool isConfirmPasswordShow = RxBool(false);
 
   String? oldPasswordValidation(value) {
+    if (value == null || value.isEmpty) {
+      return 'Please insert an old password';
+    }
     return null;
   }
 
   String? newPasswordValidation(value) {
-    if (value!.length <= 8) {
+    if (value!.length < 8) {
       return 'Minimun use of 8 characters';
     }
     return null;
   }
 
   String? confirmPasswordValidation(value) {
-    if (value!.length <= 8) {
+    if (value!.length < 8) {
       return 'Minimun use of 8 characters';
     }
     if (value != newPasswordController.text) {
@@ -36,8 +44,25 @@ class ChangePasswordController extends GetxController {
 
   void changePassword() async {
     if (formKey.currentState!.validate()) {
-      // change the password! not implemented yet.
-      try {} catch (e) {
+      try {
+        final dio = Dio();
+        isLoading.toggle();
+        final token = await storage.read(GetStorageKey.token);
+        final Map<String, dynamic> passwordData = {
+          'oldPassword': oldPasswordController.text,
+          'newPassword': newPasswordController.text,
+          'confirmPassword': confirmPasswordController.text,
+        };
+        final res = await dio.put(
+          'https://stylish-shop.vercel.app/users/change_password',
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          }),
+          data: passwordData,
+        );
+        Get.snackbar('Success', res.data?['message']);
+      } catch (e) {
         if (e is DioException) {
           final errorResponse = e.response;
           if (errorResponse != null) {
@@ -46,17 +71,18 @@ class ChangePasswordController extends GetxController {
           } else {
             Get.snackbar('Error', 'Unknown error occurred');
           }
-          isLoading.value = false;
+          isLoading.toggle();
         }
+        isLoading.toggle();
       }
     }
   }
 
-    void clearTextFieldProp() {
+  void clearTextFieldProp() {
     oldPasswordController.clear();
     newPasswordController.clear();
     confirmPasswordController.clear();
-    }
+  }
 
   @override
   void onInit() {
