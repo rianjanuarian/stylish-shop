@@ -40,6 +40,6 @@ userRoutes.get("/get_user_admin", verifyAdmin, UserControllers.getOneUser);
 
 //User Data
 userRoutes.put("/change_password", verifyUser, UserControllers.changePassword);
-userRoutes.put("/update", verifyUser, UserControllers.update);
+userRoutes.put("/update", verifyUser, upload.single("images"), UserControllers.update);
 
 module.exports = userRoutes;

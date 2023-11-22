@@ -186,15 +186,31 @@ class UserController {
       const patternPhoneNumber =
         /^(\+62|0|62)[\s.-]?(\d{2,4})[\s.-]?(\d{4})[\s.-]?(\d{4})$/;
 
-      const response = await user.update(req.body, {
-        where: {
-          uid,
-        },
-      });
-
       if (patternPhoneNumber.test(req.body.phone_number) === false) {
         return next(createError(400, "Phone number is not valid!"));
       } // Check phone number format ~Indra Oki Sandy~
+
+      const bucketName = "stylish-shop";
+      const destination = `users/${req.file.filename}`;
+
+      if (req.file) {
+        await storage.bucket(bucketName).upload(req.file.path, {
+          destination,
+        });
+      }
+
+      const image = req.file
+        ? `${bucketName}/${destination}`
+        : req.user.dataValues.image;
+
+      const response = await user.update(
+        { image, ...req.body },
+        {
+          where: {
+            uid,
+          },
+        }
+      );
 
       if (response[0] !== 1) {
         return next(createError(400, "User failed to updated!"));
@@ -295,7 +311,7 @@ class UserController {
     }
   }
 
-  static async updateAdminV2(req, res, next) {
+  static async updateAdmin(req, res, next) {
     try {
       const id = parseInt(req.params.id);
 
