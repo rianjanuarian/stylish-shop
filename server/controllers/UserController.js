@@ -114,7 +114,7 @@ class UserController {
 
       if (isEmailExist) {
         const access_token = encodeTokenUsingJwt(isEmailExist);
-        res.status(200).json({
+        return res.status(200).json({
           message: "You are successfully logged in!",
           access_token,
         });
