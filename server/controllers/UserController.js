@@ -123,6 +123,7 @@ class UserController {
       const response = await user.create({
         uid,
         email,
+        name: req.body.name,
       });
 
       const access_token = encodeTokenUsingJwt(response.dataValues);
