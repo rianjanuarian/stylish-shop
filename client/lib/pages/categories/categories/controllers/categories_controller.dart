@@ -4,18 +4,11 @@ import 'package:client/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
-//var productList = <Products>[].obs;
+
 
 class CategoriesController extends GetxController {
-  //dummy categories
-  final List<String> categoryDummies = [
-    'New Arrival',
-    'Clothes',
-    'Bags',
-    'Shoes',
-    'Electronics',
-    'Jewelery'
-  ].obs;
+  
+var categoryId = <Categories>[].obs;
   var categoriesList = <Categories>[].obs;
   var isLoading = true.obs;
   @override
@@ -24,30 +17,6 @@ class CategoriesController extends GetxController {
 
     getCategories();
   }
-// Future<void> getProducts() async {
-//     String url = 'https://stylish-shop.vercel.app/products';
-
-//     try {
-//       final response = await Dio().get(
-//         url,
-//       );
-
-//       if (response.statusCode == 200) {
-//         final List<dynamic> result = response.data;
-   
-//         productList.value = result.map((e) => Products.fromJson(e)).toList();
-//         trendingList.value = result.map((e) => Products.fromJson(e)).toList();
-//         isLoading.value = false;
-
-//         update();
-//       } else {
-//         Get.snackbar(
-//             'error fetching data', 'error : ${response.statusCode.toString()}');
-//       }
-//     } catch (e) {
-//       print(e);
-//     }
-//   }
   Future<void> getCategories() async {
     String url = 'https://stylish-shop.vercel.app/categories';
     try {
@@ -75,35 +44,20 @@ class CategoriesController extends GetxController {
       }
     }
   }
-  // void getCategories() {
-  //   try {
-  //     isLoading.toggle();
-  //     //get categories
-  //   } catch (e) {
-  //     if (e is DioException) {
-  //       final errorResponse = e.response;
-  //       if (errorResponse != null) {
-  //         final errorMessage = errorResponse.data?['message'];
-  //         Get.snackbar('Error', errorMessage ?? 'Unknown error');
-  //       } else {
-  //         Get.snackbar('Error', 'Unknown error occurred');
-  //       }
-  //       isLoading.toggle();
-  //     }
-  //   }
-  // }
 
-  void goToSpecificCategory(categoryName) async {
-    try {
-      isLoading.toggle();
-      //get categories
-      switch (categoryName) {
-        case 'New Arrival':
-          Get.toNamed(AppPages.newArrival);
-          break;
-      }
-    } catch (e) {
-      if (e is DioException) {
+ Future<void> getCategoryById(int id) async{
+  String url= 'https://stylish-shop.vercel.app/products/category/$id';
+  try {
+    final response = await Dio().get(url);
+    if (response.statusCode == 200) {
+      final Map<String,dynamic> data = response.data;
+      categoryId.value = [Categories.fromJson(data)];
+      isLoading.value = false;
+      print(data);
+      update();
+    }
+  } catch (e) {
+    if (e is DioException) {
         final errorResponse = e.response;
         if (errorResponse != null) {
           final errorMessage = errorResponse.data?['message'];
@@ -111,10 +65,10 @@ class CategoriesController extends GetxController {
         } else {
           Get.snackbar('Error', 'Unknown error occurred');
         }
-        isLoading.toggle();
+        isLoading.value = true;
       }
-    }
   }
+ }
 
   void goToSearch() {
     Get.toNamed(AppPages.search);
