@@ -113,23 +113,25 @@ class UserController {
       });
 
       if (isEmailExist) {
-        const access_token = encodeTokenUsingJwt(isEmailExist);
-        res.status(200).json({
+        const access_token = encodeTokenUsingJwt(isEmailExist.dataValues);
+        return res.status(200).json({
           message: "You are successfully logged in!",
-          access_token,
+          access_token: access_token,
         });
       }
 
       const response = await user.create({
         uid,
         email,
+        name: req.body.name,
       });
 
-      const access_token = encodeTokenUsingJwt(response);
+      const access_token = encodeTokenUsingJwt(response.dataValues);
       res.setHeader("Authorization", `Bearer ${access_token}`);
-      res
-        .status(200)
-        .json({ message: "You are successfully logged in!", access_token });
+      res.status(200).json({
+        message: "You are successfully logged in!",
+        access_token: access_token,
+      });
     } catch (error) {
       next(error);
     }
