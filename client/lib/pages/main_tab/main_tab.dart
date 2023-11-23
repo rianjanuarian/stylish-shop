@@ -31,8 +31,8 @@ class _MainTabState extends State<MainTab> {
 
   final List<Widget> _pages = [
     const HomeScreenView(),
-    const CartView(),
     const CategoriesView(),
+    const CartView(),
     const SettingView(),
   ];
 
@@ -72,15 +72,15 @@ class _MainTabState extends State<MainTab> {
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
-            icon: const Icon(Icons.shopping_bag),
-            title: const Text('Cart'),
+            icon: const Icon(Icons.category),
+            title: const Text('Categories'),
             activeColor: Colors.black,
             inactiveColor: Colors.grey,
             textAlign: TextAlign.center,
           ),
           BottomNavyBarItem(
-            icon: const Icon(Icons.category),
-            title: const Text('Categories'),
+            icon: const Icon(Icons.shopping_bag),
+            title: const Text('Cart'),
             activeColor: Colors.black,
             inactiveColor: Colors.grey,
             textAlign: TextAlign.center,
