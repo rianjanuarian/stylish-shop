@@ -4,8 +4,10 @@ const { cart, product, user, courier } = require("../models");
 class CartController {
   static async create(req, res, next) {
     try {
-      const { productId } = req.body;
-      const userId = req.user.dataValues.id;
+      const { productId, qty, total_price, color } = req.body;
+      console.log(color);
+
+      const userId = req.user.id;
 
       const currentProduct = await product.findByPk(productId);
 
@@ -13,14 +15,15 @@ class CartController {
         return next(createError(404, "Product not found!"));
       }
 
-      const total_price = currentProduct.dataValues.price;
-
-      let result = await cart.create({
+      let newCart = await cart.create({
         productId,
         userId,
+        qty,
         total_price,
+        color,
       });
-      res.status(201).json(result);
+
+      res.status(201).json({ message: "Brand has been created!", newCart });
     } catch (error) {
       next(error);
     }
@@ -28,11 +31,12 @@ class CartController {
 
   static async getProductsByUserId(req, res, next) {
     try {
-      const userId = req.user.dataValues.id;
+      const userId = req.user.id;
       const products = await cart.findAll({
         where: {
           userId,
         },
+        include: [product],
       });
       res.status(200).json(products);
     } catch (error) {
