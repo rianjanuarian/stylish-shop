@@ -1,4 +1,5 @@
 import 'package:client/routes/app_pages.dart';
+import 'package:client/services/api_service/cart/cart_models.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -64,7 +65,8 @@ class CartController extends GetxController {
             'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
           }));
-      print(res);
+      final List<dynamic> result = res.data;
+      carts.value = result.map((e) => Cart.fromJson(e)).toList();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
