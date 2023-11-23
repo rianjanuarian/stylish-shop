@@ -21,7 +21,6 @@ admin.initializeApp({
 //template
 
 const corsOptions = {
-
   allowedHeaders: "Content-Type, Authorization",
   origin: function (origin, callback) {
     const allowedOrigins = ["https://stylish-shop-web.vercel.app"];
@@ -52,6 +51,15 @@ app.use(
   swaggerUI.serve,
   swaggerUI.setup(swaggerDocs, {
     explorer: true,
+    customJs: [
+      "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js",
+    ],
+    customCssUrl: [
+      "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css",
+      "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.css",
+      "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.css",
+    ],
     swaggerOptions: {
       docExpansion: "none",
       urls: [
