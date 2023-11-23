@@ -41,7 +41,7 @@ class DetailProductController extends GetxController {
       final res = await dio.post('https://stylish-shop.vercel.app/carts/create',
           data: {
             "productId": productId,
-            "color": getColorFromString(selectedColor),
+            "color": getColorFromString(selectedColor.value),
             "qty": quantity.value,
             "total_price": price.value
           },
@@ -64,7 +64,7 @@ class DetailProductController extends GetxController {
     }
   }
 
-  String getColorFromString(Rx<Color> color) {
+  String getColorFromString(Color color) {
     switch (color) {
       case Colors.red:
         return "red";
