@@ -28,13 +28,15 @@ class AppShimmer extends StatelessWidget {
 }
 
 class ShimmerText extends StatelessWidget {
-  const ShimmerText({super.key});
+  final double width;
+  final double height;
+  const ShimmerText({super.key, required this.width, required this.height});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
-      height: 10,
+      width: width,
+      height: height,
       color: Colors.white,
       margin: const EdgeInsets.only(top: 10),
     );

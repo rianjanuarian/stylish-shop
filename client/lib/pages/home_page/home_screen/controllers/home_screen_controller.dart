@@ -7,6 +7,7 @@ class HomeScreenController extends GetxController {
   var productList = <Products>[].obs;
   var productId = <Products>[].obs;
   var trendingList = <Products>[].obs;
+  // Dummy
   final List<Map<String, dynamic>> dummyCoupon = [
     {
       "percent": 50,
@@ -83,13 +84,19 @@ class HomeScreenController extends GetxController {
     Get.toNamed(AppPages.detail, arguments: product);
   }
 
-  void trendingProducts() {
-    trendingList.shuffle();
+  Future<void> shuffleTrendingProducts() async {
+    try {
+      isLoading.toggle();
+      trendingList.shuffle();
+    } finally {
+      isLoading.toggle();
+    }
   }
 
   @override
   void onInit() {
     getProducts();
+    shuffleTrendingProducts();
     super.onInit();
   }
 }
