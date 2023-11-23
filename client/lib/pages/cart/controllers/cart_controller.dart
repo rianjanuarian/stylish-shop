@@ -3,7 +3,6 @@ import 'package:client/services/api_service/cart/cart_models.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-
 import '../../../services/keys/get_storage_key.dart';
 
 class CartController extends GetxController {
@@ -50,12 +49,12 @@ class CartController extends GetxController {
       'quantity': 2,
     },
   ].obs;
-  final carts = [].obs;
+  var carts = [].obs;
   RxBool isLoading = RxBool(false);
   final dio = Dio();
   final storage = GetStorage();
 
-  void getCart() async {
+  Future<void> getCart() async {
     try {
       isLoading.toggle();
       //fetch carts from api
@@ -66,6 +65,7 @@ class CartController extends GetxController {
             'Content-Type': 'application/json',
           }));
       final List<dynamic> result = res.data;
+      print(result);
       carts.value = result.map((e) => Cart.fromJson(e)).toList();
       isLoading.toggle();
     } catch (e) {

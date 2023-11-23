@@ -8,7 +8,7 @@ class Cart {
     int? userId;
     int? productId;
     int? qty;
-    int? totalPrice;
+    int? total_price;
     String? color;
     DateTime? createdAt;
     DateTime? updatedAt;
@@ -19,7 +19,7 @@ class Cart {
         this.userId,
         this.productId,
         this.qty,
-        this.totalPrice,
+        this.total_price,
         this.color,
         this.createdAt,
         this.updatedAt,
