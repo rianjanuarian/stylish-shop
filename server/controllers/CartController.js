@@ -23,7 +23,7 @@ class CartController {
         color,
       });
 
-      res.status(201).json({ message: "Brand has been created!", newCart });
+      res.status(201).json({ message: "Item has been added to your cart!", newCart });
     } catch (error) {
       next(error);
     }
