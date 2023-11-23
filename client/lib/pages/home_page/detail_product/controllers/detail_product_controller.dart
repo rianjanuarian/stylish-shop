@@ -50,7 +50,6 @@ class DetailProductController extends GetxController {
             'Content-Type': 'application/json',
           }));
       Get.snackbar('Success', res.data?['message']);
-      print(res);
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;

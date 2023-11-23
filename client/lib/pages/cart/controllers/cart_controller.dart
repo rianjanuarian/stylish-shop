@@ -1,6 +1,9 @@
 import 'package:client/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+import '../../../services/keys/get_storage_key.dart';
 
 class CartController extends GetxController {
   //dummy cart product
@@ -46,13 +49,23 @@ class CartController extends GetxController {
       'quantity': 2,
     },
   ].obs;
-
+  final carts = [].obs;
   RxBool isLoading = RxBool(false);
+  final dio = Dio();
+  final storage = GetStorage();
 
-  void getCart() {
+  void getCart() async {
     try {
       isLoading.toggle();
       //fetch carts from api
+      final token = await storage.read(GetStorageKey.token);
+      final res = await dio.get('https://stylish-shop.vercel.app/carts/user',
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          }));
+      print(res);
+      isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
