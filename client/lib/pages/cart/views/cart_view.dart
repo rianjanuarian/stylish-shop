@@ -58,14 +58,15 @@ class CartView extends GetView<CartController> {
                     return Column(
                       children: controller.carts.map(
                         (cart) {
+                          cart = cart as Cart;
                           return CartItem(
-                            keyItem: cart.id,
-                            title: cart.product.name,
-                            image: cart.product.image,
-                            description: cart.product.description,
-                            price: cart.total_price,
-                            quantity: cart.qty,
-                            variant: cart.color,
+                            keyItem: cart.id ?? 0,
+                            title: cart.product?.name ?? 'No Title',
+                            image: cart.product?.image ?? 'https://via.placeholder.com/200',
+                            description: cart.product?.description ?? 'No Description',
+                            price: cart.total_price ?? 0,
+                            quantity: cart.qty ?? 0,
+                            variant: cart.color ?? 'white',
                           );
                         },
                       ).toList(),
