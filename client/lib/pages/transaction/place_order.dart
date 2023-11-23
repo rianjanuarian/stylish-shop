@@ -114,6 +114,7 @@ class PlaceOrder extends StatelessWidget {
                         description: order.value['description'],
                         price: order.value['price'],
                         quantity: order.value['quantity'],
+                        variant: order.value['quantity'],
                       ))
                   .toList(),
               Text(
