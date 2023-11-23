@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
+import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:get/get.dart';
 
+import '../../../services/api_service/cart/cart_models.dart';
 import '../controllers/cart_controller.dart';
 
 class CartView extends GetView<CartController> {
@@ -41,20 +43,35 @@ class CartView extends GetView<CartController> {
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
               SizedBox(height: 20.h),
-              ...controller.dummyCarts
-                  .asMap()
-                  .entries
-                  .map(
-                    (cart) => CartItem(
-                      keyItem: cart.key,
-                      title: cart.value['title'],
-                      image: cart.value['image'],
-                      description: cart.value['description'],
-                      price: cart.value['price'],
-                      quantity: cart.value['quantity'],
-                    ),
-                  )
-                  .toList()
+              FutureBuilder(
+                  future: controller.getCart(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+
+                    if (controller.carts.isEmpty) {
+                      return Lottie.asset('assets/animations/empty.json');
+                    }
+                    return Column(
+                      children: controller.carts.map(
+                        (cart) {
+                          cart = cart as Cart;
+                          return CartItem(
+                            keyItem: cart.id ?? 0,
+                            title: cart.product?.name ?? 'No Title',
+                            image: cart.product?.image ?? 'https://via.placeholder.com/200',
+                            description: cart.product?.description ?? 'No Description',
+                            price: cart.total_price ?? 0,
+                            quantity: cart.qty ?? 0,
+                            variant: cart.color ?? 'white',
+                          );
+                        },
+                      ).toList(),
+                    );
+                  }),
             ],
           ),
         ),
@@ -71,14 +88,16 @@ class CartItem extends StatelessWidget {
     required this.title,
     required this.description,
     required this.price,
-    required this.quantity,
-  });
+    required this.quantity, 
+    required this.variant,
+ });
   final int keyItem;
   final String image;
   final String title;
   final String description;
   final int price;
   final int quantity;
+  final String variant;
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +154,9 @@ class CartItem extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10).r,
                     child: CachedNetworkImage(
-                      imageUrl: image,
+                      imageUrl: (image).contains('placeholder')
+                          ? "https://via.placeholder.com/200"
+                          : 'https://storage.googleapis.com/$image',
                       width: 80.w,
                       height: 80.h,
                       fit: BoxFit.cover,
@@ -164,10 +185,18 @@ class CartItem extends StatelessWidget {
                                 color: const Color(0xff666666),
                                 fontSize: 11.sp),
                           ),
+                          Text(
+                            'variant: $variant',
+                            style: TextStyle(
+                                color: const Color(0xff666666),
+                                fontSize: 10.sp),
+                          ),
                         ],
                       ),
                       Text(
-                        '\$$price.00',
+                        NumberFormat.currency(
+                                locale: 'id', symbol: 'Rp ', decimalDigits: 0)
+                            .format(price),
                         style: TextStyle(
                             fontWeight: FontWeight.w900, fontSize: 14.sp),
                       ),
