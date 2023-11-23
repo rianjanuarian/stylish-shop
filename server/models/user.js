@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       user.hasMany(models.transaction);
       // Coba
-      user.hasOne(models.cart);
+      user.hasMany(models.cart);
       // user.belongsToMany(models.product, {
       //   through: models.cart,
       // });

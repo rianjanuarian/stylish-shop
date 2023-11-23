@@ -11,9 +11,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       cart.belongsTo(models.user);
       cart.belongsTo(models.product);
-      // coba
-      // cart.belongsTo(models.product);
-
       cart.hasMany(models.transaction);
     }
   }
@@ -28,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       productId: DataTypes.INTEGER,
       qty: { type: DataTypes.INTEGER, defaultValue: 1 },
       total_price: DataTypes.INTEGER,
+      color: DataTypes.STRING,
     },
     {
       sequelize,
