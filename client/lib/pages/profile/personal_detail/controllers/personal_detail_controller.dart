@@ -1,6 +1,9 @@
+import 'package:client/services/api_service/user/user_service_models.dart';
+import 'package:client/services/keys/get_storage_key.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 
 enum Gender { male, female }
@@ -15,6 +18,38 @@ class PersonalDetailController extends GetxController {
 
   RxBool isLoading = RxBool(false);
 
+  // GetStorage
+  final storage = GetStorage();
+  // Dio
+  final dio = Dio();
+
+  Future<UserModel> getUser() async {
+    try {
+      final token = await storage.read(GetStorageKey.token);
+      final res = await dio.get('https://stylish-shop.vercel.app/users/getUser',
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          }));
+      return UserModel.fromJson(res.data);
+    } catch (e) {
+      if (e is DioException) {
+        final errorResponse = e.response;
+        if (errorResponse != null) {
+          throw errorResponse.data?['message'];
+        }
+      }
+      rethrow;
+    }
+  }
+
+  String? formatDate(DateTime? date) {
+    if (date == null) return null;
+
+    final formatter = DateFormat('dd-MM-yyyy');
+    return formatter.format(date);
+  }
+
   void changeGenderToMale() {
     gender.value = Gender.male;
   }
@@ -28,10 +63,10 @@ class PersonalDetailController extends GetxController {
         context: ctx,
         initialDate: DateTime(2023, 1, 1),
         firstDate: DateTime(1970),
-        lastDate: DateTime(2023));
+        lastDate: DateTime.now());
 
     if (pickedDate != null) {
-      birthDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+      birthDateController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
     }
   }
 

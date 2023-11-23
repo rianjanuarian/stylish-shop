@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/services/api_service/user/user_service_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -29,7 +31,7 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
               child: TextFormField(
                 controller: controller.nameController,
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   contentPadding: REdgeInsets.all(5),
                   isDense: true,
                   enabledBorder: const UnderlineInputBorder(
@@ -191,8 +193,8 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
                 controller: controller.birthDateController,
                 readOnly: true,
                 onTap: () => controller.changeDate(context),
-                decoration:  InputDecoration(
-                  contentPadding: REdgeInsets.all( 5),
+                decoration: InputDecoration(
+                  contentPadding: REdgeInsets.all(5),
                   isDense: true,
                   enabledBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -235,8 +237,8 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
                 controller: controller.phoneController,
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 keyboardType: TextInputType.phone,
-                decoration:  InputDecoration(
-                  contentPadding: REdgeInsets.all( 5),
+                decoration: InputDecoration(
+                  contentPadding: REdgeInsets.all(5),
                   isDense: true,
                   enabledBorder: const UnderlineInputBorder(
                       borderSide: BorderSide(
@@ -280,8 +282,8 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 maxLines: 4,
                 keyboardType: TextInputType.phone,
-                decoration:  InputDecoration(
-                  contentPadding: REdgeInsets.all( 5),
+                decoration: InputDecoration(
+                  contentPadding: REdgeInsets.all(5),
                   isDense: true,
                   enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(
@@ -314,48 +316,69 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
         surfaceTintColor: Colors.white,
       ),
       body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         child: Padding(
           padding: REdgeInsets.symmetric(horizontal: 50),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20.r),
-                child: Image.asset(
-                  'assets/images/user.png',
-                  height: 100.h,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              SizedBox(height: 20.h),
-              Form(
-                key: controller.formKey,
-                child: Column(
+          child: FutureBuilder(
+              future: controller.getUser(),
+              builder: (context, snapshot) {
+                UserModel? user = snapshot.data;
+                controller.nameController.text = user?.name ?? '';
+                controller.gender.value =
+                    user?.gender == 'woman' ? Gender.female : Gender.male;
+                controller.birthDateController.text =
+                    controller.formatDate(user?.birthday) ?? '';
+                controller.phoneController.text = user?.phone_number ?? '';
+                controller.addressController.text = user?.address ?? '';
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    nameWithInput(),
-                    genderWithCheck(),
-                    birthDate(),
-                    phoneNumber(),
-                    addressWithInput(),
-                    Padding(
-                      padding: REdgeInsets.symmetric(vertical: 30),
-                      child: ElevatedButton(
-                          onPressed: () => controller.savePersonalDetail(),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size.fromHeight(60.r),
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10).r),
-                          ),
-                          child: const Text('Save')),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20.r),
+                      child: CachedNetworkImage(
+                        imageUrl: (user?.image ?? '').contains('placeholder')
+                            ? user?.image ?? "https://via.placeholder.com/200"
+                            : 'https://storage.googleapis.com/${user?.image}',
+                        height: 100.h,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    Form(
+                      key: controller.formKey,
+                      child: Column(
+                        children: [
+                          nameWithInput(),
+                          genderWithCheck(),
+                          birthDate(),
+                          phoneNumber(),
+                          addressWithInput(),
+                          Padding(
+                            padding: REdgeInsets.symmetric(vertical: 30),
+                            child: ElevatedButton(
+                                onPressed: () =>
+                                    controller.savePersonalDetail(),
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size.fromHeight(60.r),
+                                  backgroundColor: Colors.black,
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(10).r),
+                                ),
+                                child: const Text('Save')),
+                          )
+                        ],
+                      ),
                     )
                   ],
-                ),
-              )
-            ],
-          ),
+                );
+              }),
         ),
       ),
     );
