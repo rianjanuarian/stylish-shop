@@ -1,6 +1,6 @@
 import 'package:client/pages/cart/views/cart_view.dart';
 import 'package:client/pages/categories/categories/views/categories_view.dart';
-import 'package:client/pages/home_page/home_screen.dart';
+import 'package:client/pages/home_page/home_screen/views/home_screen_view.dart';
 import 'package:client/pages/profile/setting/views/setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,7 +30,7 @@ class _MainTabState extends State<MainTab> {
   }
 
   final List<Widget> _pages = [
-    const HomeScreen(),
+    const HomeScreenView(),
     const CartView(),
     const CategoriesView(),
     const SettingView(),
