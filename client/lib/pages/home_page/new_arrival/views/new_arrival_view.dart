@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/widgets/app_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -58,12 +59,7 @@ class NewArrivalView extends GetView<NewArrivalController> {
                           ),
                           Obx(
                             () => controller.isLoading.value
-                                ? SizedBox(
-                                  height: 1.sh,
-                                  child: const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                )
+                                ? shimmerArrival()
                                 : GridView.builder(
                                     primary: false,
                                     shrinkWrap: true,
@@ -162,6 +158,52 @@ class NewArrivalView extends GetView<NewArrivalController> {
               }),
         ),
       ),
+    );
+  }
+
+  Widget shimmerArrival() {
+    return AppShimmer(
+      child: GridView.builder(
+          primary: false,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 300,
+            childAspectRatio: 1,
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 50,
+          ),
+          itemCount: 10,
+          itemBuilder: (_, index) {
+            return InkWell(
+              onTap: () => controller.goToDetail(controller.productList[index]),
+              child: Container(
+                alignment: Alignment.center,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          color: const Color.fromRGBO(219, 219, 219, 100),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Container(
+                        width: 132.h,
+                        height: 132.h,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                    ShimmerText(width: 100.w, height: 10.h),
+                    ShimmerText(width: 100.w, height: 10.h),
+                    ShimmerText(width: 100.w, height: 10.h),
+                  ],
+                ),
+              ),
+            );
+          }),
     );
   }
 }
