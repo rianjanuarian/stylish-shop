@@ -13,8 +13,7 @@
     },
     {
       "src": "/swagger/.*",
-      "dest": "/app.js",
-      "method": ["GET"]
+      "dest": "/app.js"
     }
   ],
   "env": {
