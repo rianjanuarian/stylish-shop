@@ -88,29 +88,26 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(10),
-                child: ElevatedButton(onPressed: (){
-                  Get.to(() => SearchPageView());
-                }, child: const Row(
-                  children: [
-                    Icon(Icons.search,color: Colors.black,),
-                    SizedBox(width: 15,),
-                    Text("Search...",style: TextStyle(color: Colors.black),),
-                  ],
-                ))
-              ),
-              // TextField(
-              //     decoration: InputDecoration(
-              //       prefixIcon: const Icon(Icons.search),
-              //       hintText: 'Search...',
-              //       contentPadding: EdgeInsets.zero,
-              //       fillColor: const Color(0xffF3F4F5),
-              //       filled: true,
-              //       border: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(20),
-              //       ),
-              //     ),
-              //   ),
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(() => SearchPageView());
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.search,
+                            color: Colors.black,
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            "Search...",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ],
+                      ))),
               Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 15),
                 child: SingleChildScrollView(
@@ -257,7 +254,8 @@ class HomeScreen extends StatelessWidget {
                                               children: [
                                                 Container(
                                                     decoration: BoxDecoration(
-                                                        color: const Color.fromRGBO(
+                                                        color: const Color
+                                                            .fromRGBO(
                                                             219, 219, 219, 100),
                                                         borderRadius:
                                                             BorderRadius
@@ -281,8 +279,8 @@ class HomeScreen extends StatelessWidget {
                                                 Text(
                                                   productList[index]
                                                       .description!,
-                                                  style:
-                                                      const TextStyle(fontSize: 12),
+                                                  style: const TextStyle(
+                                                      fontSize: 12),
                                                 ),
                                                 Text(
                                                   NumberFormat.currency(
@@ -341,8 +339,12 @@ class HomeScreen extends StatelessWidget {
                                               children: [
                                                 Container(
                                                   decoration: BoxDecoration(
-                                                      color: const Color.fromRGBO(
-                                                          219, 219, 219, 100),
+                                                      color:
+                                                          const Color.fromRGBO(
+                                                              219,
+                                                              219,
+                                                              219,
+                                                              100),
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               10)),
@@ -366,8 +368,8 @@ class HomeScreen extends StatelessWidget {
                                                 Text(
                                                   trendingProducts[index]
                                                       .description!,
-                                                  style:
-                                                      const TextStyle(fontSize: 12),
+                                                  style: const TextStyle(
+                                                      fontSize: 12),
                                                 ),
                                                 Text(
                                                   NumberFormat.currency(
@@ -418,9 +420,9 @@ class HomeScreen extends StatelessWidget {
                             width: 150,
                             height: 80,
                           )),
-                      const ShimmerText(),
-                      const ShimmerText(),
-                      const ShimmerText(),
+                      // const ShimmerText(),
+                      // const ShimmerText(),
+                      // const ShimmerText(),
                     ],
                   )),
             ),

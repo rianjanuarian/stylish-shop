@@ -19,21 +19,18 @@ class HomeScreenView extends GetView<HomeScreenController> {
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: SafeArea(
-          child: FutureBuilder(
-            future: userController.getUser(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return SizedBox(
-                    height: 1.sh,
-                    child: const Center(child: CircularProgressIndicator()));
-              }
-              final UserModel? user = snapshot.data;
-              return Column(
-                children: [
-                  Padding(
-                    padding:
-                        REdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                    child: Row(
+            child: Column(
+          children: [
+            Padding(
+              padding: REdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              child: FutureBuilder(
+                  future: userController.getUser(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return createShimmerAvatar();
+                    }
+                    final UserModel? user = snapshot.data;
+                    return Row(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50).r,
@@ -73,128 +70,131 @@ class HomeScreenView extends GetView<HomeScreenController> {
                           ],
                         ),
                       ],
-                    ),
+                    );
+                  }),
+            ),
+            Padding(
+              padding: REdgeInsets.symmetric(vertical: 10, horizontal: 30),
+              child: TextField(
+                onTap: () => controller.goToSearch(),
+                readOnly: true,
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
+                decoration: InputDecoration(
+                  prefixIcon: Padding(
+                    padding: REdgeInsets.symmetric(horizontal: 30.0),
+                    child: Icon(Icons.search, size: 32.sp),
                   ),
-                  Padding(
-                    padding:
-                        REdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                    child: TextField(
-                      onTap: () => controller.goToSearch(),
-                      readOnly: true,
-                      onTapOutside: (_) => FocusScope.of(context).unfocus(),
-                      decoration: InputDecoration(
-                        prefixIcon: Padding(
-                          padding: REdgeInsets.symmetric(horizontal: 30.0),
-                          child: Icon(Icons.search, size: 32.sp),
-                        ),
-                        hintText: 'Search...',
-                        hintStyle: const TextStyle(color: Color(0xFFAAAAAA)),
-                        fillColor: const Color(0xffF3F4F5),
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30).r,
-                            borderSide: BorderSide.none),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: REdgeInsets.symmetric(vertical: 10),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      child: Padding(
-                        padding: REdgeInsets.symmetric(horizontal: 30),
-                        child: Wrap(
-                          spacing: 20.w,
-                          children: controller.dummyCoupon
-                              .map(
-                                (coupon) => Container(
-                                  height: 180.h,
-                                  width: 300.w,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage(coupon["image"]),
-                                      ),
-                                      color: const Color.fromRGBO(
-                                          219, 219, 219, 100),
-                                      borderRadius:
-                                          BorderRadius.circular(10).r),
-                                  child: Stack(
+                  hintText: 'Search...',
+                  hintStyle: const TextStyle(color: Color(0xFFAAAAAA)),
+                  fillColor: const Color(0xffF3F4F5),
+                  filled: true,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30).r,
+                      borderSide: BorderSide.none),
+                ),
+              ),
+            ),
+            Padding(
+              padding: REdgeInsets.symmetric(vertical: 10),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                child: Padding(
+                  padding: REdgeInsets.symmetric(horizontal: 30),
+                  child: Wrap(
+                    spacing: 20.w,
+                    children: controller.dummyCoupon
+                        .map(
+                          (coupon) => Container(
+                            height: 180.h,
+                            width: 300.w,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(coupon["image"]),
+                                ),
+                                color: const Color.fromRGBO(219, 219, 219, 100),
+                                borderRadius: BorderRadius.circular(10).r),
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: REdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
+                                      Text(
+                                        "${coupon["percent"]}% Off",
+                                        style: TextStyle(
+                                            fontSize: 25.sp,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      Text(
+                                        coupon["title"],
+                                        style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500),
+                                      ),
                                       Padding(
-                                        padding: REdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text(
-                                              "${coupon["percent"]}% Off",
-                                              style: TextStyle(
-                                                  fontSize: 25.sp,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            Text(
-                                              coupon["title"],
-                                              style: TextStyle(
-                                                  fontSize: 16.sp,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            Padding(
-                                              padding: REdgeInsets.only(
-                                                  top: 10.0, bottom: 15.0),
-                                              child: Text(
-                                                "With code: ${coupon["code"]}",
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color:
-                                                      const Color(0xff666666),
-                                                ),
-                                              ),
-                                            ),
-                                            ElevatedButton(
-                                              onPressed: () {},
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.black,
-                                                  minimumSize: Size(75.w, 30.h),
-                                                  padding: EdgeInsets.zero),
-                                              child: Text(
-                                                "Get Now",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 12.sp),
-                                              ),
-                                            ),
-                                          ],
+                                        padding: REdgeInsets.only(
+                                            top: 10.0, bottom: 15.0),
+                                        child: Text(
+                                          "With code: ${coupon["code"]}",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: const Color(0xff666666),
+                                          ),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {},
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.black,
+                                            minimumSize: Size(75.w, 30.h),
+                                            padding: EdgeInsets.zero),
+                                        child: Text(
+                                          "Get Now",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 12.sp),
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    ),
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList(),
                   ),
-                  Padding(
-                    padding: REdgeInsets.symmetric(horizontal: 30),
-                    child: CustomText(
-                      textNamed: 'New Arrivals',
-                      onTap: controller.goToNewArrival,
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    child: Padding(
-                      padding: REdgeInsets.symmetric(horizontal: 30),
-                      child: Wrap(
+                ),
+              ),
+            ),
+            Padding(
+              padding: REdgeInsets.symmetric(horizontal: 30),
+              child: CustomText(
+                textNamed: 'New Arrival',
+                onTap: controller.goToNewArrival,
+              ),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const ClampingScrollPhysics(),
+              child: Padding(
+                padding: REdgeInsets.symmetric(horizontal: 30),
+                child: FutureBuilder(
+                    future: controller.getProducts(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return createShimmerApp();
+                      }
+                      return Wrap(
                         spacing: 20.w,
                         children: controller.productList
                             .map(
@@ -260,22 +260,29 @@ class HomeScreenView extends GetView<HomeScreenController> {
                               ),
                             )
                             .toList(),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: REdgeInsets.symmetric(horizontal: 30),
-                    child: CustomText(
-                      textNamed: 'Trending Product',
-                      onTap: controller.goToNewArrival,
-                    ),
-                  ),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    child: Padding(
-                      padding: REdgeInsets.symmetric(horizontal: 30),
-                      child: Wrap(
+                      );
+                    }),
+              ),
+            ),
+            Padding(
+              padding: REdgeInsets.symmetric(horizontal: 30),
+              child: CustomText(
+                textNamed: 'Trending Product',
+                onTap: controller.goToNewArrival,
+              ),
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const ClampingScrollPhysics(),
+              child: Padding(
+                padding: REdgeInsets.symmetric(horizontal: 30),
+                child: FutureBuilder(
+                    future: controller.getProducts(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return createShimmerApp();
+                      }
+                      return Wrap(
                         spacing: 20.w,
                         children: controller.trendingList
                             .map(
@@ -286,7 +293,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
                                   decoration: BoxDecoration(
                                       borderRadius:
                                           BorderRadius.circular(10).r),
-                                  child: controller.productList.isNotEmpty
+                                  child: controller.trendingList.isNotEmpty
                                       ? Column(
                                           children: [
                                             ClipRRect(
@@ -341,47 +348,77 @@ class HomeScreenView extends GetView<HomeScreenController> {
                               ),
                             )
                             .toList(),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
+                      );
+                    }),
+              ),
+            ),
+          ],
+        )),
+      ),
+    );
+  }
+
+  Widget createShimmerAvatar() {
+    return AppShimmer(
+      child: Row(
+        children: [
+          const CircleAvatar(
+            radius: 30,
+            child: Column(),
           ),
-        ),
+          SizedBox(width: 20.w),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ShimmerText(
+                width: 235.w,
+                height: 20.h,
+              ),
+              ShimmerText(
+                width: 70.w,
+                height: 20.h,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 
   Widget createShimmerApp() {
-    return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 6,
-        itemBuilder: (_, index) {
-          return AppShimmer(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                  alignment: Alignment.center,
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                    children: [
-                      Container(
-                          decoration: BoxDecoration(
-                              color: const Color.fromRGBO(219, 219, 219, 100),
-                              borderRadius: BorderRadius.circular(10)),
-                          child: const SizedBox(
-                            width: 150,
-                            height: 80,
-                          )),
-                      const ShimmerText(),
-                      const ShimmerText(),
-                      const ShimmerText(),
-                    ],
-                  )),
-            ),
-          );
-        });
+    return AppShimmer(
+      child: Row(
+        children: [
+          createShimmerProduct(),
+          SizedBox(width: 20.w),
+          createShimmerProduct(),
+          SizedBox(width: 20.w),
+          createShimmerProduct(),
+          SizedBox(width: 20.w),
+          createShimmerProduct(),
+        ],
+      ),
+    );
+  }
+
+  Widget createShimmerProduct() {
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10).r),
+      child: Column(
+        children: [
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              child: SizedBox(
+                width: 150.w,
+                height: 160.h,
+              )),
+          ShimmerText(width: 100.w, height: 10.h),
+          ShimmerText(width: 100.w, height: 10.h),
+          ShimmerText(width: 100.w, height: 10.h),
+        ],
+      ),
+    );
   }
 }

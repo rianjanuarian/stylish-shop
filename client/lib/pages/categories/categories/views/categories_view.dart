@@ -1,3 +1,4 @@
+import 'package:client/pages/categories/detail_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ class CategoriesView extends GetView<CategoriesController> {
   const CategoriesView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put<CategoriesController>(CategoriesController());
     Get.put(CategoriesController());
     return Scaffold(
       body: SingleChildScrollView(
@@ -32,14 +34,23 @@ class CategoriesView extends GetView<CategoriesController> {
                 ),
               ),
               SizedBox(height: 20.h),
-              ...controller.categoriesList
-                  .map(
-                    (category) => CategoryItem(
-                        categoryName: category.name!,
-                        goToSpecificCategory: () =>
-                            controller.goToSpecificCategory(category)),
-                  )
-                  .toList()
+              Obx(() => controller.isLoading.value
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Column(
+                      children: [
+                        ...controller.categoriesList
+                            .map(
+                              (category) => CategoryItem(
+                                categoryId: category.id!,
+                                categoryName: category.name!,
+                               
+                              ),
+                            )
+                            .toList()
+                      ],
+                    )),
             ],
           ),
         ),
@@ -48,13 +59,16 @@ class CategoriesView extends GetView<CategoriesController> {
   }
 }
 
+// ignore: must_be_immutable
 class CategoryItem extends StatelessWidget {
-  const CategoryItem(
+  CategoryItem(
       {super.key,
+      required this.categoryId,
       required this.categoryName,
-      required this.goToSpecificCategory});
+      });
   final String categoryName;
-  final VoidCallback goToSpecificCategory;
+  final int categoryId;
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +79,9 @@ class CategoryItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(30).r,
         child: InkWell(
           borderRadius: BorderRadius.circular(30).r,
-          onTap: () => goToSpecificCategory(),
+          onTap: () {
+            Get.to(() => DetailCategory(categoryId,categoryName));
+          },
           child: Container(
             padding: REdgeInsets.symmetric(vertical: 10, horizontal: 20),
             height: 60.h,
