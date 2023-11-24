@@ -33,6 +33,7 @@ class HomeScreenController extends GetxController {
       final List<dynamic> result = response.data;
       productList.value = result.map((e) => Products.fromJson(e)).toList();
       trendingList.value = result.map((e) => Products.fromJson(e)).toList();
+      trendingList.shuffle();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
@@ -54,7 +55,11 @@ class HomeScreenController extends GetxController {
   }
 
   void goToNewArrival() {
-    Get.toNamed(AppPages.newArrival);
+    Get.toNamed(AppPages.newArrival, arguments: 'New Arrival');
+  }
+
+  void goToTrendingProduct() {
+    Get.toNamed(AppPages.newArrival, arguments: 'Trending Products');
   }
 
   void goToDetail(Products product) {
@@ -62,7 +67,7 @@ class HomeScreenController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     getProducts();
     super.onInit();
   }

@@ -12,6 +12,7 @@ class NewArrivalView extends GetView<NewArrivalController> {
   const NewArrivalView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final String pages = Get.arguments;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -52,9 +53,9 @@ class NewArrivalView extends GetView<NewArrivalController> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "New Arrivals",
-                            style: TextStyle(
+                          Text(
+                            pages,
+                            style: const TextStyle(
                                 fontSize: 28, fontWeight: FontWeight.w700),
                           ),
                           Obx(

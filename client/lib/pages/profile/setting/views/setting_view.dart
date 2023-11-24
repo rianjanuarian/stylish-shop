@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/services/api_service/user/user_service_models.dart';
 import 'package:client/widgets/app_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,25 +30,18 @@ class SettingView extends GetView<SettingController> {
                         offset: const Offset(0, 2),
                       )
                     ]),
-                child: FutureBuilder(
-                    future: controller.getUser(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return createShimmerAvatar();
-                      } else if (snapshot.hasError) {
-                        return Text(snapshot.error.toString());
-                      }
-                      final UserModel? user = snapshot.data;
-                      return Row(
+                child: controller.isLoading.isTrue
+                    ? createShimmerAvatar()
+                    : Row(
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(10).r,
                             child: CachedNetworkImage(
-                              imageUrl: (user?.image ?? '')
+                              imageUrl: (controller.user.value?.image ?? '')
                                       .contains('placeholder')
-                                  ? user?.image ??
+                                  ? controller.user.value?.image ??
                                       "https://via.placeholder.com/200"
-                                  : 'https://storage.googleapis.com/${user?.image}',
+                                  : 'https://storage.googleapis.com/${controller.user.value?.image}',
                               height: 90.h,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => const Center(
@@ -64,13 +56,14 @@ class SettingView extends GetView<SettingController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                user?.name ?? 'No Name',
+                                controller.user.value?.name ?? 'No Name',
                                 style: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w700),
                               ),
                               Text(
-                                user?.email ?? 'noEmail@gmail.com',
+                                controller.user.value?.email ??
+                                    'noEmail@gmail.com',
                                 style: TextStyle(
                                     fontSize: 15.sp,
                                     fontWeight: FontWeight.w400,
@@ -79,8 +72,7 @@ class SettingView extends GetView<SettingController> {
                             ],
                           ),
                         ],
-                      );
-                    }),
+                      ),
               ),
               Container(
                 margin: REdgeInsets.symmetric(vertical: 20, horizontal: 30),

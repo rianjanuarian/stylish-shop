@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../../../../services/api_service/user/user_service_models.dart';
 
 enum Gender { male, female }
 
@@ -12,6 +13,7 @@ class PersonalDetailController extends GetxController {
   late final TextEditingController birthDateController;
   late final TextEditingController phoneController;
   late final TextEditingController addressController;
+  UserModel? user;
 
   RxBool isLoading = RxBool(false);
 
