@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/pages/profile/setting/controllers/setting_controller.dart';
 import 'package:client/services/api_service/user/user_service_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,6 +11,9 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
   const PersonalDetailView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // User Controller
+    final userController = Get.put<SettingController>(SettingController());
+
     Widget nameWithInput() {
       return Padding(
         padding: REdgeInsets.symmetric(vertical: 10),
@@ -281,9 +285,9 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
                 controller: controller.addressController,
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 maxLines: 4,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  contentPadding: REdgeInsets.all(5),
+                decoration:  InputDecoration(
+                  contentPadding: REdgeInsets.all( 5),
+
                   isDense: true,
                   enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(
@@ -320,7 +324,7 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
         child: Padding(
           padding: REdgeInsets.symmetric(horizontal: 50),
           child: FutureBuilder(
-              future: controller.getUser(),
+              future: userController.getUser(),
               builder: (context, snapshot) {
                 UserModel? user = snapshot.data;
                 controller.nameController.text = user?.name ?? '';

@@ -33,7 +33,6 @@ class HomeScreenController extends GetxController {
       final List<dynamic> result = response.data;
       productList.value = result.map((e) => Products.fromJson(e)).toList();
       trendingList.value = result.map((e) => Products.fromJson(e)).toList();
-      trendingList.shuffle();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
