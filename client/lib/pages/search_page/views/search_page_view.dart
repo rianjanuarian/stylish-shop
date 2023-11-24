@@ -1,10 +1,8 @@
+import 'package:client/routes/app_pages.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import '../controllers/search_page_controller.dart';
-import 'package:client/pages/home_page/detail_product.dart';
 
 // ignore: must_be_immutable
 class SearchPageView extends GetView<SearchPageController> {
@@ -67,7 +65,7 @@ class SearchPageView extends GetView<SearchPageController> {
 
                 return InkWell(
                   onTap: () {
-                    Get.to(() => DetailProduct(product.id, product.image));
+                    Get.to(() => Get.toNamed(AppPages.detail, arguments: product));
                   },
                   child: Container(
                     alignment: Alignment.center,

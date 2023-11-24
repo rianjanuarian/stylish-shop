@@ -2,16 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-
+import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:get/get.dart';
-
+import '../../../services/api_service/cart/cart_models.dart';
 import '../controllers/cart_controller.dart';
 
 class CartView extends GetView<CartController> {
   const CartView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    Get.put(CartController());
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -41,20 +41,35 @@ class CartView extends GetView<CartController> {
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
               SizedBox(height: 20.h),
-              ...controller.dummyCarts
-                  .asMap()
-                  .entries
-                  .map(
-                    (cart) => CartItem(
-                      keyItem: cart.key,
-                      title: cart.value['title'],
-                      image: cart.value['image'],
-                      description: cart.value['description'],
-                      price: cart.value['price'],
-                      quantity: cart.value['quantity'],
-                    ),
-                  )
-                  .toList()
+              FutureBuilder(
+                  future: controller.getCart(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return SizedBox(
+                        height: 0.70.sh,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    if (controller.carts.isEmpty) {
+                      return Column(
+                        children: [
+                          Lottie.asset('assets/animations/empty.json'),
+                          const Text('Nothing inside cart, try adding some!')
+                        ],
+                      );
+                    }
+                    return Column(
+                      children: controller.carts.map(
+                        (cart) {
+                          return CartItem(
+                            cart: cart,
+                          );
+                        },
+                      ).toList(),
+                    );
+                  }),
             ],
           ),
         ),
@@ -66,31 +81,21 @@ class CartView extends GetView<CartController> {
 class CartItem extends StatelessWidget {
   const CartItem({
     super.key,
-    required this.keyItem,
-    required this.image,
-    required this.title,
-    required this.description,
-    required this.price,
-    required this.quantity,
+    required this.cart,
   });
-  final int keyItem;
-  final String image;
-  final String title;
-  final String description;
-  final int price;
-  final int quantity;
+  final Cart cart;
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CartController());
     return Padding(
       padding: REdgeInsets.only(bottom: 20),
       child: Slidable(
-        key: ValueKey(keyItem),
+        key: ValueKey(cart.id),
         endActionPane: ActionPane(
             dragDismissible: false,
             extentRatio: 0.3,
             motion: const ScrollMotion(),
-            dismissible: DismissiblePane(onDismissed: () {}),
             children: [
               SlidableAction(
                 onPressed: (ctx) {
@@ -101,9 +106,7 @@ class CartItem extends StatelessWidget {
                     textCancel: 'Cancel',
                     confirmTextColor: Colors.white,
                     onCancel: () => Get.back(),
-                    onConfirm: () {
-                      Get.back();
-                    },
+                    onConfirm: () => controller.removeCart(cart.id ?? 0),
                   );
                 },
                 borderRadius: BorderRadius.only(
@@ -135,7 +138,11 @@ class CartItem extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10).r,
                     child: CachedNetworkImage(
-                      imageUrl: image,
+                      imageUrl: (cart.product?.image ??
+                                  "https://via.placeholder.com/200")
+                              .contains('placeholder')
+                          ? "https://via.placeholder.com/200"
+                          : 'https://storage.googleapis.com/${cart.product?.image}',
                       width: 80.w,
                       height: 80.h,
                       fit: BoxFit.cover,
@@ -154,20 +161,28 @@ class CartItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            title,
+                            cart.product?.name ?? 'No Name',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700, fontSize: 14.sp),
                           ),
                           Text(
-                            description,
+                            cart.product?.description ?? 'No Description',
                             style: TextStyle(
                                 color: const Color(0xff666666),
                                 fontSize: 11.sp),
                           ),
+                          Text(
+                            'variant: ${cart.color}',
+                            style: TextStyle(
+                                color: const Color(0xff666666),
+                                fontSize: 10.sp),
+                          ),
                         ],
                       ),
                       Text(
-                        '\$$price.00',
+                        NumberFormat.currency(
+                                locale: 'id', symbol: 'Rp ', decimalDigits: 0)
+                            .format(cart.total_price),
                         style: TextStyle(
                             fontWeight: FontWeight.w900, fontSize: 14.sp),
                       ),
@@ -190,14 +205,14 @@ class CartItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(20),
-                        onTap: () {
-                          //substract the quantity
-                        },
+                        onTap: () => (cart.qty ?? 0) > 1
+                            ? controller.substractQuantity(cart.id ?? 0)
+                            : null,
                         child: const Icon(Icons.remove, size: 16),
                       ),
                     ),
                     Text(
-                      quantity.toString(),
+                      '${cart.qty ?? 0}',
                       style: const TextStyle(fontSize: 14),
                     ),
                     Material(
@@ -205,9 +220,10 @@ class CartItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(20),
-                        onTap: () {
-                          //add the quantity
-                        },
+                        onTap: () =>
+                            (cart.qty ?? 0) < (cart.product?.stock ?? 0)
+                                ? controller.addQuantity(cart.id ?? 0)
+                                : null,
                         child: const Icon(Icons.add, size: 16),
                       ),
                     ),

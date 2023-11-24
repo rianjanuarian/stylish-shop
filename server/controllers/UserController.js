@@ -163,12 +163,7 @@ class UserController {
       }
 
       const password = await encryptPassword(newPassword);
-      const response = await currentUser.update({ password });
-
-      if (response[0] !== 1) {
-        res.json({ message: "Password has not been changed!" });
-      }
-
+      await currentUser.update({ password });
       res.json({ message: "Password has been changed!" });
     } catch (error) {
       next(error);

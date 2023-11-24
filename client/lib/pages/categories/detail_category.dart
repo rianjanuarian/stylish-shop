@@ -1,5 +1,5 @@
 import 'package:client/pages/categories/categories/controllers/categories_controller.dart';
-import 'package:client/pages/home_page/detail_product.dart';
+import 'package:client/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -68,11 +68,7 @@ class DetailCategory extends StatelessWidget {
                           itemBuilder: (_, index) {
                             return InkWell(
                               onTap: () {
-                                Get.to(() => DetailProduct(
-                                    categoryController
-                                        .categoryId[0].products![index].id,
-                                    categoryController
-                                        .categoryId[0].products![index].image));
+                                Get.toNamed(AppPages.detail, arguments: categoryController.categoryId[0].products);
                               },
                               child: Container(
                                 alignment: Alignment.center,
