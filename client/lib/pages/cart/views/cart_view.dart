@@ -42,8 +42,9 @@ class CartView extends GetView<CartController> {
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
               SizedBox(height: 20.h),
-              Obx(
-                () {
+              FutureBuilder(
+                future: controller.getCart(),
+                builder: (context, snapshot) {
                   if (controller.isLoading.isTrue) {
                     return SizedBox(
                       height: 0.70.sh,
@@ -60,50 +61,20 @@ class CartView extends GetView<CartController> {
                       ],
                     );
                   }
-                  return 
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: controller.carts.length,
-                    itemBuilder: (context, index) {
-                      return CartItem(
-                          cart: controller.carts[index],
-                          controller: controller);
-                    },
+                  return Obx(
+                    () => Column(
+                      children: controller.carts.map(
+                        (cart) {
+                          return CartItem(
+                            cart: cart,
+                            controller: controller,
+                          );
+                        },
+                      ).toList(),
+                    ),
                   );
-                  //  FutureBuilder(
-                  // future: controller.getCart(),
-                  // builder: (context, snapshot) {
-                  //   if (snapshot.connectionState == ConnectionState.waiting) {
-                  //     return SizedBox(
-                  //       height: 0.70.sh,
-                  //       child: const Center(
-                  //         child: CircularProgressIndicator(),
-                  //       ),
-                  //     );
-                  //   }
-                  //   if (controller.carts.isEmpty) {
-                  //     return Column(
-                  //       children: [
-                  //         Lottie.asset('assets/animations/empty.json'),
-                  //         const Text('Nothing inside cart, try adding some!')
-                  //       ],
-                  //     );
-                  //   }
-                  //   return Column(
-                  //     children: controller.carts.map(
-                  //       (cart) {
-                  //         return CartItem(
-                  //           cart: cart,
-                  //           controller: controller,
-                  //         );
-                  //       },
-                  //     ).toList(),
-                  //   );
-                  // });
                 },
               ),
-             
             ],
           ),
         ),

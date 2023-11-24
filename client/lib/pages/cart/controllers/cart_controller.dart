@@ -14,7 +14,6 @@ class CartController extends GetxController {
 
   Future<void> getCart() async {
     try {
-      print('object');
       isLoading.toggle();
       //fetch carts from api
       final token = await storage.read(GetStorageKey.token);
