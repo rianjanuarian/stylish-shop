@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/services/api_service/cart/cart_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -108,13 +109,7 @@ class PlaceOrder extends StatelessWidget {
                   .asMap()
                   .entries
                   .map((order) => CartItem(
-                        keyItem: order.key,
-                        title: order.value['title'],
-                        image: order.value['image'],
-                        description: order.value['description'],
-                        price: order.value['price'],
-                        quantity: order.value['quantity'],
-                        variant: order.value['quantity'],
+                        cart: Cart()
                       ))
                   .toList(),
               Text(

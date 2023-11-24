@@ -46,7 +46,7 @@ class CartController {
 
   static async getDetailCart(req, res, next) {
     try {
-      const userId = req.user.dataValues.id;
+      const userId = req.user.id;
       const courierId = req.params.id;
       const allCart = await cart.findAll({
         where: {
@@ -82,7 +82,7 @@ class CartController {
       const { qty } = req.body;
 
       const currentCart = await cart.findByPk(id);
-      const userId = req.user.dataValues.id;
+      const userId = req.user.id;
 
       if (!currentCart) {
         return next(createError(404, "Cart not found!"));
@@ -114,7 +114,7 @@ class CartController {
   static async delete(req, res, next) {
     try {
       const id = parseInt(req.params.id);
-      const userId = req.user.dataValues.id;
+      const userId = req.user.id;
       let currentCart = await cart.findByPk(id);
 
       if (!currentCart) {
