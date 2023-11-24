@@ -9,11 +9,10 @@ import 'package:intl/intl.dart';
 import '../controllers/new_arrival_controller.dart';
 
 class NewArrivalView extends GetView<NewArrivalController> {
-   String pages;
-    NewArrivalView(this.pages,{Key? key}) : super(key: key);
+  const NewArrivalView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-      final controller = Get.put<NewArrivalController>(NewArrivalController());
+    final String pages = Get.arguments;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
@@ -54,9 +53,9 @@ class NewArrivalView extends GetView<NewArrivalController> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                         Text(
+                          Text(
                             pages,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 28, fontWeight: FontWeight.w700),
                           ),
                           Obx(

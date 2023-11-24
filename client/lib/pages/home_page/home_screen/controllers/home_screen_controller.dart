@@ -2,7 +2,6 @@ import 'package:client/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import '../../../../models/products.dart';
-import '../../new_arrival/views/new_arrival_view.dart';
 
 class HomeScreenController extends GetxController {
   var productList = <Products>[].obs;
@@ -56,13 +55,12 @@ class HomeScreenController extends GetxController {
   }
 
   void goToNewArrival() {
-    Get.to(NewArrivalView("New Arrival"));
+    Get.toNamed(AppPages.newArrival, arguments: 'New Arrival');
   }
 
   void goToTrendingProduct() {
-    Get.to(NewArrivalView("Trending Products"));
+    Get.toNamed(AppPages.newArrival, arguments: 'Trending Products');
   }
-
 
   void goToDetail(Products product) {
     Get.toNamed(AppPages.detail, arguments: product);
