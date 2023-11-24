@@ -24,7 +24,12 @@ class HomeScreenController extends GetxController {
   ];
   final dio = Dio();
   RxBool isLoading = RxBool(false);
-
+  @override
+  void onInit() {
+    getProducts();
+    shuffleTrendingProducts();
+    super.onInit();
+  }
   Future<void> getProducts() async {
     try {
       isLoading.toggle();
@@ -39,7 +44,7 @@ class HomeScreenController extends GetxController {
       if (e is DioException) {
         final errorResponse = e.response;
         if (errorResponse != null) {
-          final errorMessage = errorResponse.data?['message'];
+          final errorMessage = errorResponse.data!['message'];
           Get.snackbar('Error', errorMessage ?? 'Unknown error');
         } else {
           Get.snackbar('Error', 'Unknown error occurred');

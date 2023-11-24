@@ -39,16 +39,21 @@ class CategoriesView extends GetView<CategoriesController> {
                       child: CircularProgressIndicator(),
                     )
                   : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const Text(
+                          "Categories",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w700),
+                        ),
                         ...controller.categoriesList
                             .map(
                               (category) => CategoryItem(
                                 categoryId: category.id!,
                                 categoryName: category.name!,
-                               
                               ),
                             )
-                            .toList()
+                            .toList(),
                       ],
                     )),
             ],
@@ -61,14 +66,13 @@ class CategoriesView extends GetView<CategoriesController> {
 
 // ignore: must_be_immutable
 class CategoryItem extends StatelessWidget {
-  CategoryItem(
-      {super.key,
-      required this.categoryId,
-      required this.categoryName,
-      });
+  CategoryItem({
+    super.key,
+    required this.categoryId,
+    required this.categoryName,
+  });
   final String categoryName;
   final int categoryId;
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +84,7 @@ class CategoryItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(30).r,
           onTap: () {
-            Get.to(() => DetailCategory(categoryId,categoryName));
+            Get.to(() => DetailCategory(categoryId, categoryName));
           },
           child: Container(
             padding: REdgeInsets.symmetric(vertical: 10, horizontal: 20),
