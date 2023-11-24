@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:lottie/lottie.dart';
 import 'package:get/get.dart';
 import '../../../services/api_service/cart/cart_models.dart';
@@ -14,71 +15,80 @@ class CartView extends GetView<CartController> {
   Widget build(BuildContext context) {
     final controller = Get.put(CartController());
     return Scaffold(
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Padding(
-          padding: REdgeInsets.all(30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                onTap: () => controller.goToSearch(),
-                decoration: InputDecoration(
-                  prefixIcon: Padding(
-                    padding: REdgeInsets.symmetric(horizontal: 30.0),
-                    child: Icon(Icons.search, size: 32.sp),
-                  ),
-                  hintText: 'Search...',
-                  hintStyle: const TextStyle(color: Color(0xFFAAAAAA)),
-                  fillColor: const Color(0xffF3F4F5),
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30).r,
+      body: LiquidPullToRefresh(
+        onRefresh: () => controller.getCart(),
+        showChildOpacityTransition: false,
+        borderWidth: 2,
+        backgroundColor: Colors.black,
+        springAnimationDurationInMilliseconds: 200,
+        color: Colors.white,
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: REdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  onTap: () => controller.goToSearch(),
+                  decoration: InputDecoration(
+                    prefixIcon: Padding(
+                      padding: REdgeInsets.symmetric(horizontal: 30.0),
+                      child: Icon(Icons.search, size: 32.sp),
+                    ),
+                    hintText: 'Search...',
+                    hintStyle: const TextStyle(color: Color(0xFFAAAAAA)),
+                    fillColor: const Color(0xffF3F4F5),
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30).r,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 20.h),
-              Text('My Cart',
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
-              SizedBox(height: 20.h),
-              FutureBuilder(
-                future: controller.getCart(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return SizedBox(
-                      height: 0.70.sh,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                SizedBox(height: 20.h),
+                Text('My Cart',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18.sp)),
+                SizedBox(height: 20.h),
+                FutureBuilder(
+                  future: controller.getCart(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return SizedBox(
+                        height: 0.70.sh,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                    return Obx(
+                      () {
+                        if (controller.carts.isNotEmpty) {
+                          return Column(
+                            children: controller.carts.map(
+                              (cart) {
+                                return CartItem(
+                                  cart: cart,
+                                  controller: controller,
+                                );
+                              },
+                            ).toList(),
+                          );
+                        } else {
+                          return Column(
+                            children: [
+                              Lottie.asset('assets/animations/empty.json'),
+                              const Text(
+                                  'Nothing inside cart, try adding some!')
+                            ],
+                          );
+                        }
+                      },
                     );
-                  }
-                  return Obx(
-                    () {
-                      if (controller.carts.isNotEmpty) {
-                        return Column(
-                          children: controller.carts.map(
-                            (cart) {
-                              return CartItem(
-                                cart: cart,
-                                controller: controller,
-                              );
-                            },
-                          ).toList(),
-                        );
-                      } else {
-                        return Column(
-                          children: [
-                            Lottie.asset('assets/animations/empty.json'),
-                            const Text('Nothing inside cart, try adding some!')
-                          ],
-                        );
-                      }
-                    },
-                  );
-                },
-              ),
-            ],
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
