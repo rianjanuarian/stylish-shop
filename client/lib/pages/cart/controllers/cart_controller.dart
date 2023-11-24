@@ -11,6 +11,7 @@ class CartController extends GetxController {
   final dio = Dio();
   final storage = GetStorage();
   int initialProductPrice = 200000;
+  RxBool isCartEmpty = RxBool(false);
 
   Future<void> getCart() async {
     try {
@@ -24,6 +25,7 @@ class CartController extends GetxController {
           }));
       final List<dynamic> result = res.data;
       carts.value = result.map((e) => Cart.fromJson(e)).toList();
+      isCartEmpty.value = checkIsCartEmpty(); 
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
@@ -39,6 +41,13 @@ class CartController extends GetxController {
     }
   }
 
+  bool checkIsCartEmpty() {
+    if (carts.isEmpty) {
+      return true;
+    }
+    return false;
+  }
+
   void removeCart(int id) async {
     try {
       final token = await storage.read(GetStorageKey.token);
@@ -48,6 +57,8 @@ class CartController extends GetxController {
             'Content-Type': 'application/json',
           }));
       carts.removeWhere((cart) => cart.id == id);
+      update();
+      isCartEmpty.value = checkIsCartEmpty();
       Get.back();
     } catch (e) {
       if (e is DioException) {
@@ -130,7 +141,6 @@ class CartController extends GetxController {
   void goToSearch() {
     Get.toNamed(AppPages.search);
   }
-
 
   @override
   void onInit() {

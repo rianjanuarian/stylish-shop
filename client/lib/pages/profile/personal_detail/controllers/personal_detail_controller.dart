@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../services/api_service/user/user_service_models.dart';
+import '../../setting/controllers/setting_controller.dart';
+
 enum Gender { male, female }
 
 class PersonalDetailController extends GetxController {
@@ -12,6 +15,7 @@ class PersonalDetailController extends GetxController {
   late final TextEditingController birthDateController;
   late final TextEditingController phoneController;
   late final TextEditingController addressController;
+  UserModel? user;
 
   RxBool isLoading = RxBool(false);
 
@@ -62,12 +66,21 @@ class PersonalDetailController extends GetxController {
     }
   }
 
+  void getUserData() async {
+    user = await SettingController().getUser();
+    nameController.text = user?.name ?? '';
+    birthDateController.text = user?.birthday != null ?   DateFormat('dd-MM-yyyy').format(user!.birthday!) : '';
+    phoneController.text = user?.phone_number ?? '';
+    addressController.text = user?.address ?? '';
+  }
+
   @override
   void onInit() {
     nameController = TextEditingController();
     birthDateController = TextEditingController();
     phoneController = TextEditingController();
     addressController = TextEditingController();
+    getUserData();
     super.onInit();
   }
 

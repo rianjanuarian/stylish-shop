@@ -45,7 +45,7 @@ class CartView extends GetView<CartController> {
               FutureBuilder(
                 future: controller.getCart(),
                 builder: (context, snapshot) {
-                  if (controller.isLoading.isTrue) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return SizedBox(
                       height: 0.70.sh,
                       child: const Center(
@@ -53,25 +53,31 @@ class CartView extends GetView<CartController> {
                       ),
                     );
                   }
-                  if (controller.carts.isEmpty) {
-                    return Column(
-                      children: [
-                        Lottie.asset('assets/animations/empty.json'),
-                        const Text('Nothing inside cart, try adding some!')
-                      ],
-                    );
-                  }
                   return Obx(
-                    () => Column(
-                      children: controller.carts.map(
-                        (cart) {
-                          return CartItem(
-                            cart: cart,
-                            controller: controller,
-                          );
-                        },
-                      ).toList(),
-                    ),
+                    () {
+                      if (controller.carts.isNotEmpty) {
+                        return Column(
+                          children: controller.carts.map(
+                            (cart) {
+                              return CartItem(
+                                cart: cart,
+                                controller: controller,
+                              );
+                            },
+                          ).toList(),
+                        );
+                      } else {
+                        return controller.isCartEmpty.isTrue
+                            ? Column(
+                                children: [
+                                  Lottie.asset('assets/animations/empty.json'),
+                                  const Text(
+                                      'Nothing inside cart, try adding some!')
+                                ],
+                              )
+                            : const SizedBox();
+                      }
+                    },
                   );
                 },
               ),

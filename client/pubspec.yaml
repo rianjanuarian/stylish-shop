@@ -50,6 +50,7 @@ dependencies:
   firebase_core: ^2.22.0
   google_sign_in: ^6.1.6
   json_annotation: ^4.8.0
+  image_picker: ^1.0.4
   lottie: ^2.7.0
 
 dev_dependencies:
