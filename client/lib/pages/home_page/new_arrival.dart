@@ -49,8 +49,8 @@ class NewArrival extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                     pages == 'trending' ? "Trending Product" : "New Arrival",
+                    const Text(
+                      "New Arrivals",
                       style:
                           TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                     ),
