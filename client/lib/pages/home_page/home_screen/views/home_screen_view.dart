@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/pages/profile/setting/controllers/setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<HomeScreenController>(HomeScreenController());
+    final userController = Get.put<SettingController>(SettingController());
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -20,18 +22,18 @@ class HomeScreenView extends GetView<HomeScreenController> {
           children: [
             Padding(
               padding: REdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              child: controller.isLoading.isTrue && controller.user == null
+              child: userController.isLoading.isTrue && userController.user.value == null
                   ? createShimmerAvatar()
                   : Row(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50).r,
                           child: CachedNetworkImage(
-                            imageUrl: (controller.user?.image ?? '')
+                            imageUrl: (userController.user.value?.image ?? '')
                                     .contains('placeholder')
-                                ? controller.user?.image ??
+                                ? userController.user.value?.image ??
                                     "https://via.placeholder.com/200"
-                                : 'https://storage.googleapis.com/${controller.user?.image}',
+                                : 'https://storage.googleapis.com/${userController.user.value?.image}',
                             width: 65.h,
                             height: 65.h,
                             placeholder: (context, url) => const Center(
@@ -52,7 +54,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
                               ),
                             ),
                             Text(
-                              controller.user?.name ?? 'Sarah Ann',
+                              userController.user.value?.name ?? 'Sarah Ann',
                               style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w400,

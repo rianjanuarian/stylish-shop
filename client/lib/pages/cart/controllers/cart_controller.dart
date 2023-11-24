@@ -57,7 +57,6 @@ class CartController extends GetxController {
             'Content-Type': 'application/json',
           }));
       carts.removeWhere((cart) => cart.id == id);
-      update();
       isCartEmpty.value = checkIsCartEmpty();
       Get.back();
     } catch (e) {

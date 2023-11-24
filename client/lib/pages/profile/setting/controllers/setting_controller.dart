@@ -8,21 +8,25 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class SettingController extends GetxController {
   final storage = GetStorage();
+  Rx<UserModel?> user = Rx<UserModel?>(null);
+  RxBool isLoading = RxBool(false);
 
   // Firebase
   final FirebaseAuth auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final dio = Dio();
 
-  Future<UserModel> getUser() async {
+  Future<void> getUser() async {
     try {
+      isLoading.toggle();
       final token = await storage.read(GetStorageKey.token);
       final res = await dio.get('https://stylish-shop.vercel.app/users/getUser',
           options: Options(headers: {
             'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
           }));
-      return UserModel.fromJson(res.data);
+      user.value = UserModel.fromJson(res.data);
+      isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
@@ -30,6 +34,7 @@ class SettingController extends GetxController {
           throw errorResponse.data?['message'];
         }
       }
+      isLoading.toggle();
       rethrow;
     }
   }
@@ -49,5 +54,11 @@ class SettingController extends GetxController {
         }
       }
     }
+  }
+
+  @override
+  void onInit() {
+    getUser();
+    super.onInit();
   }
 }

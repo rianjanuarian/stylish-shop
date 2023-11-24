@@ -1,12 +1,9 @@
-import 'package:client/pages/profile/setting/controllers/setting_controller.dart';
 import 'package:client/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import '../../../../models/products.dart';
-import '../../../../services/api_service/user/user_service_models.dart';
 
 class HomeScreenController extends GetxController {
-  UserModel? user;
   var productList = <Products>[].obs;
   var productId = <Products>[].obs;
   var trendingList = <Products>[].obs;
@@ -31,7 +28,6 @@ class HomeScreenController extends GetxController {
   Future<void> getProducts() async {
     try {
       isLoading.toggle();
-      user = await SettingController().getUser();
       String url = 'https://stylish-shop.vercel.app/products';
       final response = await dio.get(url);
       final List<dynamic> result = response.data;

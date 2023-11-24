@@ -67,15 +67,12 @@ class CartView extends GetView<CartController> {
                           ).toList(),
                         );
                       } else {
-                        return controller.isCartEmpty.isTrue
-                            ? Column(
-                                children: [
-                                  Lottie.asset('assets/animations/empty.json'),
-                                  const Text(
-                                      'Nothing inside cart, try adding some!')
-                                ],
-                              )
-                            : const SizedBox();
+                        return Column(
+                          children: [
+                            Lottie.asset('assets/animations/empty.json'),
+                            const Text('Nothing inside cart, try adding some!')
+                          ],
+                        );
                       }
                     },
                   );
