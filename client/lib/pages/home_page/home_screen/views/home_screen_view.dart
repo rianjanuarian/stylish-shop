@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/pages/home_page/new_arrival/views/new_arrival_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -171,7 +172,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
               padding: REdgeInsets.symmetric(horizontal: 30),
               child: CustomText(
                 textNamed: 'New Arrival',
-                onTap: controller.goToNewArrival,
+                onTap: (){Get.to(NewArrivalView("New Arrival"));},
               ),
             ),
             SingleChildScrollView(
@@ -260,8 +261,8 @@ class HomeScreenView extends GetView<HomeScreenController> {
             Padding(
               padding: REdgeInsets.symmetric(horizontal: 30),
               child: CustomText(
-                textNamed: 'Trending Product',
-                onTap: controller.goToNewArrival,
+                textNamed: 'Trending Products',
+                onTap: (){ Get.to(NewArrivalView("Trending Products"));}
               ),
             ),
             SingleChildScrollView(
