@@ -57,7 +57,7 @@ class _MainTabState extends State<MainTab> {
         containerHeight: 65.h,
         selectedIndex: _currentIndex,
         showElevation: true,
-        itemCornerRadius: 10,
+        itemCornerRadius: 10.r,
         curve: Curves.easeIn,
         onItemSelected: (value) {
           setState(() => _currentIndex = value);
