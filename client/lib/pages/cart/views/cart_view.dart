@@ -45,7 +45,7 @@ class CartView extends GetView<CartController> {
               FutureBuilder(
                 future: controller.getCart(),
                 builder: (context, snapshot) {
-                  if (controller.isLoading.isTrue) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return SizedBox(
                       height: 0.70.sh,
                       child: const Center(
@@ -62,16 +62,18 @@ class CartView extends GetView<CartController> {
                     );
                   }
                   return Obx(
-                    () => Column(
-                      children: controller.carts.map(
-                        (cart) {
-                          return CartItem(
-                            cart: cart,
-                            controller: controller,
-                          );
-                        },
-                      ).toList(),
-                    ),
+                    () {
+                      return Column(
+                        children: controller.carts.map(
+                          (cart) {
+                            return CartItem(
+                              cart: cart,
+                              controller: controller,
+                            );
+                          },
+                        ).toList(),
+                      );
+                    },
                   );
                 },
               ),
