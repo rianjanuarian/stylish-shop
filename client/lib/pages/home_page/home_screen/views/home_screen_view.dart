@@ -186,82 +186,84 @@ class HomeScreenView extends GetView<HomeScreenController> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               physics: const ClampingScrollPhysics(),
-              child: Padding(
-                padding: REdgeInsets.symmetric(horizontal: 30),
-                child: FutureBuilder(
-                    future: controller.getProducts(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return createShimmerApp();
-                      }
-                      return Wrap(
-                        spacing: 20.w,
-                        children: controller.productList
-                            .map(
-                              (product) => InkWell(
-                                onTap: () => controller.goToDetail(product),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(10).r),
-                                  child: controller.productList.isNotEmpty
-                                      ? Column(
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10).r,
-                                              child: CachedNetworkImage(
-                                                imageUrl: (product.image ?? '')
-                                                        .contains('placeholder')
-                                                    ? product.image ??
-                                                        "https://via.placeholder.com/200"
-                                                    : 'https://storage.googleapis.com/${product.image}',
-                                                height: 170.h,
-                                                width: 155.w,
-                                                fit: BoxFit.cover,
-                                                placeholder: (context, url) =>
-                                                    const Center(
-                                                        child:
-                                                            CircularProgressIndicator()),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        const Icon(Icons.error),
+              child: Obx(
+                () => Padding(
+                  padding: REdgeInsets.symmetric(horizontal: 30),
+                  child: controller.isLoading.isTrue
+                      ? createShimmerApp()
+                      : Wrap(
+                          spacing: 20.w,
+                          children: controller.productList
+                              .map(
+                                (product) => InkWell(
+                                  onTap: () => controller.goToDetail(product),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(10).r),
+                                    child: controller.productList.isNotEmpty
+                                        ? Column(
+                                            children: [
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10).r,
+                                                child: CachedNetworkImage(
+                                                  imageUrl: (product.image ??
+                                                              '')
+                                                          .contains(
+                                                              'placeholder')
+                                                      ? product.image ??
+                                                          "https://via.placeholder.com/200"
+                                                      : 'https://storage.googleapis.com/${product.image}',
+                                                  height: 170.h,
+                                                  width: 155.w,
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) =>
+                                                      const Center(
+                                                          child:
+                                                              CircularProgressIndicator()),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              product.name ?? "no product name",
-                                              style: TextStyle(
-                                                  fontSize: 15.sp,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            Text(
-                                              product.description ??
-                                                  "no product description",
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  color:
-                                                      const Color(0xFF666666)),
-                                            ),
-                                            Text(
-                                              NumberFormat.currency(
-                                                      locale: 'id',
-                                                      symbol: 'Rp ',
-                                                      decimalDigits: 0)
-                                                  .format(product.price ?? 0),
-                                              style: TextStyle(
-                                                  fontSize: 15.sp,
-                                                  fontWeight: FontWeight.w700),
-                                            )
-                                          ],
-                                        )
-                                      : Container(),
+                                              Text(
+                                                product.name ??
+                                                    "no product name",
+                                                style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              ),
+                                              Text(
+                                                product.description ??
+                                                    "no product description",
+                                                style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    color: const Color(
+                                                        0xFF666666)),
+                                              ),
+                                              Text(
+                                                NumberFormat.currency(
+                                                        locale: 'id',
+                                                        symbol: 'Rp ',
+                                                        decimalDigits: 0)
+                                                    .format(product.price ?? 0),
+                                                style: TextStyle(
+                                                    fontSize: 15.sp,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              )
+                                            ],
+                                          )
+                                        : Container(),
+                                  ),
                                 ),
-                              ),
-                            )
-                            .toList(),
-                      );
-                    }),
+                              )
+                              .toList(),
+                        ),
+                ),
               ),
             ),
             Padding(
@@ -276,13 +278,9 @@ class HomeScreenView extends GetView<HomeScreenController> {
               physics: const ClampingScrollPhysics(),
               child: Padding(
                 padding: REdgeInsets.symmetric(horizontal: 30),
-                child: FutureBuilder(
-                    future: controller.getProducts(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return createShimmerApp();
-                      }
-                      return Wrap(
+                child: controller.isLoading.isTrue
+                    ? createShimmerApp()
+                    : Wrap(
                         spacing: 20.w,
                         children: controller.trendingList
                             .map(
@@ -348,8 +346,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
                               ),
                             )
                             .toList(),
-                      );
-                    }),
+                      ),
               ),
             ),
           ],

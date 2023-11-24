@@ -12,6 +12,7 @@ class CartView extends GetView<CartController> {
   const CartView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CartController());
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -41,35 +42,68 @@ class CartView extends GetView<CartController> {
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp)),
               SizedBox(height: 20.h),
-              FutureBuilder(
-                  future: controller.getCart(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return SizedBox(
-                        height: 0.70.sh,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
-                    }
-                    if (controller.carts.isEmpty) {
-                      return Column(
-                        children: [
-                          Lottie.asset('assets/animations/empty.json'),
-                          const Text('Nothing inside cart, try adding some!')
-                        ],
-                      );
-                    }
-                    return Column(
-                      children: controller.carts.map(
-                        (cart) {
-                          return CartItem(
-                            cart: cart,
-                          );
-                        },
-                      ).toList(),
+              Obx(
+                () {
+                  if (controller.isLoading.isTrue) {
+                    return SizedBox(
+                      height: 0.70.sh,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     );
-                  }),
+                  }
+                  if (controller.carts.isEmpty) {
+                    return Column(
+                      children: [
+                        Lottie.asset('assets/animations/empty.json'),
+                        const Text('Nothing inside cart, try adding some!')
+                      ],
+                    );
+                  }
+                  return 
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: controller.carts.length,
+                    itemBuilder: (context, index) {
+                      return CartItem(
+                          cart: controller.carts[index],
+                          controller: controller);
+                    },
+                  );
+                  //  FutureBuilder(
+                  // future: controller.getCart(),
+                  // builder: (context, snapshot) {
+                  //   if (snapshot.connectionState == ConnectionState.waiting) {
+                  //     return SizedBox(
+                  //       height: 0.70.sh,
+                  //       child: const Center(
+                  //         child: CircularProgressIndicator(),
+                  //       ),
+                  //     );
+                  //   }
+                  //   if (controller.carts.isEmpty) {
+                  //     return Column(
+                  //       children: [
+                  //         Lottie.asset('assets/animations/empty.json'),
+                  //         const Text('Nothing inside cart, try adding some!')
+                  //       ],
+                  //     );
+                  //   }
+                  //   return Column(
+                  //     children: controller.carts.map(
+                  //       (cart) {
+                  //         return CartItem(
+                  //           cart: cart,
+                  //           controller: controller,
+                  //         );
+                  //       },
+                  //     ).toList(),
+                  //   );
+                  // });
+                },
+              ),
+             
             ],
           ),
         ),
@@ -82,12 +116,13 @@ class CartItem extends StatelessWidget {
   const CartItem({
     super.key,
     required this.cart,
+    required this.controller,
   });
   final Cart cart;
+  final CartController controller;
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(CartController());
     return Padding(
       padding: REdgeInsets.only(bottom: 20),
       child: Slidable(

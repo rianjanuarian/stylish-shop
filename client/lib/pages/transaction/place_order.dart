@@ -105,13 +105,13 @@ class PlaceOrder extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
               ),
               SizedBox(height: 20.h),
-              ...order
-                  .asMap()
-                  .entries
-                  .map((order) => CartItem(
-                        cart: Cart()
-                      ))
-                  .toList(),
+              // ...order
+              //     .asMap()
+              //     .entries
+              //     .map((order) => CartItem(
+              //           cart: Cart()
+              //         ))
+              //     .toList(),
               Text(
                 'Courier',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
