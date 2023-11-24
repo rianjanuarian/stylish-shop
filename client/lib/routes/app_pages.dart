@@ -103,7 +103,7 @@ class AppPages {
     ),
     // GetPage(
     //   name: newArrival,
-    //   page: () => const NewArrival(),
+    //   page: () => const NewArrivalView(),
     // ),
     GetPage(
       name: setting,

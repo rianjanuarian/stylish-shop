@@ -27,7 +27,11 @@ class HomeScreenController extends GetxController {
   ];
   final dio = Dio();
   RxBool isLoading = RxBool(false);
-
+  @override
+  void onInit() async {
+    getProducts();
+    super.onInit();
+  }
   Future<void> getProducts() async {
     try {
       isLoading.toggle();
@@ -37,7 +41,9 @@ class HomeScreenController extends GetxController {
       final List<dynamic> result = response.data;
       productList.value = result.map((e) => Products.fromJson(e)).toList();
       trendingList.value = result.map((e) => Products.fromJson(e)).toList();
+      trendingList.shuffle();
       isLoading.toggle();
+   
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
@@ -65,9 +71,5 @@ class HomeScreenController extends GetxController {
     Get.toNamed(AppPages.detail, arguments: product);
   }
 
-  @override
-  void onInit() async {
-    getProducts();
-    super.onInit();
-  }
+
 }
