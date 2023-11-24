@@ -75,6 +75,7 @@ class SearchPageView extends GetView<SearchPageController> {
                         BoxDecoration(borderRadius: BorderRadius.circular(10)),
                     child: Column(
                       children: [
+                      
                         Container(
                           decoration: BoxDecoration(
                               color: const Color.fromRGBO(219, 219, 219, 100),

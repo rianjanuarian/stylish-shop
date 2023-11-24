@@ -269,7 +269,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
               padding: REdgeInsets.symmetric(horizontal: 30),
               child: CustomText(
                 textNamed: 'Trending Product',
-                onTap: controller.goToNewArrival,
+                onTap: (){}
               ),
             ),
             SingleChildScrollView(

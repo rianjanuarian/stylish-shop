@@ -279,7 +279,6 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
                 controller: controller.addressController,
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 maxLines: 4,
-                keyboardType: TextInputType.phone,
                 decoration:  InputDecoration(
                   contentPadding: REdgeInsets.all( 5),
                   isDense: true,
