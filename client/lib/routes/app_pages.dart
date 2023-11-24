@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 
-import '../pages/home_page/detailProduct/bindings/detail_product_binding.dart';
-import '../pages/home_page/detailProduct/views/detail_product_view.dart';
+import '../pages/home_page/new_arrival/bindings/new_arrival_binding.dart';
 import '../pages/auth/login_signup_screen.dart';
 import '../pages/cart/bindings/cart_binding.dart';
 import '../pages/cart/views/cart_view.dart';
@@ -9,9 +8,11 @@ import '../pages/categories/categories/bindings/categories_binding.dart';
 import '../pages/categories/categories/views/categories_view.dart';
 import '../pages/common/unknown.dart';
 import '../pages/get_start/on_boarding_screen.dart';
+import '../pages/home_page/detail_product/bindings/detail_product_binding.dart';
+import '../pages/home_page/detail_product/views/detail_product_view.dart';
 import '../pages/home_page/home_screen/bindings/home_screen_binding.dart';
 import '../pages/home_page/home_screen/views/home_screen_view.dart';
-import '../pages/home_page/new_arrival.dart';
+import '../pages/home_page/new_arrival/views/new_arrival_view.dart';
 import '../pages/login/bindings/login_binding.dart';
 import '../pages/login/views/login_view.dart';
 import '../pages/main_tab/main_tab.dart';
@@ -158,3 +159,4 @@ class AppPages {
     ),
   ];
 }
+

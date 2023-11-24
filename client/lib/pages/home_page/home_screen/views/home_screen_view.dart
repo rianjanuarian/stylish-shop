@@ -191,20 +191,19 @@ class HomeScreenView extends GetView<HomeScreenController> {
               physics: const ClampingScrollPhysics(),
               child: Padding(
                 padding: REdgeInsets.symmetric(horizontal: 30),
-                child: Wrap(
-                  spacing: 20.w,
-                  children: controller.productList
-                      .map(
-                        (product) => InkWell(
-                          onTap: () => controller.goToDetail(product),
-                          child: FutureBuilder(
-                              future: controller.getProducts(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return createShimmerApp();
-                                }
-                                return Container(
+                child: FutureBuilder(
+                    future: controller.getProducts(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return createShimmerApp();
+                      }
+                      return Wrap(
+                        spacing: 20.w,
+                        children: controller.productList
+                            .map(
+                              (product) => InkWell(
+                                onTap: () => controller.goToDetail(product),
+                                child: Container(
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                       borderRadius:
@@ -260,12 +259,12 @@ class HomeScreenView extends GetView<HomeScreenController> {
                                           ],
                                         )
                                       : Container(),
-                                );
-                              }),
-                        ),
-                      )
-                      .toList(),
-                ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      );
+                    }),
               ),
             ),
             Padding(
@@ -282,20 +281,19 @@ class HomeScreenView extends GetView<HomeScreenController> {
               physics: const ClampingScrollPhysics(),
               child: Padding(
                 padding: REdgeInsets.symmetric(horizontal: 30),
-                child: Wrap(
-                  spacing: 20.w,
-                  children: controller.trendingList
-                      .map(
-                        (product) => InkWell(
-                          onTap: () => controller.goToDetail(product),
-                          child: FutureBuilder(
-                              future: controller.getProducts(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return createShimmerApp();
-                                }
-                                return Container(
+                child: FutureBuilder(
+                    future: controller.getProducts(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return createShimmerApp();
+                      }
+                      return Wrap(
+                        spacing: 20.w,
+                        children: controller.trendingList
+                            .map(
+                              (product) => InkWell(
+                                onTap: () => controller.goToDetail(product),
+                                child: Container(
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                       borderRadius:
@@ -351,12 +349,12 @@ class HomeScreenView extends GetView<HomeScreenController> {
                                           ],
                                         )
                                       : Container(),
-                                );
-                              }),
-                        ),
-                      )
-                      .toList(),
-                ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      );
+                    }),
               ),
             ),
           ],
@@ -394,24 +392,37 @@ class HomeScreenView extends GetView<HomeScreenController> {
 
   Widget createShimmerApp() {
     return AppShimmer(
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10).r),
-        child: Column(
-          children: [
-            Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                child: SizedBox(
-                  width: 150.w,
-                  height: 160.h,
-                )),
-            ShimmerText(width: 100.w, height: 10.h),
-            ShimmerText(width: 100.w, height: 10.h),
-            ShimmerText(width: 100.w, height: 10.h),
-          ],
-        ),
+      child: Row(
+        children: [
+          createShimmerProduct(),
+          SizedBox(width: 20.w),
+          createShimmerProduct(),
+          SizedBox(width: 20.w),
+          createShimmerProduct(),
+          SizedBox(width: 20.w),
+          createShimmerProduct(),
+        ],
+      ),
+    );
+  }
+
+  Widget createShimmerProduct() {
+    return Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10).r),
+      child: Column(
+        children: [
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              child: SizedBox(
+                width: 150.w,
+                height: 160.h,
+              )),
+          ShimmerText(width: 100.w, height: 10.h),
+          ShimmerText(width: 100.w, height: 10.h),
+          ShimmerText(width: 100.w, height: 10.h),
+        ],
       ),
     );
   }

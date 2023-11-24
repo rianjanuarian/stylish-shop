@@ -249,7 +249,7 @@ class DetailProductView extends GetView<DetailProductController> {
                                       ],
                                     ),
                                     ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () => controller.addToCart(product.id ?? 0),
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.black),
                                         child: const Row(

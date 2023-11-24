@@ -35,7 +35,6 @@ db.Sequelize = Sequelize;
 
 module.exports = db;
 
-
 // Ini buat local
 // 'use strict';
 
