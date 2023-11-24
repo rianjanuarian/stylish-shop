@@ -1,9 +1,12 @@
+import 'package:client/pages/profile/setting/controllers/setting_controller.dart';
 import 'package:client/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import '../../../../models/products.dart';
+import '../../../../services/api_service/user/user_service_models.dart';
 
 class HomeScreenController extends GetxController {
+  UserModel? user;
   var productList = <Products>[].obs;
   var productId = <Products>[].obs;
   var trendingList = <Products>[].obs;
@@ -24,27 +27,22 @@ class HomeScreenController extends GetxController {
   ];
   final dio = Dio();
   RxBool isLoading = RxBool(false);
-  @override
-  void onInit() {
-    getProducts();
-    shuffleTrendingProducts();
-    super.onInit();
-  }
+
   Future<void> getProducts() async {
     try {
       isLoading.toggle();
+      user = await SettingController().getUser();
       String url = 'https://stylish-shop.vercel.app/products';
       final response = await dio.get(url);
       final List<dynamic> result = response.data;
       productList.value = result.map((e) => Products.fromJson(e)).toList();
       trendingList.value = result.map((e) => Products.fromJson(e)).toList();
-      trendingList.shuffle();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
         if (errorResponse != null) {
-          final errorMessage = errorResponse.data!['message'];
+          final errorMessage = errorResponse.data?['message'];
           Get.snackbar('Error', errorMessage ?? 'Unknown error');
         } else {
           Get.snackbar('Error', 'Unknown error occurred');
@@ -54,29 +52,6 @@ class HomeScreenController extends GetxController {
       isLoading.toggle();
     }
   }
-
-  // Future<void> getProductById(int id) async {
-  //   //'http://192.168.0.104:3000/products'
-  //   String url = 'https://stylish-shop.vercel.app/products/detail/$id';
-  //   try {
-  //     final response = await dio.get(url);
-
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> data = response.data;
-  //       productId.value = [Products.fromJson(data)];
-  //       isLoading.value = false;
-  //       print(data);
-  //       update();
-  //     } else {
-  //       Get.snackbar(
-  //         'Error Fetching Product by ID',
-  //         'Error: ${response.statusCode.toString()}',
-  //       );
-  //     }
-  //   } catch (e) {
-  //     print('error : $e');
-  //   }
-  // }
 
   void goToSearch() {
     Get.toNamed(AppPages.search);
@@ -90,14 +65,9 @@ class HomeScreenController extends GetxController {
     Get.toNamed(AppPages.detail, arguments: product);
   }
 
-  Future<void> shuffleTrendingProducts() async {
-    try {
-      isLoading.toggle();
-      trendingList.shuffle();
-    } finally {
-      isLoading.toggle();
-    }
+  @override
+  void onInit() async {
+    getProducts();
+    super.onInit();
   }
-
-
 }
