@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/pages/profile/setting/controllers/setting_controller.dart';
+import 'package:client/pages/home_page/new_arrival/views/new_arrival_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../../widgets/app_shimmer.dart';
 import '../../../../widgets/custom_text.dart';
+import '../../../profile/setting/controllers/setting_controller.dart';
 import '../controllers/home_screen_controller.dart';
 
 class HomeScreenView extends GetView<HomeScreenController> {
@@ -173,7 +174,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
               padding: REdgeInsets.symmetric(horizontal: 30),
               child: CustomText(
                 textNamed: 'New Arrival',
-                onTap: controller.goToNewArrival,
+                onTap: () => controller.goToNewArrival(),
               ),
             ),
             SingleChildScrollView(
@@ -262,8 +263,8 @@ class HomeScreenView extends GetView<HomeScreenController> {
             Padding(
               padding: REdgeInsets.symmetric(horizontal: 30),
               child: CustomText(
-                textNamed: 'Trending Product',
-                onTap: controller.goToNewArrival,
+                textNamed: 'Trending Products',
+                onTap: ()=> controller.goToTrendingProduct()
               ),
             ),
             SingleChildScrollView(

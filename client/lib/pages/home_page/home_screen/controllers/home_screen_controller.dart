@@ -2,6 +2,7 @@ import 'package:client/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import '../../../../models/products.dart';
+import '../../new_arrival/views/new_arrival_view.dart';
 
 class HomeScreenController extends GetxController {
   var productList = <Products>[].obs;
@@ -33,6 +34,7 @@ class HomeScreenController extends GetxController {
       final List<dynamic> result = response.data;
       productList.value = result.map((e) => Products.fromJson(e)).toList();
       trendingList.value = result.map((e) => Products.fromJson(e)).toList();
+      trendingList.shuffle();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
@@ -54,8 +56,13 @@ class HomeScreenController extends GetxController {
   }
 
   void goToNewArrival() {
-    Get.toNamed(AppPages.newArrival);
+    Get.to(NewArrivalView("New Arrival"));
   }
+
+  void goToTrendingProduct() {
+    Get.to(NewArrivalView("Trending Products"));
+  }
+
 
   void goToDetail(Products product) {
     Get.toNamed(AppPages.detail, arguments: product);
