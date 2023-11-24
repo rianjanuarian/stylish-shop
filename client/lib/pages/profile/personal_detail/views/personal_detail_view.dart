@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/pages/profile/setting/controllers/setting_controller.dart';
-import 'package:client/services/api_service/user/user_service_models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -326,14 +325,13 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
           child: FutureBuilder(
               future: userController.getUser(),
               builder: (context, snapshot) {
-                UserModel? user = snapshot.data;
-                controller.nameController.text = user?.name ?? '';
+                controller.nameController.text = userController.user.value?.name ?? '';
                 controller.gender.value =
-                    user?.gender == 'woman' ? Gender.female : Gender.male;
+                    userController.user.value?.gender == 'woman' ? Gender.female : Gender.male;
                 controller.birthDateController.text =
-                    controller.formatDate(user?.birthday) ?? '';
-                controller.phoneController.text = user?.phone_number ?? '';
-                controller.addressController.text = user?.address ?? '';
+                    controller.formatDate(userController.user.value?.birthday) ?? '';
+                controller.phoneController.text = userController.user.value?.phone_number ?? '';
+                controller.addressController.text = userController.user.value?.address ?? '';
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -341,9 +339,9 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20.r),
                       child: CachedNetworkImage(
-                        imageUrl: (user?.image ?? '').contains('placeholder')
-                            ? user?.image ?? "https://via.placeholder.com/200"
-                            : 'https://storage.googleapis.com/${user?.image}',
+                        imageUrl: (userController.user.value?.image ?? '').contains('placeholder')
+                            ? userController.user.value?.image ?? "https://via.placeholder.com/200"
+                            : 'https://storage.googleapis.com/${userController.user.value?.image}',
                         height: 100.h,
                         fit: BoxFit.cover,
                         placeholder: (context, url) =>
