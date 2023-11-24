@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/pages/profile/setting/controllers/setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../../../services/api_service/user/user_service_models.dart';
 import '../../../../widgets/app_shimmer.dart';
 import '../../../../widgets/custom_text.dart';
 import '../controllers/home_screen_controller.dart';
@@ -14,7 +12,6 @@ class HomeScreenView extends GetView<HomeScreenController> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<HomeScreenController>(HomeScreenController());
-    final userController = Get.put<SettingController>(SettingController());
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -23,23 +20,18 @@ class HomeScreenView extends GetView<HomeScreenController> {
           children: [
             Padding(
               padding: REdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              child: FutureBuilder(
-                  future: userController.getUser(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return createShimmerAvatar();
-                    }
-                    final UserModel? user = snapshot.data;
-                    return Row(
+              child: controller.isLoading.isTrue && controller.user == null
+                  ? createShimmerAvatar()
+                  : Row(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(50).r,
                           child: CachedNetworkImage(
-                            imageUrl: (user?.image ?? '')
+                            imageUrl: (controller.user?.image ?? '')
                                     .contains('placeholder')
-                                ? user?.image ??
+                                ? controller.user?.image ??
                                     "https://via.placeholder.com/200"
-                                : 'https://storage.googleapis.com/${user?.image}',
+                                : 'https://storage.googleapis.com/${controller.user?.image}',
                             width: 65.h,
                             height: 65.h,
                             placeholder: (context, url) => const Center(
@@ -60,7 +52,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
                               ),
                             ),
                             Text(
-                              user?.name ?? 'Sarah Ann',
+                              controller.user?.name ?? 'Sarah Ann',
                               style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w400,
@@ -70,8 +62,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
                           ],
                         ),
                       ],
-                    );
-                  }),
+                    ),
             ),
             Padding(
               padding: REdgeInsets.symmetric(vertical: 10, horizontal: 30),
