@@ -100,10 +100,10 @@ class AppPages {
       page: () => const HomeScreenView(),
       binding: HomeScreenBinding(),
     ),
-    GetPage(
-      name: newArrival,
-      page: () => const NewArrival(),
-    ),
+    // GetPage(
+    //   name: newArrival,
+    //   page: () => const NewArrival(),
+    // ),
     GetPage(
       name: setting,
       page: () => const SettingView(),

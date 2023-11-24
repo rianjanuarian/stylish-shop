@@ -6,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class NewArrival extends StatelessWidget {
-  const NewArrival({super.key});
+  String pages;
+  NewArrival(this.pages, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +49,8 @@ class NewArrival extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "New Arrivals",
+                    Text(
+                     pages == 'trending' ? "Trending Product" : "New Arrival",
                       style:
                           TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                     ),
