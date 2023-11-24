@@ -1,10 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/pages/profile/setting/controllers/setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../../../../services/api_service/user/user_service_models.dart';
 import '../../../../widgets/app_shimmer.dart';
 import '../../../../widgets/custom_text.dart';
 import '../controllers/home_screen_controller.dart';
