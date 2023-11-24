@@ -10,11 +10,11 @@ class CartController extends GetxController {
   RxBool isLoading = RxBool(false);
   final dio = Dio();
   final storage = GetStorage();
-  RxInt price = 0.obs;
   int initialProductPrice = 200000;
 
   Future<void> getCart() async {
     try {
+      print('object');
       isLoading.toggle();
       //fetch carts from api
       final token = await storage.read(GetStorageKey.token);
@@ -49,6 +49,7 @@ class CartController extends GetxController {
             'Content-Type': 'application/json',
           }));
       carts.removeWhere((cart) => cart.id == id);
+      Get.back();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
@@ -80,6 +81,7 @@ class CartController extends GetxController {
             'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
           }));
+      update();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
@@ -111,6 +113,7 @@ class CartController extends GetxController {
             'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
           }));
+      update();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
@@ -127,5 +130,12 @@ class CartController extends GetxController {
 
   void goToSearch() {
     Get.toNamed(AppPages.search);
+  }
+
+
+  @override
+  void onInit() {
+    getCart();
+    super.onInit();
   }
 }
