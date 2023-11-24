@@ -1,3 +1,4 @@
+import 'package:client/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,9 +33,6 @@ class ChangePasswordController extends GetxController {
   }
 
   String? confirmPasswordValidation(value) {
-    if (value!.length < 8) {
-      return 'Minimun use of 8 characters';
-    }
     if (value != newPasswordController.text) {
       return 'Your password is not matches the new password';
     }
@@ -61,6 +59,7 @@ class ChangePasswordController extends GetxController {
           data: passwordData,
         );
         Get.snackbar('Success', res.data?['message']);
+        Get.offAllNamed(AppPages.login);
       } catch (e) {
         if (e is DioException) {
           final errorResponse = e.response;
