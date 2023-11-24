@@ -59,6 +59,7 @@ class ChangePasswordController extends GetxController {
           data: passwordData,
         );
         Get.snackbar('Success', res.data?['message']);
+        await storage.remove(GetStorageKey.token);
         Get.offAllNamed(AppPages.login);
       } catch (e) {
         if (e is DioException) {

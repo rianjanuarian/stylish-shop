@@ -125,7 +125,10 @@ class CartItem extends StatelessWidget {
                     textCancel: 'Cancel',
                     confirmTextColor: Colors.white,
                     onCancel: () => Get.back(),
-                    onConfirm: () => controller.removeCart(cart.id ?? 0),
+                    onConfirm: () async {
+                      controller.removeCart(cart.id ?? 0);
+                      Get.back();
+                    },
                   );
                 },
                 borderRadius: BorderRadius.only(
