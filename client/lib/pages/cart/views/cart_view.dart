@@ -12,6 +12,7 @@ class CartView extends GetView<CartController> {
   const CartView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    Get.put(CartController());
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -60,14 +61,16 @@ class CartView extends GetView<CartController> {
                         ],
                       );
                     }
-                    return Column(
-                      children: controller.carts.map(
-                        (cart) {
-                          return CartItem(
-                            cart: cart,
-                          );
-                        },
-                      ).toList(),
+                    return Obx(
+                      () => Column(
+                        children: controller.carts.map(
+                          (cart) {
+                            return CartItem(
+                              cart: cart,
+                            );
+                          },
+                        ).toList(),
+                      ),
                     );
                   }),
             ],
@@ -106,7 +109,10 @@ class CartItem extends StatelessWidget {
                     textCancel: 'Cancel',
                     confirmTextColor: Colors.white,
                     onCancel: () => Get.back(),
-                    onConfirm: () => controller.removeCart(cart.id ?? 0),
+                    onConfirm: () async {
+                      controller.removeCart(cart.id ?? 0);
+                      Get.back();
+                    },
                   );
                 },
                 borderRadius: BorderRadius.only(
