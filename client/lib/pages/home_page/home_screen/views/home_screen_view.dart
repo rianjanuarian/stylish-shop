@@ -473,35 +473,36 @@ class HomeScreenView extends GetView<HomeScreenController> {
   Widget createShimmerApp() {
     return AppShimmer(
       child: Row(
-        children: [
-          createShimmerProduct(),
-          SizedBox(width: 20.w),
-          createShimmerProduct(),
-          SizedBox(width: 20.w),
-          createShimmerProduct(),
-          SizedBox(width: 20.w),
-          createShimmerProduct(),
-        ],
+        children: List.generate(
+          4,
+          (index) => Padding(
+            padding: EdgeInsets.only(right: 20.w),
+            child: shimmerProducts(),
+          ),
+        ),
       ),
     );
   }
 
-  Widget createShimmerProduct() {
+  Widget shimmerProducts() {
     return Container(
       alignment: Alignment.center,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10).r),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10).r,
+      ),
       child: Column(
         children: [
           Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              child: SizedBox(
-                width: 150.w,
-                height: 160.h,
-              )),
-          ShimmerText(width: 100.w, height: 10.h),
-          ShimmerText(width: 100.w, height: 10.h),
-          ShimmerText(width: 100.w, height: 10.h),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: SizedBox(
+              width: 150.w,
+              height: 160.h,
+            ),
+          ),
+          for (int i = 0; i < 3; i++) ShimmerText(width: 100.w, height: 10.h),
         ],
       ),
     );
