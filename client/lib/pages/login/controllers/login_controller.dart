@@ -1,3 +1,4 @@
+import 'package:client/routes/app_pages.dart';
 import 'package:client/services/api_service/api_service.dart';
 import 'package:client/services/api_service/api_service_models.dart';
 import 'package:client/services/keys/get_storage_key.dart';
@@ -61,7 +62,7 @@ class LoginController extends GetxController {
     if (formKey.currentState!.validate()) {
       try {
         isLoading.value = true;
-        auth.signInWithEmailAndPassword(
+        await auth.signInWithEmailAndPassword(
           email: email.text,
           password: password.text,
         );
@@ -72,7 +73,7 @@ class LoginController extends GetxController {
         );
         final loginPayload = response.payload;
         await storage.write(GetStorageKey.token, loginPayload!.access_token);
-        Get.offAllNamed('/main-tab');
+        Get.offAllNamed(AppPages.mainTab);
         isLoading.value = false;
       } catch (e) {
         if (e is DioException) {
@@ -104,7 +105,7 @@ class LoginController extends GetxController {
         final response = await apiService.loginWithGoogle(
             googleUser.email, auth.currentUser!.uid, googleUser.displayName);
         await storage.write(GetStorageKey.token, response.data["access_token"]);
-        Get.offAllNamed('/main-tab');
+        Get.offAllNamed(AppPages.mainTab);
       }
     } catch (e) {
       if (e is FirebaseAuthException) {
