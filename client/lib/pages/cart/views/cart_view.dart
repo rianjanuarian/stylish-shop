@@ -130,7 +130,7 @@ class CartView extends GetView<CartController> {
             Padding(
               padding: REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () => controller.goToCheckout(),
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),

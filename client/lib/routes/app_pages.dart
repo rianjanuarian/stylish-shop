@@ -1,4 +1,5 @@
 import 'package:client/pages/main_tab/bindings/main_tab_binding.dart';
+import 'package:client/pages/transaction/place_order.dart';
 import 'package:get/get.dart';
 
 import '../pages/home_page/new_arrival/bindings/new_arrival_binding.dart';
@@ -55,6 +56,7 @@ class AppPages {
   static const search = '/search';
   static const cart = '/cart';
   static const detail = '/detail';
+  static const placeOrder = '/place-order';
 
   // Unknown
   static const unknown = '/unknown';
@@ -160,5 +162,9 @@ class AppPages {
       page: () => const DetailProductView(),
       binding: DetailProductBinding(),
     ),
+    GetPage(
+      name: placeOrder,
+      page: () => const PlaceOrder(),
+    )
   ];
 }
