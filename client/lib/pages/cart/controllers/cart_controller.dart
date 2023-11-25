@@ -25,7 +25,7 @@ class CartController extends GetxController {
           }));
       final List<dynamic> result = res.data;
       carts.value = result.map((e) => Cart.fromJson(e)).toList();
-      isCartEmpty.value = checkIsCartEmpty(); 
+      isCartEmpty.value = checkIsCartEmpty();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
@@ -46,6 +46,18 @@ class CartController extends GetxController {
       return true;
     }
     return false;
+  }
+
+  double get totalPrice {
+    return carts.fold(0.0, (double total, Cart cart) {
+      return total + (cart.total_price ?? 0);
+    });
+  }
+
+  int get totalItems {
+    return carts.fold(0, (int total, Cart cart) {
+      return total + (cart.qty ?? 0);
+    });
   }
 
   void removeCart(int id) async {
