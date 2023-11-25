@@ -92,6 +92,71 @@ class CartView extends GetView<CartController> {
           ),
         ),
       ),
+      bottomNavigationBar: Container(
+        height: 150.h,
+        padding: REdgeInsets.all(16.0),
+        color: Colors.white,
+        child: Obx(
+          () => Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: REdgeInsets.symmetric(horizontal: 25.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Total (${controller.totalItems} ${controller.totalItems > 1 ? 'items' : 'item'}) :',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: const Color(0xFF888888),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        NumberFormat.currency(
+                                locale: 'id', symbol: 'Rp ', decimalDigits: 0)
+                            .format(controller.totalPrice),
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      minimumSize: Size.fromHeight(60.h),
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Proceed to Checkout',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Icon(Icons.arrow_forward, size: 20.sp),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
