@@ -55,7 +55,9 @@ class PlaceOrder extends StatelessWidget {
               ],
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.back();
+              },
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black, foregroundColor: Colors.white),
               child: const Text('Place Order'),
@@ -85,20 +87,32 @@ class PlaceOrder extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.sp),
               ),
               SizedBox(height: 20.h),
-              TextField(
-                maxLines: 5,
-                decoration: InputDecoration(
-                  fillColor: const Color(0xFFD9D9D9),
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10).r,
-                    borderSide: const BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
-                    ),
-                  ),
+              Container(
+                padding: REdgeInsets.all(10),
+                width: double.infinity,
+                height: 150.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10).r,
+                  color: const Color(0xFFD9D9D9),
+                ),
+                child: const Text(
+                  'Jl. Cempaka Putih No. 1, Jakarta Pusat bla bla bla bla bla',
                 ),
               ),
+              // TextField(
+              //   maxLines: 5,
+              //   decoration: InputDecoration(
+              //     fillColor: const Color(0xFFD9D9D9),
+              //     filled: true,
+              //     border: OutlineInputBorder(
+              //       borderRadius: BorderRadius.circular(10).r,
+              //       borderSide: const BorderSide(
+              //         width: 0,
+              //         style: BorderStyle.none,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 20.h),
               Text(
                 'Product Item',
