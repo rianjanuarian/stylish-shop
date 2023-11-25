@@ -37,55 +37,58 @@ class HomeScreenView extends GetView<HomeScreenController> {
               surfaceTintColor: Colors.white,
               flexibleSpace: SafeArea(
                 child: SingleChildScrollView(
-                  child: Padding(
-                    padding:
-                        REdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                    child: userController.isLoading.isTrue &&
-                            userController.user.value == null
-                        ? createShimmerAvatar()
-                        : Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(50).r,
-                                child: CachedNetworkImage(
-                                  imageUrl: (userController.user.value?.image ??
-                                              '')
-                                          .contains('placeholder')
-                                      ? userController.user.value?.image ??
-                                          "https://via.placeholder.com/200"
-                                      : 'https://storage.googleapis.com/${userController.user.value?.image}',
-                                  width: 65.h,
-                                  height: 65.h,
-                                  placeholder: (context, url) => const Center(
-                                      child: CircularProgressIndicator()),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
+                  child: Obx(
+                    () => Padding(
+                      padding:
+                          REdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      child: userController.isLoading.isTrue &&
+                              userController.user.value == null
+                          ? createShimmerAvatar()
+                          : Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(50).r,
+                                  child: CachedNetworkImage(
+                                    imageUrl: (userController
+                                                    .user.value?.image ??
+                                                '')
+                                            .contains('placeholder')
+                                        ? userController.user.value?.image ??
+                                            "https://via.placeholder.com/200"
+                                        : 'https://storage.googleapis.com/${userController.user.value?.image}',
+                                    width: 65.h,
+                                    height: 65.h,
+                                    placeholder: (context, url) => const Center(
+                                        child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(width: 20.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Happy Shopping!',
-                                    style: TextStyle(
-                                      fontSize: 25.sp,
-                                      fontWeight: FontWeight.w700,
+                                SizedBox(width: 20.w),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Happy Shopping!',
+                                      style: TextStyle(
+                                        fontSize: 25.sp,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    userController.user.value?.name ??
-                                        'Sarah Ann',
-                                    style: TextStyle(
-                                      fontSize: 20.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0xFF666666),
+                                    Text(
+                                      userController.user.value?.name ??
+                                          'Sarah Ann',
+                                      style: TextStyle(
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xFF666666),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                    ),
                   ),
                 ),
               ),
