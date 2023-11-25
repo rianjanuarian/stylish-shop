@@ -97,37 +97,34 @@ class CartView extends GetView<CartController> {
             Expanded(
               child: Padding(
                 padding: REdgeInsets.symmetric(horizontal: 25.w),
-                child: FutureBuilder(
-                    future: controller.getCart(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return shimmerTextCart();
-                      }
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Total (${controller.totalItems} ${controller.totalItems > 1 ? 'items' : 'item'}) :',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              color: const Color(0xFF888888),
-                              fontWeight: FontWeight.w600,
+                child: Obx(
+                  () => controller.isLoading.isTrue
+                      ? shimmerTextCart()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total (${controller.totalItems} ${controller.totalItems > 1 ? 'items' : 'item'}) :',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: const Color(0xFF888888),
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          Text(
-                            NumberFormat.currency(
-                                    locale: 'id',
-                                    symbol: 'Rp ',
-                                    decimalDigits: 0)
-                                .format(controller.totalPrice),
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
+                            Text(
+                              NumberFormat.currency(
+                                      locale: 'id',
+                                      symbol: 'Rp ',
+                                      decimalDigits: 0)
+                                  .format(controller.totalPrice),
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
-                      );
-                    }),
+                          ],
+                        ),
+                ),
               ),
             ),
             Padding(
