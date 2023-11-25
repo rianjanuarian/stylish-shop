@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:client/widgets/app_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -54,12 +55,7 @@ class CartView extends GetView<CartController> {
                   future: controller.getCart(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return SizedBox(
-                        height: 0.70.sh,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      );
+                      return shimmerCardCart();
                     }
                     return Obx(
                       () {
@@ -96,66 +92,100 @@ class CartView extends GetView<CartController> {
         height: 150.h,
         padding: REdgeInsets.all(16.0),
         color: Colors.white,
-        child: Obx(
-          () => Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: REdgeInsets.symmetric(horizontal: 25.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total (${controller.totalItems} ${controller.totalItems > 1 ? 'items' : 'item'}) :',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          color: const Color(0xFF888888),
-                          fontWeight: FontWeight.w600,
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: REdgeInsets.symmetric(horizontal: 25.w),
+                child: Obx(
+                  () => controller.isLoading.isTrue
+                      ? shimmerTextCart()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total (${controller.totalItems} ${controller.totalItems > 1 ? 'items' : 'item'}) :',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: const Color(0xFF888888),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              NumberFormat.currency(
+                                      locale: 'id',
+                                      symbol: 'Rp ',
+                                      decimalDigits: 0)
+                                  .format(controller.totalPrice),
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Text(
-                        NumberFormat.currency(
-                                locale: 'id', symbol: 'Rp ', decimalDigits: 0)
-                            .format(controller.totalPrice),
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
-              Padding(
-                padding:
-                    REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+            ),
+            Padding(
+              padding: REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    minimumSize: Size.fromHeight(60.h),
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Proceed to Checkout',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
-                      minimumSize: Size.fromHeight(60.h),
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Proceed to Checkout',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Icon(Icons.arrow_forward, size: 20.sp),
-                    ],
-                  ),
+                    ),
+                    Icon(Icons.arrow_forward, size: 20.sp),
+                  ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
+      ),
+    );
+  }
+
+  Widget shimmerCardCart() {
+    return AppShimmer(
+      child: Column(
+        children: List.generate(5, (index) => cardCart()),
+      ),
+    );
+  }
+
+  Widget cardCart() {
+    return Card(
+      child: Container(
+          height: 100.h,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10).r,
+          )),
+    );
+  }
+
+  Widget shimmerTextCart() {
+    return AppShimmer(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ShimmerText(width: 320.w, height: 20.h),
+        ],
       ),
     );
   }
