@@ -1,11 +1,12 @@
-import 'package:client/pages/main_tab/controllers/main_tab_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import '../../../widgets/bottom_navy_bar.dart';
 
-class MainTab extends GetView<MainTabController> {
-  const MainTab({super.key});
+import '../../../widgets/bottom_navy_bar.dart';
+import '../controllers/main_tab_controller.dart';
+
+class MainTabView extends GetView<MainTabController> {
+  const MainTabView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
