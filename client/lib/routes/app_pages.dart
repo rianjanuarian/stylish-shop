@@ -1,5 +1,3 @@
-import 'package:client/pages/main_tab/bindings/main_tab_binding.dart';
-import 'package:client/pages/transaction/place_order.dart';
 import 'package:get/get.dart';
 
 import '../pages/home_page/new_arrival/bindings/new_arrival_binding.dart';
@@ -17,7 +15,8 @@ import '../pages/home_page/home_screen/views/home_screen_view.dart';
 import '../pages/home_page/new_arrival/views/new_arrival_view.dart';
 import '../pages/login/bindings/login_binding.dart';
 import '../pages/login/views/login_view.dart';
-import '../pages/main_tab/views/main_tab_view..dart';
+import '../pages/main_tab/bindings/main_tab_binding.dart';
+import '../pages/main_tab/views/main_tab_view.dart';
 import '../pages/profile/change_password/bindings/change_password_binding.dart';
 import '../pages/profile/change_password/views/change_password_view.dart';
 import '../pages/profile/order_ongoing/bindings/order_ongoing_binding.dart';
@@ -35,6 +34,8 @@ import '../pages/signup/bindings/signup_binding.dart';
 import '../pages/signup/views/signup_view.dart';
 import '../pages/splash_screen/bindings/splash_screen_binding.dart';
 import '../pages/splash_screen/views/splash_screen_view.dart';
+import '../pages/transaction/bindings/place_order_binding.dart';
+import '../pages/transaction/views/place_order_view.dart';
 
 class AppPages {
   static const splash = '/splash-screen';
@@ -97,7 +98,7 @@ class AppPages {
     ),
     GetPage(
       name: mainTab,
-      page: () => const MainTab(),
+      page: () => const MainTabView(),
       binding: MainTabBinding(),
     ),
     GetPage(
@@ -164,7 +165,8 @@ class AppPages {
     ),
     GetPage(
       name: placeOrder,
-      page: () => const PlaceOrder(),
+      page: () => const PlaceOrderView(),
+      binding: PlaceOrderBinding(),
     )
   ];
 }
