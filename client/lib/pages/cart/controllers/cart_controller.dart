@@ -153,6 +153,10 @@ class CartController extends GetxController {
     Get.toNamed(AppPages.search);
   }
 
+  void goToCheckout() {
+    Get.toNamed(AppPages.placeOrder);
+  }
+
   @override
   void onInit() {
     getCart();

@@ -1,3 +1,4 @@
+import 'package:client/routes/app_pages.dart';
 import 'package:client/services/api_service/user/user_service_models.dart';
 import 'package:client/services/keys/get_storage_key.dart';
 import 'package:dio/dio.dart';
@@ -45,7 +46,7 @@ class SettingController extends GetxController {
       await auth.signOut();
       await GetStorage().remove(GetStorageKey.token);
       await dio.get('https://stylish-shop.vercel.app/users/logout');
-      Get.offAllNamed('/login');
+      Get.offAllNamed(AppPages.login);
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;

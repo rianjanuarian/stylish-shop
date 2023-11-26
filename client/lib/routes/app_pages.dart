@@ -1,3 +1,5 @@
+import 'package:client/pages/main_tab/bindings/main_tab_binding.dart';
+import 'package:client/pages/transaction/place_order.dart';
 import 'package:get/get.dart';
 
 import '../pages/home_page/new_arrival/bindings/new_arrival_binding.dart';
@@ -15,7 +17,7 @@ import '../pages/home_page/home_screen/views/home_screen_view.dart';
 import '../pages/home_page/new_arrival/views/new_arrival_view.dart';
 import '../pages/login/bindings/login_binding.dart';
 import '../pages/login/views/login_view.dart';
-import '../pages/main_tab/main_tab.dart';
+import '../pages/main_tab/views/main_tab_view..dart';
 import '../pages/profile/change_password/bindings/change_password_binding.dart';
 import '../pages/profile/change_password/views/change_password_view.dart';
 import '../pages/profile/order_ongoing/bindings/order_ongoing_binding.dart';
@@ -54,6 +56,7 @@ class AppPages {
   static const search = '/search';
   static const cart = '/cart';
   static const detail = '/detail';
+  static const placeOrder = '/place-order';
 
   // Unknown
   static const unknown = '/unknown';
@@ -95,6 +98,7 @@ class AppPages {
     GetPage(
       name: mainTab,
       page: () => const MainTab(),
+      binding: MainTabBinding(),
     ),
     GetPage(
       name: home,
@@ -158,6 +162,9 @@ class AppPages {
       page: () => const DetailProductView(),
       binding: DetailProductBinding(),
     ),
+    GetPage(
+      name: placeOrder,
+      page: () => const PlaceOrder(),
+    )
   ];
 }
-

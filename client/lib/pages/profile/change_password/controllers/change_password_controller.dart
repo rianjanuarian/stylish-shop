@@ -1,5 +1,6 @@
 import 'package:client/routes/app_pages.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,6 +18,9 @@ class ChangePasswordController extends GetxController {
   RxBool isOldPasswordShow = RxBool(false);
   RxBool isNewPasswordShow = RxBool(false);
   RxBool isConfirmPasswordShow = RxBool(false);
+
+  // Firebase init
+  final auth = FirebaseAuth.instance;
 
   String? oldPasswordValidation(value) {
     if (value == null || value.isEmpty) {
@@ -58,6 +62,7 @@ class ChangePasswordController extends GetxController {
           }),
           data: passwordData,
         );
+        await auth.currentUser!.updatePassword(newPasswordController.text);
         Get.snackbar('Success', res.data?['message']);
         await storage.remove(GetStorageKey.token);
         Get.offAllNamed(AppPages.login);
