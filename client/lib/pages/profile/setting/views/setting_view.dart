@@ -100,7 +100,7 @@ class SettingView extends GetView<SettingController> {
                     _IconText(
                       icon: Icons.person_2_outlined,
                       text: 'Personal Details',
-                      handleClick: () => Get.toNamed('/personal-detail'),
+                      handleClick: () => Get.toNamed('/personal-detail', arguments: controller.user),
                     ),
                     _IconText(
                       icon: Icons.list,

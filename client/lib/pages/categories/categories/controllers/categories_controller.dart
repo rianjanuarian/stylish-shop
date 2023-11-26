@@ -4,8 +4,6 @@ import 'package:client/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
-
-
 class CategoriesController extends GetxController {
   
 var categoryId = <Categories>[].obs;
@@ -25,7 +23,6 @@ var categoryId = <Categories>[].obs;
         final List<dynamic> result = response.data;
         categoriesList.value = result.map((e) => Categories.fromJson(e)).toList();
         isLoading.value = false;
-        print(result);
         update();
       } else {
         Get.snackbar(
@@ -53,7 +50,6 @@ var categoryId = <Categories>[].obs;
       final Map<String,dynamic> data = response.data;
       categoryId.value = [Categories.fromJson(data)];
       isLoading.value = false;
-      print(data);
       update();
     }
   } catch (e) {
