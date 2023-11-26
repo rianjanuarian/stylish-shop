@@ -172,11 +172,11 @@ class UserController {
 
   static async update(req, res, next) {
     try {
-      const uid = req.user.dataValues.uid;
+      const id = req.user.id;
       const patternPhoneNumber =
         /^(\+62|0|62)[\s.-]?(\d{2,4})[\s.-]?(\d{4})[\s.-]?(\d{4})$/;
 
-      if (patternPhoneNumber.test(req.body.phone_number) === false) {
+      if (req.body.phone_number && patternPhoneNumber.test(req.body.phone_number) === false) {
         return next(createError(400, "Phone number is not valid!"));
       } // Check phone number format ~Indra Oki Sandy~
 
@@ -197,7 +197,7 @@ class UserController {
         { image, ...req.body },
         {
           where: {
-            uid,
+            id,
           },
         }
       );

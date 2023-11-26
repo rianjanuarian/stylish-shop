@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/pages/profile/setting/controllers/setting_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -10,9 +11,6 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
   const PersonalDetailView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // User Controller
-    final userController = Get.put<SettingController>(SettingController());
-
     Widget nameWithInput() {
       return Padding(
         padding: REdgeInsets.symmetric(vertical: 10),
@@ -284,9 +282,8 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
                 controller: controller.addressController,
                 onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 maxLines: 4,
-                decoration:  InputDecoration(
-                  contentPadding: REdgeInsets.all( 5),
-
+                decoration: InputDecoration(
+                  contentPadding: REdgeInsets.all(5),
                   isDense: true,
                   enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(
@@ -321,67 +318,99 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Padding(
-          padding: REdgeInsets.symmetric(horizontal: 50),
-          child: FutureBuilder(
-              future: userController.getUser(),
-              builder: (context, snapshot) {
-                controller.nameController.text = userController.user.value?.name ?? '';
-                controller.gender.value =
-                    userController.user.value?.gender == 'woman' ? Gender.female : Gender.male;
-                controller.birthDateController.text =
-                    controller.formatDate(userController.user.value?.birthday) ?? '';
-                controller.phoneController.text = userController.user.value?.phone_number ?? '';
-                controller.addressController.text = userController.user.value?.address ?? '';
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+            padding: REdgeInsets.symmetric(horizontal: 50),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20.r),
-                      child: CachedNetworkImage(
-                        imageUrl: (userController.user.value?.image ?? '').contains('placeholder')
-                            ? userController.user.value?.image ?? "https://via.placeholder.com/200"
-                            : 'https://storage.googleapis.com/${userController.user.value?.image}',
-                        height: 100.h,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                    Obx(
+                      () => ClipRRect(
+                        borderRadius: BorderRadius.circular(20.r),
+                        child: controller.image.value != null
+                            ? Image.file(
+                                File(controller.image.value!.path),
+                                height: 100.h,
+                                width: 100.h,
+                                fit: BoxFit.cover,
+                              )
+                            : CachedNetworkImage(
+                                imageUrl: (controller.user.value?.image ?? '')
+                                        .contains('placeholder')
+                                    ? controller.user.value?.image ??
+                                        "https://via.placeholder.com/200"
+                                    : 'https://storage.googleapis.com/${controller.user.value?.image}',
+                                height: 100.h,
+                                width: 100.h,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator()),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
                       ),
                     ),
-                    SizedBox(height: 20.h),
-                    Form(
-                      key: controller.formKey,
-                      child: Column(
-                        children: [
-                          nameWithInput(),
-                          genderWithCheck(),
-                          birthDate(),
-                          phoneNumber(),
-                          addressWithInput(),
-                          Padding(
-                            padding: REdgeInsets.symmetric(vertical: 30),
-                            child: ElevatedButton(
-                                onPressed: () =>
-                                    controller.savePersonalDetail(),
-                                style: ElevatedButton.styleFrom(
-                                  minimumSize: Size.fromHeight(60.r),
-                                  backgroundColor: Colors.black,
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10).r),
-                                ),
-                                child: const Text('Save')),
-                          )
-                        ],
+                    //meh seadanya dulu
+                    Positioned(
+                      bottom: -10,
+                      right: -10,
+                      child: Material(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(15),
+                        child: InkWell(
+                          //fungsi ambil gambar
+                          onTap: () => controller.takePicture(context),
+                          borderRadius: BorderRadius.circular(15),
+                          child: SizedBox(
+                            height: 30.h,
+                            width: 30.h,
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: 12.sp,
+                            ),
+                          ),
+                        ),
                       ),
                     )
                   ],
-                );
-              }),
-        ),
+                ),
+                SizedBox(height: 20.h),
+                Form(
+                  key: controller.formKey,
+                  child: Column(
+                    children: [
+                      nameWithInput(),
+                      genderWithCheck(),
+                      birthDate(),
+                      phoneNumber(),
+                      addressWithInput(),
+                      Padding(
+                        padding: REdgeInsets.symmetric(vertical: 30),
+                        child: Obx(
+                          () => ElevatedButton(
+                              onPressed: controller.isLoading.isTrue
+                                  ? null
+                                  : () => controller.savePersonalDetail(),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size.fromHeight(60.r),
+                                backgroundColor: Colors.black,
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10).r),
+                              ),
+                              child: controller.isLoading.isTrue
+                                  ? const Center(child: CircularProgressIndicator(),)
+                                  : const Text('Save')),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )),
       ),
     );
   }
