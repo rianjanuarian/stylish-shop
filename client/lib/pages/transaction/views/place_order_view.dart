@@ -1,13 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/services/api_service/cart/cart_models.dart';
+import 'package:client/pages/transaction/controllers/place_order_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../cart/views/cart_view.dart';
-
-class PlaceOrder extends StatelessWidget {
-  const PlaceOrder({super.key});
+class PlaceOrderView extends GetView<PlaceOrderView> {
+  const PlaceOrderView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -143,6 +141,7 @@ class PlaceOrder extends StatelessWidget {
 class _Courier extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(PlaceOrderController());
     return Container(
       height: 70.h,
       padding: REdgeInsets.symmetric(horizontal: 20),
@@ -164,8 +163,7 @@ class _Courier extends StatelessWidget {
           Row(
             children: [
               CachedNetworkImage(
-                imageUrl:
-                    'https://id.wikipedia.org/wiki/Berkas:New_Logo_JNE.png',
+                imageUrl: controller.couriers[0].image ?? '',
                 width: 80.w,
                 height: 80.h,
                 fit: BoxFit.cover,
@@ -173,14 +171,14 @@ class _Courier extends StatelessWidget {
                     const Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
-              const Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'JNE',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    controller.couriers[0].name ?? '',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text('\$15')
+                  const Text('\$15')
                 ],
               ),
             ],
