@@ -304,6 +304,72 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
       );
     }
 
+    void takePicture(BuildContext context) async {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext ctx) {
+          return SizedBox(
+            width: double.infinity,
+            height: 200.h,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Text(
+                  'Choose',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: controller.takePictureUsingCamera,
+                      borderRadius: BorderRadius.circular(15).r,
+                      child: SizedBox(
+                        height: 100.h,
+                        width: 80.w,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //ganti2 je la
+                            Icon(
+                              Icons.camera,
+                              size: 50.sp,
+                            ),
+                            const Text('Camera',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: controller.takePictureUsingGallery,
+                      borderRadius: BorderRadius.circular(15).r,
+                      child: SizedBox(
+                        height: 100.h,
+                        width: 80.w,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //ganti2 je la
+                            Icon(
+                              Icons.photo_library,
+                              size: 50.sp,
+                            ),
+                            const Text('Gallery',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 80.w,
@@ -361,7 +427,7 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
                         borderRadius: BorderRadius.circular(15),
                         child: InkWell(
                           //fungsi ambil gambar
-                          onTap: () => controller.takePicture(context),
+                          onTap: () => takePicture(context),
                           borderRadius: BorderRadius.circular(15),
                           child: SizedBox(
                             height: 30.h,
@@ -402,7 +468,9 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
                                     borderRadius: BorderRadius.circular(10).r),
                               ),
                               child: controller.isLoading.isTrue
-                                  ? const Center(child: CircularProgressIndicator(),)
+                                  ? const Center(
+                                      child: CircularProgressIndicator(),
+                                    )
                                   : const Text('Save')),
                         ),
                       )
