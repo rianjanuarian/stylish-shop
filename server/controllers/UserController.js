@@ -185,7 +185,7 @@ class UserController {
 
       const bucketName = "stylish-shop";
 
-      let image = req.user.dataValues.image;
+      let image = req.user.image;
 
       if (req.file) {
         const destination = `users/${req.file.filename}`;
