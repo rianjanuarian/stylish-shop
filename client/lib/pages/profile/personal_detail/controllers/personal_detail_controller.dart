@@ -1,14 +1,13 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart' hide Response, FormData, MultipartFile;
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import '../../../../services/api_service/user/user_service_models.dart';
 import '../../../../services/keys/get_storage_key.dart';
+import '../../setting/controllers/setting_controller.dart';
 
 enum Gender { male, female }
 
@@ -65,8 +64,10 @@ class PersonalDetailController extends GetxController {
         }
 
         if (birthDateController.text.trim().isNotEmpty) {
-          formData.fields
-              .add(MapEntry('birthday', birthDateController.text.trim()));
+          DateTime pickedDate =
+              DateFormat('dd-MM-yyyy').parse(birthDateController.text.trim());
+          String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+          formData.fields.add(MapEntry('birthday', formattedDate));
         }
 
         if (addressController.text.trim().isNotEmpty) {
@@ -80,19 +81,17 @@ class PersonalDetailController extends GetxController {
         }
 
         if (image.value != null) {
+          List<int> imageBytes = await File(image.value!.path).readAsBytes();
           String fileName = File(image.value!.path).uri.pathSegments.last;
-          formData.files.add(MapEntry(
-            'image',
-            await MultipartFile.fromFile(
-              image.value!.path,
-              filename: fileName,
-            ),
-          ));
+          MultipartFile imageFile = MultipartFile.fromBytes(
+            imageBytes,
+            filename: fileName,
+          );
+          formData.files.add(MapEntry('images', imageFile));
         }
 
-        formData.fields.add(MapEntry('gender', gender.value.name));
-
-        print(formData.files);
+        formData.fields.add(
+            MapEntry('gender', gender.value.name == 'male' ? 'man' : 'woman'));
 
         final token = await storage.read(GetStorageKey.token);
         await dio.put(
@@ -103,11 +102,12 @@ class PersonalDetailController extends GetxController {
           }),
           data: formData,
         );
+        await Get.find<SettingController>().getUser();
+        Get.back();
       } catch (e) {
         if (e is DioException) {
           final errorResponse = e.response;
           if (errorResponse != null) {
-            print(errorResponse);
             final errorMessage = errorResponse.data?['message'];
             Get.snackbar('Error', errorMessage ?? 'Unknown error');
           } else {
@@ -121,55 +121,6 @@ class PersonalDetailController extends GetxController {
         isLoading.toggle();
       }
     }
-  }
-
-  void takePicture(BuildContext context) async {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext ctx) {
-        return SizedBox(
-          width: double.infinity,
-          height: 150.h,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const Text('Select Source'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  InkWell(
-                    onTap: takePictureUsingCamera,
-                    child: Column(
-                      children: [
-                        //ganti2 je la
-                        Icon(
-                          Icons.camera,
-                          size: 50.sp,
-                        ),
-                        const Text('Camera'),
-                      ],
-                    ),
-                  ),
-                  InkWell(
-                    onTap: takePictureUsingGallery,
-                    child: Column(
-                      children: [
-                        //ganti2 je la
-                        Icon(
-                          Icons.browse_gallery,
-                          size: 50.sp,
-                        ),
-                        const Text('Gallery'),
-                      ],
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        );
-      },
-    );
   }
 
   void takePictureUsingCamera() async {

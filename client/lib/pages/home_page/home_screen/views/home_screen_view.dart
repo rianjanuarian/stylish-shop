@@ -47,7 +47,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
                           : Row(
                               children: [
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(50).r,
+                                  borderRadius: BorderRadius.circular(32.5).r,
                                   child: CachedNetworkImage(
                                     imageUrl: (userController
                                                     .user.value?.image ??
@@ -58,6 +58,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
                                         : 'https://storage.googleapis.com/${userController.user.value?.image}',
                                     width: 65.h,
                                     height: 65.h,
+                                    fit: BoxFit.cover,
                                     placeholder: (context, url) => const Center(
                                         child: CircularProgressIndicator()),
                                     errorWidget: (context, url, error) =>

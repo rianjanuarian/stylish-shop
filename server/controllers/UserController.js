@@ -176,22 +176,25 @@ class UserController {
       const patternPhoneNumber =
         /^(\+62|0|62)[\s.-]?(\d{2,4})[\s.-]?(\d{4})[\s.-]?(\d{4})$/;
 
-      if (req.body.phone_number && patternPhoneNumber.test(req.body.phone_number) === false) {
+      if (
+        req.body.phone_number &&
+        patternPhoneNumber.test(req.body.phone_number) === false
+      ) {
         return next(createError(400, "Phone number is not valid!"));
-      } // Check phone number format ~Indra Oki Sandy~
+      } // Check phone number format ~Andika Tri Prasetya~
 
       const bucketName = "stylish-shop";
-      const destination = `users/${req.file.filename}`;
+
+      let image = req.user.dataValues.image;
 
       if (req.file) {
+        const destination = `users/${req.file.filename}`;
         await storage.bucket(bucketName).upload(req.file.path, {
           destination,
         });
-      }
 
-      const image = req.file
-        ? `${bucketName}/${destination}`
-        : req.user.dataValues.image;
+        image = `${bucketName}/${destination}`;
+      }
 
       const response = await user.update(
         { image, ...req.body },

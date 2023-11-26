@@ -30,49 +30,52 @@ class SettingView extends GetView<SettingController> {
                         offset: const Offset(0, 2),
                       )
                     ]),
-                child: controller.isLoading.isTrue
-                    ? createShimmerAvatar()
-                    : Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10).r,
-                            child: CachedNetworkImage(
-                              imageUrl: (controller.user.value?.image ?? '')
-                                      .contains('placeholder')
-                                  ? controller.user.value?.image ??
-                                      "https://via.placeholder.com/200"
-                                  : 'https://storage.googleapis.com/${controller.user.value?.image}',
-                              height: 90.h,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator()),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
-                          ),
-                          SizedBox(width: 20.w),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                controller.user.value?.name ?? 'No Name',
-                                style: TextStyle(
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w700),
+                child: Obx(
+                  () => controller.isLoading.isTrue
+                      ? createShimmerAvatar()
+                      : Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10).r,
+                              child: CachedNetworkImage(
+                                imageUrl: (controller.user.value?.image ?? '')
+                                        .contains('placeholder')
+                                    ? controller.user.value?.image ??
+                                        "https://via.placeholder.com/200"
+                                    : 'https://storage.googleapis.com/${controller.user.value?.image}',
+                                height: 90.h,
+                                width: 70.h,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator()),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
                               ),
-                              Text(
-                                controller.user.value?.email ??
-                                    'noEmail@gmail.com',
-                                style: TextStyle(
-                                    fontSize: 15.sp,
-                                    fontWeight: FontWeight.w400,
-                                    color: const Color(0xFF8E8E8E)),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                            SizedBox(width: 20.w),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  controller.user.value?.name ?? 'No Name',
+                                  style: TextStyle(
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  controller.user.value?.email ??
+                                      'noEmail@gmail.com',
+                                  style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: const Color(0xFF8E8E8E)),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                ),
               ),
               Container(
                 margin: REdgeInsets.symmetric(vertical: 20, horizontal: 30),
@@ -100,7 +103,8 @@ class SettingView extends GetView<SettingController> {
                     _IconText(
                       icon: Icons.person_2_outlined,
                       text: 'Personal Details',
-                      handleClick: () => Get.toNamed('/personal-detail', arguments: controller.user),
+                      handleClick: () => Get.toNamed('/personal-detail',
+                          arguments: controller.user),
                     ),
                     _IconText(
                       icon: Icons.list,
