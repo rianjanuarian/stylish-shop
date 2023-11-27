@@ -19,24 +19,6 @@ class PlaceOrderView extends GetView<PlaceOrderView> {
     final userController = Get.put(SettingController());
     final cartController = Get.put(CartController());
 
-    // final List order = [
-    //   {
-    //     'image':
-    //         'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    //     'title': 'Roller Rabbit',
-    //     'description': 'Vado Odelle Dress',
-    //     'price': 198,
-    //     'quantity': 1,
-    //   },
-    //   {
-    //     'image':
-    //         'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    //     'title': 'Axel Arigato',
-    //     'description': 'Clean 90 Triole Snakers',
-    //     'price': 245,
-    //     'quantity': 1,
-    //   },
-    // ];
     return Scaffold(
       bottomNavigationBar: Container(
         height: 70.h,
@@ -48,22 +30,32 @@ class PlaceOrderView extends GetView<PlaceOrderView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Total Price',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  NumberFormat.currency(
-                          locale: 'id', symbol: 'Rp ', decimalDigits: 0)
-                      .format(cartController.totalPrice),
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
-                ),
-              ],
-            ),
+            FutureBuilder(
+                future: controller.getCouriers(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Total Price',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        NumberFormat.currency(
+                                locale: 'id', symbol: 'Rp ', decimalDigits: 0)
+                            .format(cartController.totalPrice +
+                                controller.couriers[0].price!),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20.sp),
+                      ),
+                    ],
+                  );
+                }),
             ElevatedButton(
               onPressed: () {
                 Get.back();
