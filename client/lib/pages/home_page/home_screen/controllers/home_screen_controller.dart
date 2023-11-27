@@ -1,12 +1,12 @@
 import 'package:client/routes/app_pages.dart';
+import 'package:client/services/api_service/product/product_model.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import '../../../../models/products.dart';
 
 class HomeScreenController extends GetxController {
-  var productList = <Products>[].obs;
-  var productId = <Products>[].obs;
-  var trendingList = <Products>[].obs;
+  var productList = <Product>[].obs;
+  var productId = <Product>[].obs;
+  var trendingList = <Product>[].obs;
   // Dummy
   final List<Map<String, dynamic>> dummyCoupon = [
     {
@@ -31,8 +31,8 @@ class HomeScreenController extends GetxController {
       String url = 'https://stylish-shop.vercel.app/products';
       final response = await dio.get(url);
       final List<dynamic> result = response.data;
-      productList.value = result.map((e) => Products.fromJson(e)).toList();
-      trendingList.value = result.map((e) => Products.fromJson(e)).toList();
+      productList.value = result.map((e) => Product.fromJson(e)).toList();
+      trendingList.value = result.map((e) => Product.fromJson(e)).toList();
       trendingList.shuffle();
       isLoading.toggle();
     } catch (e) {
@@ -62,7 +62,7 @@ class HomeScreenController extends GetxController {
     Get.toNamed(AppPages.newArrival, arguments: 'Trending Products');
   }
 
-  void goToDetail(Products product) {
+  void goToDetail(Product product) {
     Get.toNamed(AppPages.detail, arguments: product);
   }
 

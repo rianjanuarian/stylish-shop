@@ -1,4 +1,4 @@
-import 'package:client/pages/signup/controllers/signup_controller.dart';
+import '../controllers/signup_controller.dart';
 import 'package:client/themes/const.dart';
 import 'package:client/widgets/costom_text_form_field.dart';
 import 'package:flutter/material.dart';

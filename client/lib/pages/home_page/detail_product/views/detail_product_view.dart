@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/models/products.dart';
+import 'package:client/services/api_service/product/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -10,7 +10,7 @@ class DetailProductView extends GetView<DetailProductController> {
   const DetailProductView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final Products product = Get.arguments;
+    final Product product = Get.arguments;
     return Scaffold(
         body: Column(
       children: [
@@ -99,7 +99,7 @@ class DetailProductView extends GetView<DetailProductController> {
                                               fontSize: 20.sp,
                                               fontWeight: FontWeight.w700),
                                         ),
-                                        Text(product.brands![0].name ?? " "),
+                                        Text(product.brands?[0].name ?? " "),
                                       ],
                                     ),
                                     Column(

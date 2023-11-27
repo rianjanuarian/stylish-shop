@@ -75,7 +75,7 @@ class CartView extends GetView<CartController> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       disabledBackgroundColor:
-                          controller.isCartEmpty.isTrue ? Colors.grey : null,
+                          controller.isCartEmpty.isTrue ? Colors.grey.shade200 : null,
                       minimumSize: Size.fromHeight(60.h),
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white),

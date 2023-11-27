@@ -1,4 +1,4 @@
-import 'package:client/models/products.dart';
+import 'package:client/services/api_service/product/product_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'cart_models.g.dart';
 
@@ -12,7 +12,7 @@ class Cart {
     String? color;
     DateTime? createdAt;
     DateTime? updatedAt;
-    Products? product;
+    Product? product;
 
     Cart({
         this.id,

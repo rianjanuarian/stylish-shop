@@ -74,18 +74,29 @@ class LoginController extends GetxController {
         final loginPayload = response.payload;
         await storage.write(GetStorageKey.token, loginPayload!.access_token);
         Get.offAllNamed(AppPages.mainTab);
-        isLoading.value = false;
       } catch (e) {
         if (e is DioException) {
           final errorResponse = e.response;
           if (errorResponse != null) {
-            final errorMessage = errorResponse.data?['message'];
-            Get.snackbar('Error', errorMessage ?? 'Unknown error');
-          } else {
-            Get.snackbar('Error', 'Unknown error occurred');
+            if (errorResponse.data is Map) {
+              final errorMessage = errorResponse.data['message'];
+              Get.snackbar('Error', errorMessage ?? 'Unknown error');
+            } else {
+              Get.snackbar('Error', 'Unknown error occurred');
+            }
           }
-          isLoading.value = false;
         }
+        if (e is FirebaseAuthException) {
+          Get.snackbar(
+            'Error',
+            e.message ?? 'Unknown error',
+            backgroundColor: Colors.grey.shade300,
+            borderWidth: 0.2,
+            duration: const Duration(seconds: 2),
+          );
+        }
+      } finally {
+        isLoading.value = false;
       }
     }
   }

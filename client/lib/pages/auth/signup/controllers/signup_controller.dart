@@ -2,9 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../services/api_service/api_service.dart';
-import '../../../services/api_service/api_service_models.dart';
+import '../../../../services/api_service/api_service.dart';
+import '../../../../services/api_service/api_service_models.dart';
 
 class SignupController extends GetxController {
   final formKey = GlobalKey<FormState>();
@@ -112,13 +111,25 @@ class SignupController extends GetxController {
         if (e is DioException) {
           final errorResponse = e.response;
           if (errorResponse != null) {
-            final errorMessage = errorResponse.data?['message'];
-            Get.snackbar('Error', errorMessage ?? 'Unknown error');
-          } else {
-            Get.snackbar('Error', 'Unknown error occurred');
+            if (errorResponse.data is Map) {
+              final errorMessage = errorResponse.data['message'];
+              Get.snackbar('Error', errorMessage ?? 'Unknown error');
+            } else {
+              Get.snackbar('Error', 'Unknown error occurred');
+            }
           }
-          isLoading.value = false;
         }
+        if (e is FirebaseAuthException) {
+          Get.snackbar(
+            'Error',
+            e.message ?? 'Unknown error',
+            backgroundColor: Colors.grey.shade300,
+            borderWidth: 0.2,
+            duration: const Duration(seconds: 2),
+          );
+        }
+      } finally {
+        isLoading.value = false;
       }
     }
   }

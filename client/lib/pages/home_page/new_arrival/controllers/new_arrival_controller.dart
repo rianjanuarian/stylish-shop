@@ -1,11 +1,11 @@
-import 'package:client/models/products.dart';
 import 'package:client/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import '../../../../services/api_service/product/product_model.dart';
 
 class NewArrivalController extends GetxController {
   RxBool isLoading = RxBool(false);
-  var productList = <Products>[].obs;
+  var productList = <Product>[].obs;
   final dio = Dio();
 
   Future<void> getProduct() async {
@@ -14,7 +14,7 @@ class NewArrivalController extends GetxController {
       String url = 'https://stylish-shop.vercel.app/products';
       final response = await dio.get(url);
       final List<dynamic> result = response.data;
-      productList.value = result.map((e) => Products.fromJson(e)).toList();
+      productList.value = result.map((e) => Product.fromJson(e)).toList();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
@@ -31,7 +31,7 @@ class NewArrivalController extends GetxController {
     }
   }
 
-  void goToDetail(Products product) {
+  void goToDetail(Product product) {
     Get.toNamed(AppPages.detail, arguments: product);
   }
 }

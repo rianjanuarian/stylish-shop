@@ -6,10 +6,10 @@ const {
   categoryproduct,
   brandproduct,
 } = require("../models");
-const { Storage } = require('@google-cloud/storage');
+const { Storage } = require("@google-cloud/storage");
 const storage = new Storage({
-  projectId: '7c8c89da30790dc43d65677a33d2b042d6b3e7b3',
-  credentials: require("../helpers/cloud-storage.json")
+  projectId: "7c8c89da30790dc43d65677a33d2b042d6b3e7b3",
+  credentials: require("../helpers/cloud-storage.json"),
 });
 const { Op } = require("sequelize");
 
@@ -46,7 +46,10 @@ class ProductControllers {
     try {
       const id = parseInt(req.params.id);
       let result = await category.findByPk(id, {
-        include: [product],
+        include: {
+          model: product,
+          include: [category, brand],
+        },
       });
 
       if (!result) {
@@ -131,17 +134,16 @@ class ProductControllers {
 
   //only admin can access part
 
-
   static async create(req, res, next) {
     try {
-      const bucketName = 'stylish-shop';
+      const bucketName = "stylish-shop";
       const destination = `products/${req.file.filename}`;
       let { categoryId, brandId, colors, ...otherDetails } = req.body;
       categoryId = parseInt(categoryId);
       brandId = parseInt(brandId);
 
       colors = colors.split(",");
-      await storage.bucket(bucketName).upload(req.file.path, {destination,});
+      await storage.bucket(bucketName).upload(req.file.path, { destination });
       const image = req.file
         ? `${bucketName}/${destination}`
         : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png";
@@ -188,7 +190,7 @@ class ProductControllers {
   static async update(req, res, next) {
     try {
       const id = parseInt(req.params.id);
-      const bucketName = 'stylish-shop';
+      const bucketName = "stylish-shop";
       const destination = `products/${req.file.filename}`;
       let { categoryId, brandId, colors, ...otherDetails } = req.body;
 
@@ -199,7 +201,7 @@ class ProductControllers {
       if (!currentProduct) {
         return next(createError(404, "Product not found!"));
       }
-      await storage.bucket(bucketName).upload(req.file.path, {destination,});
+      await storage.bucket(bucketName).upload(req.file.path, { destination });
       const image = req.file
         ? `${bucketName}/${destination}`
         : currentProduct.dataValues.image;
