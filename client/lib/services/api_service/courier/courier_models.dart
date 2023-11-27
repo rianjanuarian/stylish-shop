@@ -4,18 +4,18 @@ part 'courier_models.g.dart';
 
 @JsonSerializable()
 class Courier {
-  final String? id;
-  final String? name;
-  final String? image;
-  final int? price;
-  final String? createdAt;
-  final String? updatedAt;
+  int? id;
+  String? name;
+  int? price;
+  String? image;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   Courier({
     this.id,
     this.name,
-    this.image,
     this.price,
+    this.image,
     this.createdAt,
     this.updatedAt,
   });
