@@ -38,22 +38,24 @@ class PlaceOrderView extends GetView<PlaceOrderView> {
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Total Price',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        NumberFormat.currency(
-                                locale: 'id', symbol: 'Rp ', decimalDigits: 0)
-                            .format(cartController.totalPrice +
-                                controller.couriers[0].price!),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20.sp),
-                      ),
-                    ],
+                  return Obx(
+                    () => Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Total Price',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          NumberFormat.currency(
+                                  locale: 'id', symbol: 'Rp ', decimalDigits: 0)
+                              .format(cartController.totalPrice +
+                                  controller.courierFee),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20.sp),
+                        ),
+                      ],
+                    ),
                   );
                 }),
             ElevatedButton(
