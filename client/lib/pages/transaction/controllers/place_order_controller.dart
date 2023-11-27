@@ -6,13 +6,13 @@ class PlaceOrderController extends GetxController {
   RxList<Courier> couriers = <Courier>[].obs;
   RxBool isLoading = RxBool(false);
   final dio = Dio();
-Rx<Courier?> selectedCourier = Rx<Courier?>(null);
+  Rx<Courier?> selectedCourier = Rx<Courier?>(null);
   Future<void> getCouriers() async {
     try {
       isLoading.toggle();
       final res = await dio.get('https://stylish-shop.vercel.app/couriers');
       final List<dynamic> result = res.data;
-      couriers.value = result.map((e) => Courier.fromJson(e)).toList();
+    couriers.value = result.map((e) => Courier.fromJson(e)).toSet().toList();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
@@ -27,9 +27,10 @@ Rx<Courier?> selectedCourier = Rx<Courier?>(null);
       }
     }
   }
- void setSelectedCourier(Courier? courier) {
+
+  void setSelectedCourier(Courier? courier) {
     selectedCourier.value = courier;
-     update(); 
+    update();
   }
 
   @override
