@@ -59,7 +59,7 @@ class Products {
       this.categoryproduct});
 
   Products.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'] as int;
     name = json['name'];
     price = json['price'];
     description = json['description'];
@@ -75,7 +75,7 @@ class Products {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = id;
+    data['id'] = id as int;
     data['name'] = name;
     data['price'] = price;
     data['description'] = description;

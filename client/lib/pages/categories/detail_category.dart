@@ -50,7 +50,7 @@ class DetailCategory extends StatelessWidget {
             Obx(
               () => categoryController.isLoading.value
                   ? const Center(child: CircularProgressIndicator())
-                  : categoryController.categoryId[0].products!.isEmpty
+                  : categoryController.categoryId.isEmpty 
                       ? Center(child: Text("No products in $categoryName category"))
                       : GridView.builder(
                           primary: false,
