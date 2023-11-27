@@ -42,10 +42,7 @@ class CartController extends GetxController {
   }
 
   bool checkIsCartEmpty() {
-    if (carts.isEmpty) {
-      return true;
-    }
-    return false;
+    return carts.isEmpty ? true : false;
   }
 
   double get totalPrice {
@@ -154,7 +151,8 @@ class CartController extends GetxController {
   }
 
   void goToCheckout() {
-    Get.toNamed(AppPages.placeOrder);
+    Get.toNamed(AppPages.placeOrder,
+        arguments: {'total': totalPrice, 'carts': carts});
   }
 
   @override
