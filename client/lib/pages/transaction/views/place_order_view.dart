@@ -154,7 +154,6 @@ class PlaceOrderView extends GetView<PlaceOrderView> {
   }
 }
 
-
 class _Courier extends StatelessWidget {
   const _Courier({required this.controller});
 
@@ -170,6 +169,7 @@ class _Courier extends StatelessWidget {
           _showDropdown(context);
         },
         child: Container(
+          // ... (Widget details)
           height: 70.h,
           padding: REdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
@@ -184,52 +184,39 @@ class _Courier extends StatelessWidget {
             borderRadius: BorderRadius.circular(30).r,
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
+              // ... (Other widget details)
+              courier.image != null
+                  ? CachedNetworkImage(
+                      imageUrl:
+                          'https://storage.googleapis.com/${courier.image}',
+                      width: 80.w,
+                      height: 80.h,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    )
+                  : Container(),
+              SizedBox(width: 20.w),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CachedNetworkImage(
-                    imageUrl: 'https://storage.googleapis.com/${courier.image}',
-                    width: 80.w,
-                    height: 80.h,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                  Text(
+                    '${courier.name ?? 'No Courier Selected'}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(width: 20.w),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${courier.name}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        NumberFormat.currency(
-                          locale: 'id',
-                          symbol: 'Rp ',
-                          decimalDigits: 0,
-                        ).format(courier.price),
-                        style: TextStyle(fontSize: 16.sp),
-                      ),
-                    ],
+                  Text(
+                    NumberFormat.currency(
+                      locale: 'id',
+                      symbol: 'Rp ',
+                      decimalDigits: 0,
+                    ).format(courier.price ?? 0),
+                    style: TextStyle(fontSize: 16.sp),
                   ),
                 ],
-              ),
-              Material(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(20).r,
-                child: InkWell(
-                  onTap: () {
-                    _showDropdown(context);
-                  },
-                  borderRadius: BorderRadius.circular(20).r,
-                  child: const Icon(Icons.expand_more),
-                ),
               ),
             ],
           ),
@@ -243,7 +230,7 @@ class _Courier extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Select a Courier'),
+          title: const Text('Select your Courier'),
           content: SizedBox(
             width: 200,
             child: DropdownButton<Courier>(
@@ -255,7 +242,7 @@ class _Courier extends StatelessWidget {
               items: controller.couriers.map((Courier courier) {
                 return DropdownMenuItem<Courier>(
                   value: courier,
-                  child: Text(courier.name!),
+                  child: Text(courier.name ?? 'No Courier Selected'),
                 );
               }).toList(),
             ),
