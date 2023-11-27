@@ -169,7 +169,6 @@ class _Courier extends StatelessWidget {
           _showDropdown(context);
         },
         child: Container(
-          // ... (Widget details)
           height: 70.h,
           padding: REdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
@@ -185,7 +184,6 @@ class _Courier extends StatelessWidget {
           ),
           child: Row(
             children: [
-              // ... (Other widget details)
               courier.image != null
                   ? CachedNetworkImage(
                       imageUrl:
@@ -205,7 +203,7 @@ class _Courier extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${courier.name ?? 'No Courier Selected'}',
+                    courier.name ?? 'No Courier Selected',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Text(
