@@ -6,7 +6,7 @@ class PlaceOrderController extends GetxController {
   RxList<Courier> couriers = <Courier>[].obs;
   RxBool isLoading = RxBool(false);
   final dio = Dio();
-
+Rx<Courier?> selectedCourier = Rx<Courier?>(null);
   Future<void> getCouriers() async {
     try {
       isLoading.toggle();
@@ -26,6 +26,10 @@ class PlaceOrderController extends GetxController {
         isLoading.toggle();
       }
     }
+  }
+ void setSelectedCourier(Courier? courier) {
+    selectedCourier.value = courier;
+     update(); 
   }
 
   @override

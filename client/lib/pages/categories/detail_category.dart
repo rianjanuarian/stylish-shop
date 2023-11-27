@@ -49,6 +49,7 @@ class DetailCategory extends StatelessWidget {
                     const TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
               ),
             ),
+
             FutureBuilder(
                 future: builder,
                 builder: (context, snapshot) {
@@ -103,6 +104,7 @@ class DetailCategory extends StatelessWidget {
                                   style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w700),
+
                                 ),
                                 Text(
                                   categoryController.categoryId[0]
