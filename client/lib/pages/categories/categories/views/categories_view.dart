@@ -9,7 +9,6 @@ class CategoriesView extends GetView<CategoriesController> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put<CategoriesController>(CategoriesController());
-    Get.put(CategoriesController());
     return Scaffold(
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

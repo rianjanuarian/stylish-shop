@@ -382,7 +382,7 @@ class PersonalDetailView extends GetView<PersonalDetailController> {
         surfaceTintColor: Colors.white,
       ),
       body: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Padding(
             padding: REdgeInsets.symmetric(horizontal: 50),
             child: Column(

@@ -60,29 +60,38 @@ class CartView extends GetView<CartController> {
                     }),
               ),
             ),
-            Padding(
-              padding: REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
-              child: ElevatedButton(
-                onPressed: () => controller.goToCheckout(),
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    minimumSize: Size.fromHeight(60.h),
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Proceed to Checkout',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+            Obx(
+              () => Padding(
+                padding:
+                    REdgeInsets.symmetric(horizontal: 30.w, vertical: 10.h),
+                child: ElevatedButton(
+                  onPressed: controller.isCartEmpty.isTrue
+                      ? null
+                      : () {
+                          controller.goToCheckout();
+                        },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    ),
-                    Icon(Icons.arrow_forward, size: 20.sp),
-                  ],
+                      disabledBackgroundColor:
+                          controller.isCartEmpty.isTrue ? Colors.grey : null,
+                      minimumSize: Size.fromHeight(60.h),
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Proceed to Checkout',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Icon(Icons.arrow_forward, size: 20.sp),
+                    ],
+                  ),
                 ),
               ),
             )
@@ -139,6 +148,7 @@ class CartView extends GetView<CartController> {
                                 return CartItem(
                                   cart: cart,
                                   controller: controller,
+                                  isUsed: true,
                                 );
                               },
                             ).toList(),
@@ -146,7 +156,8 @@ class CartView extends GetView<CartController> {
                         } else {
                           return Column(
                             children: [
-                              Lottie.asset('assets/animations/empty.json'),
+                              Lottie.asset('assets/animations/empty.json',
+                                  height: 300.h, width: double.infinity),
                               const Text(
                                   'Nothing inside cart, try adding some!')
                             ],
@@ -196,14 +207,17 @@ class CartView extends GetView<CartController> {
   }
 }
 
+// ignore: must_be_immutable
 class CartItem extends StatelessWidget {
-  const CartItem({
+  CartItem({
     super.key,
     required this.cart,
     required this.controller,
+    this.isUsed,
   });
   final Cart cart;
   final CartController controller;
+  bool? isUsed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -322,31 +336,37 @@ class CartItem extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Material(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
-                      child: InkWell(
+                    Visibility(
+                      visible: isUsed ?? false,
+                      child: Material(
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.circular(20),
-                        onTap: () => (cart.qty ?? 0) > 1
-                            ? controller.substractQuantity(cart.id ?? 0)
-                            : null,
-                        child: const Icon(Icons.remove, size: 16),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(20),
+                          onTap: () => (cart.qty ?? 0) > 1
+                              ? controller.substractQuantity(cart.id ?? 0)
+                              : null,
+                          child: const Icon(Icons.remove, size: 16),
+                        ),
                       ),
                     ),
                     Text(
                       '${cart.qty ?? 0}',
                       style: const TextStyle(fontSize: 14),
                     ),
-                    Material(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
-                      child: InkWell(
+                    Visibility(
+                      visible: isUsed ?? false,
+                      child: Material(
+                        color: Colors.transparent,
                         borderRadius: BorderRadius.circular(20),
-                        onTap: () =>
-                            (cart.qty ?? 0) < (cart.product?.stock ?? 0)
-                                ? controller.addQuantity(cart.id ?? 0)
-                                : null,
-                        child: const Icon(Icons.add, size: 16),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(20),
+                          onTap: () =>
+                              (cart.qty ?? 0) < (cart.product?.stock ?? 0)
+                                  ? controller.addQuantity(cart.id ?? 0)
+                                  : null,
+                          child: const Icon(Icons.add, size: 16),
+                        ),
                       ),
                     ),
                   ],
