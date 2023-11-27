@@ -1,7 +1,7 @@
-import 'package:client/pages/categories/detail_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../widgets/app_shimmer.dart';
 import '../controllers/categories_controller.dart';
 
 class CategoriesView extends GetView<CategoriesController> {
@@ -17,6 +17,7 @@ class CategoriesView extends GetView<CategoriesController> {
           child: Column(
             children: [
               TextField(
+                onTapOutside: (_) => FocusScope.of(context).unfocus(),
                 onTap: () => controller.goToSearch(),
                 decoration: InputDecoration(
                   prefixIcon: Padding(
@@ -34,9 +35,7 @@ class CategoriesView extends GetView<CategoriesController> {
               ),
               SizedBox(height: 20.h),
               Obx(() => controller.isLoading.value
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
+                  ? shimmerCategory()
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -50,6 +49,8 @@ class CategoriesView extends GetView<CategoriesController> {
                               (category) => CategoryItem(
                                 categoryId: category.id!,
                                 categoryName: category.name!,
+                                callback: () =>
+                                    controller.goToDetailCategory(category.id!),
                               ),
                             )
                             .toList(),
@@ -63,15 +64,51 @@ class CategoriesView extends GetView<CategoriesController> {
   }
 }
 
-// ignore: must_be_immutable
+Widget shimmerCategory() {
+  return AppShimmer(
+    child: ListView.builder(
+        primary: false,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 5,
+        itemBuilder: (_, index) {
+          return InkWell(
+            child: Container(
+              alignment: Alignment.center,
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                padding: REdgeInsets.only(top: 30),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: const Color.fromRGBO(219, 219, 219, 100),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Container(
+                    width: double.infinity,
+                    height: 60.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+  );
+}
+
 class CategoryItem extends StatelessWidget {
-  CategoryItem({
+  const CategoryItem({
     super.key,
     required this.categoryId,
     required this.categoryName,
+    required this.callback,
   });
   final String categoryName;
   final int categoryId;
+  final VoidCallback callback;
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +119,7 @@ class CategoryItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(30).r,
         child: InkWell(
           borderRadius: BorderRadius.circular(30).r,
-          onTap: () {
-            Get.to(() => DetailCategory(categoryId, categoryName));
-          },
+          onTap: callback,
           child: Container(
             padding: REdgeInsets.symmetric(vertical: 10, horizontal: 20),
             height: 60.h,

@@ -21,7 +21,7 @@ Cart _$CartFromJson(Map<String, dynamic> json) => Cart(
           : DateTime.parse(json['updatedAt'] as String),
       product: json['product'] == null
           ? null
-          : Products.fromJson(json['product'] as Map<String, dynamic>),
+          : Product.fromJson(json['product'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CartToJson(Cart instance) => <String, dynamic>{

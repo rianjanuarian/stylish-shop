@@ -1,11 +1,11 @@
-import 'package:client/models/categories.dart';
 import 'package:client/routes/app_pages.dart';
+import 'package:client/services/api_service/category/category_model.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
 class CategoriesController extends GetxController {
-  var categoryId = <Categories>[].obs;
-  var categoriesList = <Categories>[].obs;
+  var categoryId = <Category>[].obs;
+  var categoriesList = <Category>[].obs;
   var isLoading = true.obs;
 
   Future<void> getCategories() async {
@@ -15,7 +15,7 @@ class CategoriesController extends GetxController {
       if (response.statusCode == 200) {
         final List<dynamic> result = response.data;
         categoriesList.value =
-            result.map((e) => Categories.fromJson(e)).toList();
+            result.map((e) => Category.fromJson(e)).toList();
         isLoading.value = false;
         update();
       } else {
@@ -42,7 +42,7 @@ class CategoriesController extends GetxController {
       final response = await Dio().get(url);
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = response.data;
-        categoryId.value = [Categories.fromJson(data)];
+        categoryId.value = [Category.fromJson(data)];
         isLoading.value = false;
         update();
       }
@@ -58,6 +58,10 @@ class CategoriesController extends GetxController {
         isLoading.value = true;
       }
     }
+  }
+
+  void goToDetailCategory(int id) {
+    Get.toNamed(AppPages.detailCategory, arguments: id);
   }
 
   void goToSearch() {

@@ -1,8 +1,8 @@
-import 'package:client/models/products.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import '../../../../services/api_service/product/product_model.dart';
 import '../../../../services/keys/get_storage_key.dart';
 
 class DetailProductController extends GetxController {
@@ -82,7 +82,7 @@ class DetailProductController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final Products product = Get.arguments;
+    final Product product = Get.arguments;
     setInitialPrice(product.price ?? 0);
   }
 }

@@ -1,6 +1,11 @@
 import 'package:get/get.dart';
 
-import '../pages/home_page/new_arrival/bindings/new_arrival_binding.dart';
+import '../pages/auth/login/bindings/login_binding.dart';
+import '../pages/auth/login/views/login_view.dart';
+import '../pages/auth/signup/bindings/signup_binding.dart';
+import '../pages/auth/signup/views/signup_view.dart';
+import '../pages/categories/detailCategory/bindings/detail_category_binding.dart';
+import '../pages/categories/detailCategory/views/detail_category_view.dart';
 import '../pages/auth/login_signup_screen.dart';
 import '../pages/cart/bindings/cart_binding.dart';
 import '../pages/cart/views/cart_view.dart';
@@ -12,9 +17,8 @@ import '../pages/home_page/detail_product/bindings/detail_product_binding.dart';
 import '../pages/home_page/detail_product/views/detail_product_view.dart';
 import '../pages/home_page/home_screen/bindings/home_screen_binding.dart';
 import '../pages/home_page/home_screen/views/home_screen_view.dart';
+import '../pages/home_page/new_arrival/bindings/new_arrival_binding.dart';
 import '../pages/home_page/new_arrival/views/new_arrival_view.dart';
-import '../pages/login/bindings/login_binding.dart';
-import '../pages/login/views/login_view.dart';
 import '../pages/main_tab/bindings/main_tab_binding.dart';
 import '../pages/main_tab/views/main_tab_view.dart';
 import '../pages/profile/change_password/bindings/change_password_binding.dart';
@@ -30,8 +34,6 @@ import '../pages/profile/setting/bindings/setting_binding.dart';
 import '../pages/profile/setting/views/setting_view.dart';
 import '../pages/search_page/bindings/search_page_binding.dart';
 import '../pages/search_page/views/search_page_view.dart';
-import '../pages/signup/bindings/signup_binding.dart';
-import '../pages/signup/views/signup_view.dart';
 import '../pages/splash_screen/bindings/splash_screen_binding.dart';
 import '../pages/splash_screen/views/splash_screen_view.dart';
 import '../pages/transaction/bindings/place_order_binding.dart';
@@ -58,6 +60,7 @@ class AppPages {
   static const cart = '/cart';
   static const detail = '/detail';
   static const placeOrder = '/place-order';
+  static const detailCategory = '/detail-category';
 
   // Unknown
   static const unknown = '/unknown';
@@ -167,6 +170,11 @@ class AppPages {
       name: placeOrder,
       page: () => const PlaceOrderView(),
       binding: PlaceOrderBinding(),
-    )
+    ),
+    GetPage(
+      name: detailCategory,
+      page: () => const DetailCategoryView(),
+      binding: DetailCategoryBinding(),
+    ),
   ];
 }

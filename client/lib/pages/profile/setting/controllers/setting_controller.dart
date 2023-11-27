@@ -27,16 +27,27 @@ class SettingController extends GetxController {
             'Content-Type': 'application/json',
           }));
       user.value = UserModel.fromJson(res.data);
-      isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
         if (errorResponse != null) {
-          throw errorResponse.data?['message'];
+          if (errorResponse.data is Map) {
+            final errorMessage = errorResponse.data['message'];
+            Get.snackbar('Error', errorMessage ?? 'Unknown error');
+          } else {
+            Get.snackbar('Error', 'Unknown error occurred');
+          }
         }
+      } else {
+        Get.snackbar(
+          'Error',
+          e.toString(),
+          borderWidth: 0.2,
+          duration: const Duration(seconds: 2),
+        );
       }
-      isLoading.toggle();
-      rethrow;
+    } finally {
+      isLoading.value = false;
     }
   }
 

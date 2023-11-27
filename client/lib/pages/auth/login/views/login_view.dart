@@ -1,4 +1,4 @@
-import 'package:client/pages/login/controllers/login_controller.dart';
+import '../controllers/login_controller.dart';
 import 'package:client/themes/color.dart';
 import 'package:client/themes/const.dart';
 import 'package:client/widgets/costom_text_form_field.dart';
