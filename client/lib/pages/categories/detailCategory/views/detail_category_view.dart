@@ -48,11 +48,11 @@ class DetailCategoryView extends GetView<DetailCategoryController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(30.0),
+                          padding: REdgeInsets.all(30.0),
                           child: Text(
                             controller.category.value?.name ?? "unknown",
-                            style: const TextStyle(
-                                fontSize: 28, fontWeight: FontWeight.w700),
+                            style: TextStyle(
+                                fontSize: 28.sp, fontWeight: FontWeight.w700),
                           ),
                         ),
                         GridView.builder(
@@ -76,32 +76,32 @@ class DetailCategoryView extends GetView<DetailCategoryController> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  CachedNetworkImage(
-                                    imageUrl: (product?.image ??
-                                                "https://via.placeholder.com/200")
-                                            .contains('placeholder')
-                                        ? "https://via.placeholder.com/200"
-                                        : 'https://storage.googleapis.com/${product?.image}',
-                                    width: 132.h,
-                                    height: 132.h,
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) =>
-                                        const Center(
-                                            child:
-                                                CircularProgressIndicator()),
-                                    errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(15).r,
+                                    child: CachedNetworkImage(
+                                      imageUrl: (product?.image ??
+                                                  "https://via.placeholder.com/200")
+                                              .contains('placeholder')
+                                          ? "https://via.placeholder.com/200"
+                                          : 'https://storage.googleapis.com/${product?.image}',
+                                      width: 132.h,
+                                      height: 132.h,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => const Center(
+                                          child: CircularProgressIndicator()),
+                                      errorWidget: (context, url, error) =>
+                                          const Icon(Icons.error),
+                                    ),
                                   ),
                                   Text(
                                     product?.name ?? 'No Name',
-                                    style: const TextStyle(
-                                        fontSize: 15,
+                                    style: TextStyle(
+                                        fontSize: 15.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
                                   Text(
-                                    product?.description ??
-                                        'No Description',
-                                    style: const TextStyle(fontSize: 12),
+                                    product?.description ?? 'No Description',
+                                    style: TextStyle(fontSize: 12.sp),
                                   ),
                                   Text(
                                     NumberFormat.currency(
@@ -109,8 +109,8 @@ class DetailCategoryView extends GetView<DetailCategoryController> {
                                             symbol: 'Rp ',
                                             decimalDigits: 0)
                                         .format(product?.price),
-                                    style: const TextStyle(
-                                        fontSize: 15,
+                                    style: TextStyle(
+                                        fontSize: 15.sp,
                                         fontWeight: FontWeight.w700),
                                   ),
                                 ],
@@ -144,19 +144,19 @@ Widget shimmerDetailCategory() {
             child: Container(
               alignment: Alignment.center,
               decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  BoxDecoration(borderRadius: BorderRadius.circular(10).r),
               child: Column(
                 children: [
                   Container(
                     decoration: BoxDecoration(
                         color: const Color.fromRGBO(219, 219, 219, 100),
-                        borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10).r),
                     child: Container(
                       width: 132.h,
                       height: 132.h,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10).r,
                       ),
                     ),
                   ),

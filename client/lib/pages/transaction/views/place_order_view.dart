@@ -22,7 +22,7 @@ class PlaceOrderView extends GetView<PlaceOrderController> {
             surfaceTintColor: Colors.white,
             title: const Text('Select your Courier'),
             content: SizedBox(
-              width: 200,
+              width: 200.w,
               child: DropdownButton<Courier>(
                 isExpanded: true,
                 value: controller.selectedCourier.value,
@@ -123,10 +123,10 @@ class PlaceOrderView extends GetView<PlaceOrderController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Text('Qty: ', style: TextStyle(fontSize: 12)),
+                     Text('Qty: ', style: TextStyle(fontSize: 12.sp)),
                     Text(
                       '${cart.qty ?? 0}',
-                      style: const TextStyle(fontSize: 12),
+                      style:  TextStyle(fontSize: 12.sp),
                     ),
                   ],
                 ),

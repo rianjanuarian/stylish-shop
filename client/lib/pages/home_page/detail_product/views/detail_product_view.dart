@@ -51,7 +51,7 @@ class DetailProductView extends GetView<DetailProductController> {
                     ),
                     color: Colors.white,
                     style: IconButton.styleFrom(
-                        iconSize: 20,
+                        iconSize: 20.sp,
                         backgroundColor:
                             const Color.fromARGB(255, 255, 255, 255)),
                   ),
@@ -111,7 +111,7 @@ class DetailProductView extends GetView<DetailProductController> {
                                               color: const Color.fromRGBO(
                                                   219, 219, 219, 100),
                                               borderRadius:
-                                                  BorderRadius.circular(20)),
+                                                  BorderRadius.circular(20).r),
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
@@ -181,13 +181,13 @@ class DetailProductView extends GetView<DetailProductController> {
                                           highlightColor: Colors.red,
                                           child: Obx(
                                             () => Container(
-                                              width: 50,
-                                              height: 50,
-                                              margin: const EdgeInsets.all(8),
+                                              width: 50.h,
+                                              height: 50.h,
+                                              margin: REdgeInsets.all(8),
                                               decoration: BoxDecoration(
                                                 color: color,
                                                 border: Border.all(
-                                                    width: 2,
+                                                    width: 2.w,
                                                     color: controller
                                                                 .selectedColor
                                                                 .value ==
@@ -207,11 +207,11 @@ class DetailProductView extends GetView<DetailProductController> {
                                 Text(
                                   "Description",
                                   style: TextStyle(
-                                      fontSize: 15.h,
+                                      fontSize: 15.sp,
                                       fontWeight: FontWeight.w700),
                                 ),
-                                const SizedBox(
-                                  height: 15,
+                                SizedBox(
+                                  height: 15.h,
                                 ),
                                 Text(
                                   product.description ?? 'No Description',
@@ -219,8 +219,7 @@ class DetailProductView extends GetView<DetailProductController> {
                                       fontWeight: FontWeight.w400),
                                 ),
                                 SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: 0.05.sh,
                                 ),
                                 Row(
                                   mainAxisAlignment:
@@ -228,11 +227,11 @@ class DetailProductView extends GetView<DetailProductController> {
                                   children: [
                                     Column(
                                       children: [
-                                        const Text(
+                                        Text(
                                           "Total Price",
                                           style: TextStyle(
                                               fontWeight: FontWeight.w300,
-                                              fontSize: 10),
+                                              fontSize: 10.sp),
                                         ),
                                         Obx(
                                           () => Text(
@@ -241,33 +240,35 @@ class DetailProductView extends GetView<DetailProductController> {
                                                     symbol: 'Rp ',
                                                     decimalDigits: 0)
                                                 .format(controller.price.value),
-                                            style: const TextStyle(
-                                                fontSize: 15,
+                                            style: TextStyle(
+                                                fontSize: 15.sp,
                                                 fontWeight: FontWeight.w700),
                                           ),
                                         )
                                       ],
                                     ),
                                     ElevatedButton(
-                                        onPressed: () => controller.addToCart(product.id ?? 0),
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.black),
-                                        child: const Row(
-                                          children: [
-                                            Icon(
-                                              Icons.shopping_basket_outlined,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              "Add to cart",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            )
-                                          ],
-                                        ))
+                                      onPressed: () =>
+                                          controller.addToCart(product.id ?? 0),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.black),
+                                      child: Row(
+                                        children: [
+                                          const Icon(
+                                            Icons.shopping_basket_outlined,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(
+                                            width: 10.w,
+                                          ),
+                                          const Text(
+                                            "Add to cart",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 )
                               ],

@@ -72,7 +72,7 @@ class CartView extends GetView<CartController> {
                         },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10).r,
                       ),
                       disabledBackgroundColor:
                           controller.isCartEmpty.isTrue ? Colors.grey.shade200 : null,
@@ -340,32 +340,32 @@ class CartItem extends StatelessWidget {
                       visible: isUsed ?? false,
                       child: Material(
                         color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20).r,
                         child: InkWell(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20).r,
                           onTap: () => (cart.qty ?? 0) > 1
                               ? controller.substractQuantity(cart.id ?? 0)
                               : null,
-                          child: const Icon(Icons.remove, size: 16),
+                          child:  Icon(Icons.remove, size: 16.sp),
                         ),
                       ),
                     ),
                     Text(
                       '${cart.qty ?? 0}',
-                      style: const TextStyle(fontSize: 14),
+                      style:  TextStyle(fontSize: 14.sp),
                     ),
                     Visibility(
                       visible: isUsed ?? false,
                       child: Material(
                         color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20).r,
                         child: InkWell(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20).r,
                           onTap: () =>
                               (cart.qty ?? 0) < (cart.product?.stock ?? 0)
                                   ? controller.addQuantity(cart.id ?? 0)
                                   : null,
-                          child: const Icon(Icons.add, size: 16),
+                          child:  Icon(Icons.add, size: 16.sp),
                         ),
                       ),
                     ),

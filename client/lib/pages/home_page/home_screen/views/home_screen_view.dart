@@ -451,9 +451,9 @@ class HomeScreenView extends GetView<HomeScreenController> {
     return AppShimmer(
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 30,
-            child: Column(),
+          CircleAvatar(
+            radius: 30.r,
+            child: const Column(),
           ),
           SizedBox(width: 20.w),
           Column(
@@ -499,7 +499,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
           Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10).r,
             ),
             child: SizedBox(
               width: 150.w,
