@@ -114,7 +114,7 @@ class TransactionControllers {
 
       await cart.destroy({
         where: {
-          userId: id,
+          userId: userId,
         },
       });
 
