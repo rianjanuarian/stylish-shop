@@ -81,22 +81,23 @@ class PlaceOrderController extends GetxController {
     }
   }
 
-  void openUrl(String urlToken) async {
-    final Uri url = Uri.parse(urlToken);
-    try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalNonBrowserApplication);
-      } else {
-        // Launch web view if app is not installed!
-        await launchUrl(
-          url,
-          mode: LaunchMode.inAppWebView,
-        );
-      }
-    } catch (e) {
-      throw 'There was a problem to open the url: $url';
-    }
-  }
+  //ga butuh
+  // void openUrl(String urlToken) async {
+  //   final Uri url = Uri.parse(urlToken);
+  //   try {
+  //     if (await canLaunchUrl(url)) {
+  //       await launchUrl(url, mode: LaunchMode.externalNonBrowserApplication);
+  //     } else {
+  //       // Launch web view if app is not installed!
+  //       await launchUrl(
+  //         url,
+  //         mode: LaunchMode.inAppWebView,
+  //       );
+  //     }
+  //   } catch (e) {
+  //     throw 'There was a problem to open the url: $url';
+  //   }
+  // }
 
   void setSelectedCourier(Courier? courier) {
     totalPrice.value -= selectedCourier.value?.price ?? 0;
