@@ -52,11 +52,33 @@ android {
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        release {
+            keyAlias System.getenv("KEYSTOREALIAS")
+            keyPassword System.getenv("KEYSTOREPASSWORD")
+            storeFile System.getenv("KEYSTOREFILE") ? file(System.getenv("KEYSTOREFILE")) : null
+            storePassword System.getenv("KEYSTOREPASSWORD")
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            // Use env to detect if it's debug or release
+            if (System.getenv("KEYSTOREALIAS") == null) {
+                signingConfig signingConfigs.debug
+            } else {
+                signingConfig signingConfigs.release
+
+                // https://github.com/flutter/flutter/issues/18232
+                applicationVariants.all { variant ->
+                    variant.outputs.all { output ->
+                        // For apk without --split-per-abi
+                        output.outputFileName = "app-release.apk"
+                        // For apk with --split-per-abi
+                        //output.outputFileName = "app-" + output.getFilter(com.android.build.OutputFile.ABI) + "-release.apk";
+                    }
+                }
+            }
         }
     }
 }
