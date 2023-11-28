@@ -1,4 +1,4 @@
-const { transaction, cart, courier, user } = require("../models");
+const { transaction, cart, courier, user, product } = require("../models");
 const midtransClient = require("midtrans-client");
 const { createOrder } = require("../helpers/order");
 const createError = require("../middlewares/createError");
@@ -111,12 +111,12 @@ class TransactionControllers {
         midtranstoken: transactionToken,
         status: "pending",
       });
-
-      await cart.destroy({
-        where: {
-          userId: userId,
-        },
-      });
+      //izin mindahin cuma klo pembayaran sukses, nyusahin buat development klo ga
+      // await cart.destroy({
+      //   where: {
+      //     userId: userId,
+      //   },
+      // });
 
       res
         .status(200)
@@ -147,6 +147,30 @@ class TransactionControllers {
           },
         }
       );
+
+      //ini g tau bsa apa ga, tolong setel lah
+      if (statusOrder === "approve") {
+        const userId = req.user.id;
+        const carts = await cart.findAll({ where: { userId } });
+        //hasilnya kan list si cart. nah liat product id dri si itu, terus kurangin jumlah qty,
+        // ini baru keknya loh aku blom tes, jam 1 ngantuk
+        // btw klo quantity ini coba aja dulu, klo work comment lagi aja, soalnya kan kita msih butuh buat development, klo abis barang nnti kita g bsa test2 transaction lagi
+        // tidor dulu
+        for (const cartItem of carts) {
+          const { productId, qty } = cartItem;
+          const product = await product.findByPk(productId);
+          if (product) {
+            const updatedQty = product.qty - qty;
+            await product.update({ qty: updatedQty });
+          }
+        }
+        await cart.destroy({
+          where: {
+            userId,
+          },
+        });
+      }
+
       res.status(201).json({
         message: `Payment status ${statusOrder}!`,
       });

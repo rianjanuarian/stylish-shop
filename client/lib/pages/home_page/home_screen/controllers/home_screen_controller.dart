@@ -39,10 +39,14 @@ class HomeScreenController extends GetxController {
       if (e is DioException) {
         final errorResponse = e.response;
         if (errorResponse != null) {
-          final errorMessage = errorResponse.data?['message'];
-          Get.snackbar('Error', errorMessage ?? 'Unknown error');
+          if (errorResponse.data is Map) {
+            final errorMessage = errorResponse.data['message'];
+            Get.snackbar('Error', errorMessage ?? 'Unknown error');
+          } else {
+            Get.snackbar('Error', e.toString());
+          }
         } else {
-          Get.snackbar('Error', 'Unknown error occurred');
+          Get.snackbar('Error', e.toString());
         }
         isLoading.toggle();
       }

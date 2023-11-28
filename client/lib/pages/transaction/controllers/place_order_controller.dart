@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../routes/app_pages.dart';
 import '../../../services/api_service/cart/cart_models.dart';
 import '../../../services/keys/get_storage_key.dart';
 
@@ -49,7 +50,6 @@ class PlaceOrderController extends GetxController {
 
   Future<void> placeOrder() async {
     try {
-      isLoading.toggle();
       int? id = selectedCourier.value?.id;
       final token = await storage.read(GetStorageKey.token);
       final res = await dio.post(
@@ -63,8 +63,9 @@ class PlaceOrderController extends GetxController {
         'Success',
         res.data?['message'],
       );
-      openUrl(
-          'https://app.sandbox.midtrans.com/snap/v3/redirection/${res.data['userPay']['midtranstoken']}');
+      Get.toNamed(AppPages.transactionWebView,
+          arguments:
+              'https://app.sandbox.midtrans.com/snap/v3/redirection/${res.data['userPay']['midtranstoken']}');
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
@@ -74,11 +75,9 @@ class PlaceOrderController extends GetxController {
         } else {
           Get.snackbar('Error', 'Unknown error occurred');
         }
-        isLoading.toggle();
+      } else {
+        Get.snackbar('Error', e.toString());
       }
-      isLoading.toggle();
-    } finally {
-      isLoading.toggle();
     }
   }
 

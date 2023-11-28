@@ -2,17 +2,19 @@ import 'package:get/get.dart';
 
 import '../pages/auth/login/bindings/login_binding.dart';
 import '../pages/auth/login/views/login_view.dart';
+import '../pages/auth/login_signup_screen.dart';
 import '../pages/auth/signup/bindings/signup_binding.dart';
 import '../pages/auth/signup/views/signup_view.dart';
-import '../pages/categories/detailCategory/bindings/detail_category_binding.dart';
-import '../pages/categories/detailCategory/views/detail_category_view.dart';
-import '../pages/auth/login_signup_screen.dart';
 import '../pages/cart/bindings/cart_binding.dart';
 import '../pages/cart/views/cart_view.dart';
 import '../pages/categories/categories/bindings/categories_binding.dart';
 import '../pages/categories/categories/views/categories_view.dart';
+import '../pages/categories/detailCategory/bindings/detail_category_binding.dart';
+import '../pages/categories/detailCategory/views/detail_category_view.dart';
 import '../pages/common/unknown.dart';
 import '../pages/get_start/on_boarding_screen.dart';
+import '../pages/get_start/splash_screen/bindings/splash_screen_binding.dart';
+import '../pages/get_start/splash_screen/views/splash_screen_view.dart';
 import '../pages/home_page/detail_product/bindings/detail_product_binding.dart';
 import '../pages/home_page/detail_product/views/detail_product_view.dart';
 import '../pages/home_page/home_screen/bindings/home_screen_binding.dart';
@@ -34,10 +36,10 @@ import '../pages/profile/setting/bindings/setting_binding.dart';
 import '../pages/profile/setting/views/setting_view.dart';
 import '../pages/search_page/bindings/search_page_binding.dart';
 import '../pages/search_page/views/search_page_view.dart';
-import '../pages/get_start/splash_screen/bindings/splash_screen_binding.dart';
-import '../pages/get_start/splash_screen/views/splash_screen_view.dart';
 import '../pages/transaction/bindings/place_order_binding.dart';
 import '../pages/transaction/views/place_order_view.dart';
+import '../pages/transactionWeb/bindings/transaction_web_binding.dart';
+import '../pages/transactionWeb/views/transaction_web_view.dart';
 
 class AppPages {
   static const splash = '/splash-screen';
@@ -61,6 +63,7 @@ class AppPages {
   static const detail = '/detail';
   static const placeOrder = '/place-order';
   static const detailCategory = '/detail-category';
+  static const transactionWebView = '/transaction-webview';
 
   // Unknown
   static const unknown = '/unknown';
@@ -175,6 +178,11 @@ class AppPages {
       name: detailCategory,
       page: () => const DetailCategoryView(),
       binding: DetailCategoryBinding(),
+    ),
+    GetPage(
+      name: transactionWebView,
+      page: () => const TransactionWebView(),
+      binding: TransactionWebBinding(),
     ),
   ];
 }
