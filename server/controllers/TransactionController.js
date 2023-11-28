@@ -1,4 +1,4 @@
-const { transaction, cart, courier,user } = require("../models");
+const { transaction, cart, courier, user } = require("../models");
 const midtransClient = require("midtrans-client");
 const { createOrder } = require("../helpers/order");
 const createError = require("../middlewares/createError");
@@ -7,7 +7,7 @@ class TransactionControllers {
   static async getTransaction(req, res, next) {
     try {
       const transactions = await transaction.findAll({
-        include : [user,courier]
+        include: [user, courier],
       });
       res.status(200).json(transactions);
     } catch (error) {
@@ -38,11 +38,11 @@ class TransactionControllers {
   }
   static async createTransaction(req, res, next) {
     try {
-      const id = req.user.dataValues.id;
+      const userId = req.user.id;
       const idCourier = +req.params.id;
       const carts = await cart.findAll({
         where: {
-          userId: id,
+          userId: userId,
         },
       });
 
@@ -81,17 +81,17 @@ class TransactionControllers {
         },
         customer_details: {
           first_name: `${
-            req.user.dataValues.name.toLowerCase === "user"
+            req.user.name.toLowerCase === "user"
               ? "User"
-              : req.user.dataValues.name.split(" ")[0]
+              : req.user.name.split(" ")[0]
           }`,
           last_name: `${
-            req.user.dataValues.name.toLowerCase === "user"
+            req.user.name.toLowerCase === "user"
               ? ""
-              : req.user.dataValues.name.split(" ")[1]
+              : req.user.name.split(" ")[1]
           }`,
-          email: `${req.user.dataValues.email}`,
-          phone: `${req.user.dataValues.phone_number}`,
+          email: `${req.user.email}`,
+          phone: `${req.user.phone_number}`,
         },
       };
 
@@ -104,7 +104,7 @@ class TransactionControllers {
 
       let userPay = await transaction.create({
         //create payment
-        userId: id,
+        userId: userId,
         orderId: orderId,
         cartId: arrCart.toString(),
         courierId: idCourier,
