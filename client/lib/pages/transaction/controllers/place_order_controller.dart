@@ -65,7 +65,6 @@ class PlaceOrderController extends GetxController {
       );
       openUrl(
           'https://app.sandbox.midtrans.com/snap/v3/redirection/${res.data['userPay']['midtranstoken']}');
-      isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
