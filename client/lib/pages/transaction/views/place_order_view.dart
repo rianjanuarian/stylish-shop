@@ -123,10 +123,10 @@ class PlaceOrderView extends GetView<PlaceOrderController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                     Text('Qty: ', style: TextStyle(fontSize: 12.sp)),
+                    Text('Qty: ', style: TextStyle(fontSize: 12.sp)),
                     Text(
                       '${cart.qty ?? 0}',
-                      style:  TextStyle(fontSize: 12.sp),
+                      style: TextStyle(fontSize: 12.sp),
                     ),
                   ],
                 ),
@@ -222,18 +222,29 @@ class PlaceOrderView extends GetView<PlaceOrderController> {
                   () => Text(
                     NumberFormat.currency(
                             locale: 'id', symbol: 'Rp ', decimalDigits: 0)
-                        .format(controller.totalPrice.value),
+                        .format(controller.totalPrice.value +
+                            controller.courierFee),
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
                   ),
                 ),
               ],
             ),
-            ElevatedButton(
-              onPressed: () => Get.back(),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black, foregroundColor: Colors.white),
-              child: const Text('Place Order'),
+            Obx(
+              () => ElevatedButton(
+                onPressed: controller.selectedCourier.value == null
+                    ? null
+                    : () => controller.placeOrder(),
+                style: ElevatedButton.styleFrom(
+                  disabledBackgroundColor:
+                      controller.selectedCourier.value == null
+                          ? Colors.grey.shade200
+                          : null,
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Place Order'),
+              ),
             )
           ],
         ),

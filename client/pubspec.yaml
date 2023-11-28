@@ -53,6 +53,7 @@ dependencies:
   image_picker: ^1.0.4
   lottie: ^2.7.0
   liquid_pull_to_refresh: ^3.0.1
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   flutter_test:
