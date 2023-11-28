@@ -222,8 +222,7 @@ class PlaceOrderView extends GetView<PlaceOrderController> {
                   () => Text(
                     NumberFormat.currency(
                             locale: 'id', symbol: 'Rp ', decimalDigits: 0)
-                        .format(controller.totalPrice.value +
-                            controller.courierFee),
+                        .format(controller.totalPrice.value),
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
                   ),
