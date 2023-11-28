@@ -32,6 +32,7 @@ class HomeScreenController extends GetxController {
       final response = await dio.get(url);
       final List<dynamic> result = response.data;
       //bikin logic klo barang kosong g muncul
+      // productList.value = result.map((e) => Product.fromJson(e)).toList(); //jaga2 klo g work
       productList.value = result.map((e) => Product.fromJson(e)).toList().where((product) => product.stock != 0).toList();
       trendingList.value = result.map((e) => Product.fromJson(e)).toList().where((product) => product.stock != 0).toList();
       trendingList.shuffle();

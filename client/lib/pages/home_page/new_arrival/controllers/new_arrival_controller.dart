@@ -14,7 +14,7 @@ class NewArrivalController extends GetxController {
       String url = 'https://stylish-shop.vercel.app/products';
       final response = await dio.get(url);
       final List<dynamic> result = response.data;
-      productList.value = result.map((e) => Product.fromJson(e)).toList();
+      productList.value = result.map((e) => Product.fromJson(e)).toList().where((product) => product.stock != 0).toList();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
