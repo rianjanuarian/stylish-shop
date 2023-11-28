@@ -39,7 +39,7 @@ class TransactionControllers {
   static async createTransaction(req, res, next) {
     try {
       const userId = req.user.id;
-      const idCourier = +req.params.id;
+      const idCourier = +req.query;
       const carts = await cart.findAll({
         where: {
           userId: userId,
