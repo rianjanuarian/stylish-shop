@@ -2,8 +2,6 @@ import 'package:client/services/api_service/courier/courier_models.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../../routes/app_pages.dart';
 import '../../../services/api_service/cart/cart_models.dart';
 import '../../../services/keys/get_storage_key.dart';
