@@ -85,10 +85,18 @@ class PlaceOrderController extends GetxController {
 
   void openUrl(String urlToken) async {
     final Uri url = Uri.parse(urlToken);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.inAppBrowserView);
-    } else {
-      Get.snackbar('Error', 'Could not launch $url');
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalNonBrowserApplication);
+      } else {
+        // Launch web view if app is not installed!
+        await launchUrl(
+          url,
+          mode: LaunchMode.inAppWebView,
+        );
+      }
+    } catch (e) {
+      throw 'There was a problem to open the url: $url';
     }
   }
 
