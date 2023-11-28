@@ -93,6 +93,7 @@ class PlaceOrderController extends GetxController {
   }
 
   void setSelectedCourier(Courier? courier) {
+    totalPrice.value -= selectedCourier.value?.price ?? 0;
     selectedCourier.value = courier;
   }
 
