@@ -181,7 +181,7 @@ class UserController {
         patternPhoneNumber.test(req.body.phone_number) === false
       ) {
         return next(createError(400, "Phone number is not valid!"));
-      } // Check phone number format ~Andika Tri Prasetya~
+      }
 
       const bucketName = "stylish-shop";
 
