@@ -39,10 +39,10 @@ class CategoriesView extends GetView<CategoriesController> {
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "Categories",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.w700),
+                              fontSize: 25.sp, fontWeight: FontWeight.w700),
                         ),
                         ...controller.categoriesList
                             .map(
@@ -88,7 +88,7 @@ Widget shimmerCategory() {
                     height: 60.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10).r,
                     ),
                   ),
                 ),
@@ -113,7 +113,7 @@ class CategoryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
+      padding: REdgeInsets.only(top: 20.0),
       child: Material(
         color: Colors.black,
         borderRadius: BorderRadius.circular(30).r,

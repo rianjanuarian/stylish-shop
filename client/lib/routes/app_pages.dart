@@ -34,8 +34,8 @@ import '../pages/profile/setting/bindings/setting_binding.dart';
 import '../pages/profile/setting/views/setting_view.dart';
 import '../pages/search_page/bindings/search_page_binding.dart';
 import '../pages/search_page/views/search_page_view.dart';
-import '../pages/splash_screen/bindings/splash_screen_binding.dart';
-import '../pages/splash_screen/views/splash_screen_view.dart';
+import '../pages/get_start/splash_screen/bindings/splash_screen_binding.dart';
+import '../pages/get_start/splash_screen/views/splash_screen_view.dart';
 import '../pages/transaction/bindings/place_order_binding.dart';
 import '../pages/transaction/views/place_order_view.dart';
 
