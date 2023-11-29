@@ -63,17 +63,12 @@ class TransactionControllers {
       });
 
       const cartIds = carts.map((cart) => cart.dataValues.id);
-      // await carts.map((item) => {
-      //   arrCart.push(item.dataValues.id);
-      // });
+      const getCourier = await courier.findByPk(idCourier);
 
       const total_price =
         carts
           .map((cart) => cart.dataValues.total_price)
           .reduce((a, b) => a + b, 0) + getCourier.price;
-      // for (let i = 0; i < carts.length; i++) {
-      //   priceTotal.push(carts[i].dataValues.total_price);
-      // }
 
       //klo gagal yamaap
       const itemDetails = carts.flatMap((cartItem) => {
@@ -86,11 +81,6 @@ class TransactionControllers {
           };
         });
       });
-
-      const getCourier = await courier.findByPk(idCourier);
-
-      // const total_price =
-      //   priceTotal.reduce((a, b) => a + b, 0) + getCourier.price;
 
       //Struktur Midtrands
       let snap = new midtransClient.Snap({
