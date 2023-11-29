@@ -1,14 +1,16 @@
 import 'dart:ui';
 
-import 'package:client/routes/app_pages.dart';
+import 'package:client/services/keys/get_storage_key.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class TransactionWebController extends GetxController {
   late WebViewController webController = WebViewController();
 
   final dio = Dio();
+  final storage = GetStorage();
 
   @override
   void onInit() {
@@ -26,10 +28,15 @@ class TransactionWebController extends GetxController {
               final Uri uri = Uri.parse(url);
               String? id = uri.queryParameters['order_id'];
               String? status = uri.queryParameters['transaction_status'];
+              final token = storage.read(GetStorageKey.token);
               try {
-                final res = await dio.get(
-                    'https://stylish-shop.vercel.app/transactions/approve',
-                    queryParameters: {
+                final res = await dio
+                    .get('https://stylish-shop.vercel.app/transactions/approve',
+                        options: Options(headers: {
+                          'Authorization': 'Bearer $token',
+                          'Content-Type': 'application/json',
+                        }),
+                        queryParameters: {
                       'order_id': id,
                       'transaction_status': status,
                     });
