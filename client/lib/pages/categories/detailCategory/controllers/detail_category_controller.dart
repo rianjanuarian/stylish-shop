@@ -1,5 +1,5 @@
-import 'package:client/routes/app_pages.dart';
-import 'package:client/services/api_service/category/category_model.dart';
+import 'package:stylish_shop/routes/app_pages.dart';
+import 'package:stylish_shop/services/api_service/category/category_model.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 

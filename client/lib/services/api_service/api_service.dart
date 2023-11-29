@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:client/services/api_service/api_service_models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:stylish_shop/services/api_service/api_service_models.dart';
 
 const String authorization = 'authorization';
 

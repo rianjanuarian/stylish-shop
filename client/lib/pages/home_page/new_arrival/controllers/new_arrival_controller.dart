@@ -1,4 +1,4 @@
-import 'package:client/routes/app_pages.dart';
+import 'package:stylish_shop/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import '../../../../services/api_service/product/product_model.dart';
@@ -14,7 +14,11 @@ class NewArrivalController extends GetxController {
       String url = 'https://stylish-shop.vercel.app/products';
       final response = await dio.get(url);
       final List<dynamic> result = response.data;
-      productList.value = result.map((e) => Product.fromJson(e)).toList().where((product) => product.stock != 0).toList();
+      productList.value = result
+          .map((e) => Product.fromJson(e))
+          .toList()
+          .where((product) => product.stock != 0)
+          .toList();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {

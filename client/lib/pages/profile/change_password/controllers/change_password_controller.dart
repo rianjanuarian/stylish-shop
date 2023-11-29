@@ -1,4 +1,4 @@
-import 'package:client/routes/app_pages.dart';
+import 'package:stylish_shop/routes/app_pages.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
