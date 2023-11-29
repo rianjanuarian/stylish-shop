@@ -131,47 +131,56 @@ class DetailCategoryView extends GetView<DetailCategoryController> {
 
 Widget shimmerDetailCategory() {
   return AppShimmer(
-    child: GridView.builder(
-        primary: false,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 300,
-          childAspectRatio: 1,
-          crossAxisSpacing: 0,
-          mainAxisSpacing: 50,
-        ),
-        itemCount: 10,
-        itemBuilder: (_, index) {
-          return InkWell(
-            child: Container(
-              alignment: Alignment.center,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(10).r),
-              child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: const Color.fromRGBO(219, 219, 219, 100),
-                        borderRadius: BorderRadius.circular(10).r),
-                    child: Container(
-                      width: 132.h,
-                      height: 132.h,
+      child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: REdgeInsets.all(30.0),
+        child: ShimmerText(width: 150.w, height: 20.h),
+      ),
+      SizedBox(height: 10.h),
+      GridView.builder(
+          primary: false,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 300,
+            childAspectRatio: 1,
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 50,
+          ),
+          itemCount: 10,
+          itemBuilder: (_, index) {
+            return InkWell(
+              child: Container(
+                alignment: Alignment.center,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(10).r),
+                child: Column(
+                  children: [
+                    Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10).r,
+                          color: const Color.fromRGBO(219, 219, 219, 100),
+                          borderRadius: BorderRadius.circular(10).r),
+                      child: Container(
+                        width: 132.h,
+                        height: 132.h,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10).r,
+                        ),
                       ),
                     ),
-                  ),
-                  ShimmerText(width: 100.w, height: 10.h),
-                  ShimmerText(width: 100.w, height: 10.h),
-                  ShimmerText(width: 100.w, height: 10.h),
-                ],
+                    ShimmerText(width: 100.w, height: 10.h),
+                    ShimmerText(width: 100.w, height: 10.h),
+                    ShimmerText(width: 100.w, height: 10.h),
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
-  );
+            );
+          }),
+    ],
+  ));
 }
 
 String limitWord(String text) {
