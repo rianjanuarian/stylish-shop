@@ -65,7 +65,8 @@ class SearchPageView extends GetView<SearchPageController> {
 
                 return InkWell(
                   onTap: () {
-                    Get.to(() => Get.toNamed(AppPages.detail, arguments: product));
+                    Get.to(
+                        () => Get.toNamed(AppPages.detail, arguments: product));
                   },
                   child: Container(
                     alignment: Alignment.center,
@@ -73,7 +74,6 @@ class SearchPageView extends GetView<SearchPageController> {
                         BoxDecoration(borderRadius: BorderRadius.circular(10)),
                     child: Column(
                       children: [
-                      
                         Container(
                           decoration: BoxDecoration(
                               color: const Color.fromRGBO(219, 219, 219, 100),
@@ -90,7 +90,7 @@ class SearchPageView extends GetView<SearchPageController> {
                               fontSize: 15, fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          product.description!,
+                          limitWord(product.description!),
                           style: const TextStyle(fontSize: 12),
                         ),
                         Text(
@@ -110,5 +110,15 @@ class SearchPageView extends GetView<SearchPageController> {
         },
       ),
     );
+  }
+}
+
+String limitWord(String text) {
+  List<String> words = text.split(' ');
+
+  if (words.length <= 3) {
+    return text;
+  } else {
+    return '${words.take(3).join(' ')}...';
   }
 }

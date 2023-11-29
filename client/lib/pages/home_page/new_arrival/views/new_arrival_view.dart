@@ -92,16 +92,19 @@ class NewArrivalView extends GetView<NewArrivalController> {
                                                       BorderRadius.circular(10)
                                                           .r),
                                               child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(15).r,
+                                                borderRadius:
+                                                    BorderRadius.circular(15).r,
                                                 child: CachedNetworkImage(
                                                   imageUrl: (controller
                                                                   .productList[
                                                                       index]
                                                                   .image ??
                                                               '')
-                                                          .contains('placeholder')
+                                                          .contains(
+                                                              'placeholder')
                                                       ? controller
-                                                              .productList[index]
+                                                              .productList[
+                                                                  index]
                                                               .image ??
                                                           "https://via.placeholder.com/200"
                                                       : 'https://storage.googleapis.com/${controller.productList[index].image}',
@@ -112,9 +115,9 @@ class NewArrivalView extends GetView<NewArrivalController> {
                                                       const Center(
                                                           child:
                                                               CircularProgressIndicator()),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          const Icon(Icons.error),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
                                                 ),
                                               ),
                                             ),
@@ -126,8 +129,9 @@ class NewArrivalView extends GetView<NewArrivalController> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             Text(
-                                              controller.productList[index]
-                                                  .description!,
+                                              limitWord(controller
+                                                  .productList[index]
+                                                  .description!),
                                               style: TextStyle(fontSize: 12.sp),
                                             ),
                                             Text(
@@ -205,5 +209,15 @@ class NewArrivalView extends GetView<NewArrivalController> {
             );
           }),
     );
+  }
+}
+
+String limitWord(String text) {
+  List<String> words = text.split(' ');
+
+  if (words.length <= 3) {
+    return text;
+  } else {
+    return '${words.take(3).join(' ')}...';
   }
 }

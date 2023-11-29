@@ -202,7 +202,7 @@ class DetailProductView extends GetView<DetailProductController> {
                                       }),
                                 ),
                                 SizedBox(
-                                  height: 15.h,
+                                  height: 10.h,
                                 ),
                                 Text(
                                   "Description",
@@ -211,15 +211,21 @@ class DetailProductView extends GetView<DetailProductController> {
                                       fontWeight: FontWeight.w700),
                                 ),
                                 SizedBox(
-                                  height: 15.h,
-                                ),
-                                Text(
-                                  product.description ?? 'No Description',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w400),
+                                  height: 10.h,
                                 ),
                                 SizedBox(
-                                  height: 0.05.sh,
+                                  height: 75.h,
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                      product.description ?? 'No Description',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10.h,
                                 ),
                                 Row(
                                   mainAxisAlignment:
