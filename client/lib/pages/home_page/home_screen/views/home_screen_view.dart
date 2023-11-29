@@ -296,12 +296,15 @@ class HomeScreenView extends GetView<HomeScreenController> {
                                                                         .w700),
                                                           ),
                                                           Text(
-                                                            product.description ??
-                                                                "no product description",
+                                                            limitWord(
+                                                              product.description ??
+                                                                  "no product description",
+                                                            ),
                                                             style: TextStyle(
-                                                                fontSize: 12.sp,
-                                                                color: const Color(
-                                                                    0xFF666666)),
+                                                              fontSize: 12.sp,
+                                                              color: const Color(
+                                                                  0xFF666666),
+                                                            ),
                                                           ),
                                                           Text(
                                                             NumberFormat.currency(
@@ -402,14 +405,17 @@ class HomeScreenView extends GetView<HomeScreenController> {
                                                                   FontWeight
                                                                       .w700),
                                                         ),
-                                                        Text(
-                                                          product.description ??
-                                                              "no product description",
-                                                          style: TextStyle(
+                                                       Text(
+                                                            limitWord(
+                                                              product.description ??
+                                                                  "no product description",
+                                                            ),
+                                                            style: TextStyle(
                                                               fontSize: 12.sp,
                                                               color: const Color(
-                                                                  0xFF666666)),
-                                                        ),
+                                                                  0xFF666666),
+                                                            ),
+                                                          ),
                                                         Text(
                                                           NumberFormat.currency(
                                                                   locale: 'id',
@@ -510,5 +516,15 @@ class HomeScreenView extends GetView<HomeScreenController> {
         ],
       ),
     );
+  }
+}
+
+String limitWord(String text) {
+  List<String> words = text.split(' ');
+
+  if (words.length <= 3) {
+    return text;
+  } else {
+    return '${words.take(3).join(' ')}...';
   }
 }

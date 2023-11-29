@@ -87,8 +87,10 @@ class DetailCategoryView extends GetView<DetailCategoryController> {
                                       width: 132.h,
                                       height: 132.h,
                                       fit: BoxFit.cover,
-                                      placeholder: (context, url) => const Center(
-                                          child: CircularProgressIndicator()),
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                              child:
+                                                  CircularProgressIndicator()),
                                       errorWidget: (context, url, error) =>
                                           const Icon(Icons.error),
                                     ),
@@ -100,7 +102,8 @@ class DetailCategoryView extends GetView<DetailCategoryController> {
                                         fontWeight: FontWeight.w700),
                                   ),
                                   Text(
-                                    product?.description ?? 'No Description',
+                                    limitWord(product?.description ??
+                                        'No Description'),
                                     style: TextStyle(fontSize: 12.sp),
                                   ),
                                   Text(
@@ -169,4 +172,14 @@ Widget shimmerDetailCategory() {
           );
         }),
   );
+}
+
+String limitWord(String text) {
+  List<String> words = text.split(' ');
+
+  if (words.length <= 3) {
+    return text;
+  } else {
+    return '${words.take(3).join(' ')}...';
+  }
 }

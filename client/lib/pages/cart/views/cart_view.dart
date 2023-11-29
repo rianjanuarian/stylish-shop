@@ -303,7 +303,8 @@ class CartItem extends StatelessWidget {
                                 fontWeight: FontWeight.w700, fontSize: 14.sp),
                           ),
                           Text(
-                            cart.product?.description ?? 'No Description',
+                            limitWord(cart.product?.description ?? "No Description"),
+                        
                             style: TextStyle(
                                 color: const Color(0xff666666),
                                 fontSize: 11.sp),
@@ -378,5 +379,14 @@ class CartItem extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+String limitWord(String text) {
+  List<String> words = text.split(' ');
+
+  if (words.length <= 3) {
+    return text;
+  } else {
+    return '${words.take(3).join(' ')}...';
   }
 }

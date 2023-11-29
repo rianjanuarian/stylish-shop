@@ -129,8 +129,9 @@ class NewArrivalView extends GetView<NewArrivalController> {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             Text(
-                                              controller.productList[index]
-                                                  .description!,
+                                              limitWord(controller
+                                                  .productList[index]
+                                                  .description!),
                                               style: TextStyle(fontSize: 12.sp),
                                             ),
                                             Text(
@@ -208,5 +209,15 @@ class NewArrivalView extends GetView<NewArrivalController> {
             );
           }),
     );
+  }
+}
+
+String limitWord(String text) {
+  List<String> words = text.split(' ');
+
+  if (words.length <= 3) {
+    return text;
+  } else {
+    return '${words.take(3).join(' ')}...';
   }
 }

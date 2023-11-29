@@ -90,7 +90,7 @@ class SearchPageView extends GetView<SearchPageController> {
                               fontSize: 15, fontWeight: FontWeight.w700),
                         ),
                         Text(
-                          product.description!,
+                          limitWord(product.description!),
                           style: const TextStyle(fontSize: 12),
                         ),
                         Text(
@@ -110,5 +110,15 @@ class SearchPageView extends GetView<SearchPageController> {
         },
       ),
     );
+  }
+}
+
+String limitWord(String text) {
+  List<String> words = text.split(' ');
+
+  if (words.length <= 3) {
+    return text;
+  } else {
+    return '${words.take(3).join(' ')}...';
   }
 }
