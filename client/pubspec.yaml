@@ -54,6 +54,7 @@ dependencies:
   lottie: ^2.7.0
   liquid_pull_to_refresh: ^3.0.1
   url_launcher: ^6.2.1
+  webview_flutter: ^4.4.2
 
 dev_dependencies:
   flutter_test:

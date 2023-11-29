@@ -31,18 +31,24 @@ class HomeScreenController extends GetxController {
       String url = 'https://stylish-shop.vercel.app/products';
       final response = await dio.get(url);
       final List<dynamic> result = response.data;
-      productList.value = result.map((e) => Product.fromJson(e)).toList();
-      trendingList.value = result.map((e) => Product.fromJson(e)).toList();
+      //bikin logic klo barang kosong g muncul
+      // productList.value = result.map((e) => Product.fromJson(e)).toList(); //jaga2 klo g work
+      productList.value = result.map((e) => Product.fromJson(e)).toList().where((product) => product.stock != 0).toList();
+      trendingList.value = result.map((e) => Product.fromJson(e)).toList().where((product) => product.stock != 0).toList();
       trendingList.shuffle();
       isLoading.toggle();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
         if (errorResponse != null) {
-          final errorMessage = errorResponse.data?['message'];
-          Get.snackbar('Error', errorMessage ?? 'Unknown error');
+          if (errorResponse.data is Map) {
+            final errorMessage = errorResponse.data['message'];
+            Get.snackbar('Error', errorMessage ?? 'Unknown error');
+          } else {
+            Get.snackbar('Error', e.toString());
+          }
         } else {
-          Get.snackbar('Error', 'Unknown error occurred');
+          Get.snackbar('Error', e.toString());
         }
         isLoading.toggle();
       }
