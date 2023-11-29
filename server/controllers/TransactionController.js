@@ -158,10 +158,10 @@ class TransactionControllers {
         // tidor dulu
         for (const cartItem of carts) {
           const { productId, qty } = cartItem;
-          const product = await product.findByPk(productId);
-          if (product) {
-            const updatedQty = product.qty - qty;
-            await product.update({ qty: updatedQty });
+          const currentProduct = await product.findByPk(productId);
+          if (currentProduct) {
+            const updatedQty = currentProduct.qty - qty;
+            await currentProduct.update({ qty: updatedQty });
           }
         }
       }

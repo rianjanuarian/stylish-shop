@@ -23,6 +23,7 @@ class TransactionWebController extends GetxController {
         NavigationDelegate(
           onProgress: (int progress) {},
           onPageStarted: (String url) async {
+            print('url page start $url');
             if (url.contains('order_id') &&
                 url.contains('transaction_status=settlement')) {
               final Uri uri = Uri.parse(url);
@@ -46,10 +47,14 @@ class TransactionWebController extends GetxController {
                 if (e is DioException) {
                   final errorResponse = e.response;
                   if (errorResponse != null) {
-                    final errorMessage = errorResponse.data?['message'];
-                    Get.snackbar('Error', errorMessage ?? 'Unknown error');
+                    if (errorResponse.data is Map) {
+                      final errorMessage = errorResponse.data['message'];
+                      Get.snackbar('Error', errorMessage ?? 'Unknown error');
+                    } else {
+                      Get.snackbar('Error', 'Unknown error occurred');
+                    }
                   } else {
-                    Get.snackbar('Error', 'Unknown error occurred');
+                    Get.snackbar('Error', e.toString());
                   }
                 }
               } finally {
