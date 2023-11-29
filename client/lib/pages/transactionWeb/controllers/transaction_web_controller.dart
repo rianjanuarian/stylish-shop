@@ -61,7 +61,7 @@ class TransactionWebController extends GetxController {
               }
             }
             // error gmana?
-            if (url.contains('status_code=202&transaction_status=deny')) {
+            if (url.contains('transaction_status=deny')) {
               Get.snackbar('Failed',
                   'Your transaction has been failed. Please try again');
             }
