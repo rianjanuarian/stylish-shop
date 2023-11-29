@@ -1,9 +1,8 @@
-import 'package:client/pages/get_start/get_started_one_screen.dart';
-import 'package:client/pages/get_start/get_started_two_screen.dart';
+import 'package:stylish_shop/pages/get_start/get_started_one_screen.dart';
+import 'package:stylish_shop/pages/get_start/get_started_two_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});

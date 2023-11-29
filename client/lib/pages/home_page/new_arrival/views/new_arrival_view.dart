@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/widgets/app_shimmer.dart';
+import 'package:stylish_shop/widgets/app_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -92,16 +92,19 @@ class NewArrivalView extends GetView<NewArrivalController> {
                                                       BorderRadius.circular(10)
                                                           .r),
                                               child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(15).r,
+                                                borderRadius:
+                                                    BorderRadius.circular(15).r,
                                                 child: CachedNetworkImage(
                                                   imageUrl: (controller
                                                                   .productList[
                                                                       index]
                                                                   .image ??
                                                               '')
-                                                          .contains('placeholder')
+                                                          .contains(
+                                                              'placeholder')
                                                       ? controller
-                                                              .productList[index]
+                                                              .productList[
+                                                                  index]
                                                               .image ??
                                                           "https://via.placeholder.com/200"
                                                       : 'https://storage.googleapis.com/${controller.productList[index].image}',
@@ -112,9 +115,9 @@ class NewArrivalView extends GetView<NewArrivalController> {
                                                       const Center(
                                                           child:
                                                               CircularProgressIndicator()),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          const Icon(Icons.error),
+                                                  errorWidget: (context, url,
+                                                          error) =>
+                                                      const Icon(Icons.error),
                                                 ),
                                               ),
                                             ),

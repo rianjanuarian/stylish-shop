@@ -1,5 +1,5 @@
-import 'package:client/routes/app_pages.dart';
-import 'package:client/services/api_service/product/product_model.dart';
+import 'package:stylish_shop/routes/app_pages.dart';
+import 'package:stylish_shop/services/api_service/product/product_model.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
@@ -33,8 +33,16 @@ class HomeScreenController extends GetxController {
       final List<dynamic> result = response.data;
       //bikin logic klo barang kosong g muncul
       // productList.value = result.map((e) => Product.fromJson(e)).toList(); //jaga2 klo g work
-      productList.value = result.map((e) => Product.fromJson(e)).toList().where((product) => product.stock != 0).toList();
-      trendingList.value = result.map((e) => Product.fromJson(e)).toList().where((product) => product.stock != 0).toList();
+      productList.value = result
+          .map((e) => Product.fromJson(e))
+          .toList()
+          .where((product) => product.stock != 0)
+          .toList();
+      trendingList.value = result
+          .map((e) => Product.fromJson(e))
+          .toList()
+          .where((product) => product.stock != 0)
+          .toList();
       trendingList.shuffle();
       isLoading.toggle();
     } catch (e) {
