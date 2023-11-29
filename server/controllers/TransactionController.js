@@ -15,6 +15,20 @@ class TransactionControllers {
     }
   }
 
+  static async getTransactionByUser(req, res, next) {
+    try {
+      const userId = req.user.id;
+      const transactions = await transaction.findAll({
+        where: {
+          userId,
+        },
+      });
+      res.status(200).json(transactions);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async getTransactionDetail(req, res, next) {
     try {
       const id = req.params.id;
@@ -36,6 +50,7 @@ class TransactionControllers {
       next(error);
     }
   }
+
   static async createTransaction(req, res, next) {
     try {
       const userId = req.user.id;
@@ -44,22 +59,38 @@ class TransactionControllers {
         where: {
           userId: userId,
         },
+        include: [product],
       });
 
-      let arrCart = [];
-      await carts.map((item) => {
-        arrCart.push(item.dataValues.id);
-      });
+      const cartIds = carts.map((cart) => cart.dataValues.id);
+      // await carts.map((item) => {
+      //   arrCart.push(item.dataValues.id);
+      // });
 
-      let priceTotal = [];
-      for (let i = 0; i < carts.length; i++) {
-        priceTotal.push(carts[i].dataValues.total_price);
-      }
+      const total_price =
+        carts
+          .map((cart) => cart.dataValues.total_price)
+          .reduce((a, b) => a + b, 0) + getCourier.price;
+      // for (let i = 0; i < carts.length; i++) {
+      //   priceTotal.push(carts[i].dataValues.total_price);
+      // }
+
+      //klo gagal yamaap
+      const itemDetails = carts.flatMap((cartItem) => {
+        return cartItem.dataValues.products.map((productDetails) => {
+          return {
+            id: productDetails.dataValues.id,
+            price: productDetails.price,
+            name: productDetails.dataValues.name,
+            brand: productDetails.dataValues.brand,
+          };
+        });
+      });
 
       const getCourier = await courier.findByPk(idCourier);
 
-      const total_price =
-        priceTotal.reduce((a, b) => a + b, 0) + getCourier.price;
+      // const total_price =
+      //   priceTotal.reduce((a, b) => a + b, 0) + getCourier.price;
 
       //Struktur Midtrands
       let snap = new midtransClient.Snap({
@@ -88,17 +119,20 @@ class TransactionControllers {
           last_name: `${
             req.user.name.toLowerCase === "user"
               ? ""
-              : req.user.name.split(" ")[1]
+              : req.user.name.split(" ").length > 1
+              ? req.user.name.split(" ")[1]
+              : ""
           }`,
           email: `${req.user.email}`,
           phone: `${req.user.phone_number}`,
         },
+        item_details: itemDetails,
       };
 
       const transactions = await snap.createTransaction(parameter);
       let transactionToken = transactions.token; //ambil token dari midtrands
 
-      if (arrCart.length === 0) {
+      if (cartIds.length === 0) {
         return next(createError(404, "Cart is empty!"));
       }
 
@@ -106,12 +140,12 @@ class TransactionControllers {
         //create payment
         userId: userId,
         orderId: orderId,
-        cartId: arrCart.toString(),
+        cartId: cartIds.toString(),
         courierId: idCourier,
         midtranstoken: transactionToken,
         status: "pending",
       });
-      //sementara
+      // fungsi hapus
       // await cart.destroy({
       //   where: {
       //     userId: userId,
@@ -152,10 +186,7 @@ class TransactionControllers {
       if (statusOrder === "approve") {
         const userId = req.user.id;
         const carts = await cart.findAll({ where: { userId } });
-        //hasilnya kan list si cart. nah liat product id dri si itu, terus kurangin jumlah qty,
-        // ini baru keknya loh aku blom tes, jam 1 ngantuk
-        // btw klo quantity ini coba aja dulu, klo work comment lagi aja, soalnya kan kita msih butuh buat development, klo abis barang nnti kita g bsa test2 transaction lagi
-        // tidor dulu
+      
         for (const cartItem of carts) {
           const { productId, qty } = cartItem;
           const currentProduct = await product.findByPk(productId);
