@@ -111,7 +111,7 @@ class TransactionControllers {
         midtranstoken: transactionToken,
         status: "pending",
       });
-      //izin mindahin cuma klo pembayaran sukses, nyusahin buat development klo ga
+      //sementara
       // await cart.destroy({
       //   where: {
       //     userId: userId,
@@ -164,11 +164,6 @@ class TransactionControllers {
             await product.update({ qty: updatedQty });
           }
         }
-        await cart.destroy({
-          where: {
-            userId,
-          },
-        });
       }
 
       res.status(201).json({

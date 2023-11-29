@@ -12,10 +12,7 @@ class TransactionWebController extends GetxController {
 
   @override
   void onInit() {
-    final url = Get.arguments;
-    final Uri uri = Uri.parse(url);
-    String? id = uri.queryParameters['id'];
-    String? status = uri.queryParameters['transaction_status'];
+    final urlFromArgument = Get.arguments;
     //default bawaan dri https://pub.dev/packages/webview_flutter
     webController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -24,19 +21,36 @@ class TransactionWebController extends GetxController {
         NavigationDelegate(
           onProgress: (int progress) {},
           onPageStarted: (String url) async {
-            if (url.contains('status_code=200&transaction_status=settlement')) {
-              final res = await dio.get(
-                  'https://stylish-shop.vercel.app/transactions/approve',
-                  queryParameters: {
-                    'order_id': id,
-                    'transaction_status': status,
-                  });
-              Get.snackbar('Payment Success',
-                  'Your transaction payment has been successfully received and ${res.data['message']}');
-              Get.offAllNamed(AppPages.mainTab);
+            if (url.contains('order_id') &&
+                url.contains('transaction_status=settlement')) {
+              final Uri uri = Uri.parse(url);
+              String? id = uri.queryParameters['order_id'];
+              String? status = uri.queryParameters['transaction_status'];
+              try {
+                final res = await dio.get(
+                    'https://stylish-shop.vercel.app/transactions/approve',
+                    queryParameters: {
+                      'order_id': id,
+                      'transaction_status': status,
+                    });
+                Get.snackbar('Payment Success',
+                    'Your transaction payment has been successfully received and ${res.data['message']}');
+              } catch (e) {
+                if (e is DioException) {
+                  final errorResponse = e.response;
+                  if (errorResponse != null) {
+                    final errorMessage = errorResponse.data?['message'];
+                    Get.snackbar('Error', errorMessage ?? 'Unknown error');
+                  } else {
+                    Get.snackbar('Error', 'Unknown error occurred');
+                  }
+                }
+              } finally {
+                // Get.offAllNamed(AppPages.mainTab);
+              }
             }
+            // error gmana?
             if (url.contains('status_code=202&transaction_status=deny')) {
-              //jam 1 ga ada ide klo gagal ngapain
               Get.snackbar('Failed',
                   'Your transaction has been failed. Please try again');
             }
@@ -51,7 +65,7 @@ class TransactionWebController extends GetxController {
           },
         ),
       )
-      ..loadRequest(Uri.parse(url));
+      ..loadRequest(Uri.parse(urlFromArgument));
     super.onInit();
   }
 }
