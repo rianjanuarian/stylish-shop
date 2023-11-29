@@ -240,7 +240,7 @@ input[type="submit"]:hover {
 }
 
 input[type="submit"]:disabled {
-  background-color: #ccc; 
+  background-color: #ccc;
   color: #999;
   cursor: not-allowed;
 }
@@ -304,7 +304,8 @@ body.active-modal {
   font-size: 18px;
 }
 
-.modal, .overlay {
+.modal,
+.overlay {
   width: 100vw;
   height: 100vh;
   top: 0;
@@ -315,7 +316,7 @@ body.active-modal {
 }
 
 .overlay {
-  background: rgba(49,49,49,0.8);
+  background: rgba(49, 49, 49, 0.8);
 }
 .modal-content {
   position: absolute;
@@ -337,16 +338,15 @@ body.active-modal {
   padding: 5px 7px;
 }
 
-.loading-animate{
+.loading-animate {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.user-role{
+.user-role {
   display: flex;
   flex-direction: row;
-  
 }
 
 .user-btn {
@@ -361,12 +361,12 @@ body.active-modal {
 }
 
 .button:disabled {
-  background-color: #ccc; 
-  color: #999; 
+  background-color: #ccc;
+  color: #999;
   cursor: not-allowed;
 }
 
-.colors{
+.colors {
   margin-bottom: 8px;
 }
 
@@ -385,7 +385,7 @@ body.active-modal {
   background-color: #f1f1f1;
   min-width: 80px;
   right: 0;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
@@ -396,8 +396,39 @@ body.active-modal {
   display: block;
   cursor: pointer;
 }
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
 
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.page-btn {
+  background-color: #f8f9fa;
+  color: #343a40;
+  border: 1px solid #dee2e6;
+  padding: 8px 16px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.page-btn:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.page-btn.active {
+  background-color: #007bff;
+  color: #fff;
+}

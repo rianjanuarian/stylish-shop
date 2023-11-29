@@ -24,7 +24,8 @@ const Category = () => {
   const [modalAdd, setModalAdd] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
   const [categoryId, setCategoryId] = useState(0);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
   const toggleModalAdd = () => setModalAdd(!modalAdd);
   const toggleModalEdit = () => setModalEdit(!modalEdit);
 
@@ -69,7 +70,18 @@ const Category = () => {
     setCategoryId(id);
     toggleModalEdit();
   };
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = categories.slice(indexOfFirstItem, indexOfLastItem);
 
+  const totalPages = Math.ceil(categories.length / itemsPerPage);
+
+  const paginate = (pageNumber) => {
+    const lastPageItemIndex = pageNumber * itemsPerPage;
+
+    const nextPage = Math.min(pageNumber, totalPages);
+    setCurrentPage(nextPage);
+  };
   return (
     <>
       <div className="dashboard-container">
@@ -91,43 +103,53 @@ const Category = () => {
               ) : error ? (
                 <p>{error}</p>
               ) : categories.length !== 0 ? (
-                <table>
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th>NAME</th>
-                      <th>ACTION</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {categories.map((e, index) => (
-                      <tr key={e.id}>
-                        <td>
-                          <span>{index + 1}</span>
-                        </td>
-                        <td>
-                          <span>{e.name}</span>
-                        </td>
-                        <td>
-                          <div>
-                            <button
-                              onClick={() => deletes(e.id)}
-                              className="action-btn-delete"
-                            >
-                              Delete
-                            </button>
-                            <button
-                              className="action-btn-update"
-                              onClick={() => update(e.id)}
-                            >
-                              Update
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <><table>
+                      <thead>
+                        <tr>
+                          <th>No.</th>
+                          <th>NAME</th>
+                          <th>ACTION</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currentItems.map((e, index) => (
+                          <tr key={e.id}>
+                            <td>
+                              <span> {index + 1 + itemsPerPage * (currentPage - 1)}</span>
+                            </td>
+                            <td>
+                              <span>{e.name}</span>
+                            </td>
+                            <td>
+                              <div>
+                                <button
+                                  onClick={() => deletes(e.id)}
+                                  className="action-btn-delete"
+                                >
+                                  Delete
+                                </button>
+                                <button
+                                  className="action-btn-update"
+                                  onClick={() => update(e.id)}
+                                >
+                                  Update
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table><div className="pagination">
+                        {Array.from({ length: totalPages }).map((_, index) => (
+                          <button
+                            key={index}
+                            className={`page-btn ${index + 1 === currentPage ? "active" : ""}`}
+                            onClick={() => paginate(index + 1)}
+                          >
+                            {index + 1}
+                          </button>
+                        ))}
+                      </div></>
               ) : (
                 <div className="empty">
                   <img src={empty} alt="" />

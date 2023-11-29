@@ -12,6 +12,8 @@ import Loading from '../../helpers/Loading/Loading';
 
 
 function Orders() {
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
     const dispatch = useDispatch()
     const transactions = useSelector(transactionSelectors.selectAll)
     const status = useSelector((state) => state.transactions.status);
@@ -19,6 +21,18 @@ function Orders() {
     useEffect(() => {
         dispatch(getTransactions())
     }, [dispatch])
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = transactions.slice(indexOfFirstItem, indexOfLastItem);
+
+    const totalPages = Math.ceil(transactions.length / itemsPerPage);
+
+    const paginate = (pageNumber) => {
+        const lastPageItemIndex = pageNumber * itemsPerPage;
+
+        const nextPage = Math.min(pageNumber, totalPages);
+        setCurrentPage(nextPage);
+    };
     return (
         <div className='dashboard-container'>
             <SideBar menu={sidebar_menu} />
@@ -50,9 +64,9 @@ function Orders() {
                                 : status === "rejected" ? <p>{error}</p> :
                                     transactions.length !== 0 ?
                                         <tbody>
-                                            {transactions.map((e, index) => (
+                                            {currentItems.map((e, index) => (
                                                 <tr key={e.id}>
-                                                    <td><span>{index + 1}</span></td>
+                                                    <td><span>  {index + 1 + itemsPerPage * (currentPage - 1)}</span></td>
                                                     <td><span>{e.user.name}</span></td>
                                                     <td><span>{e.cartId}</span></td>
                                                     <td><span>{e.courier.name}</span></td>
@@ -82,6 +96,18 @@ function Orders() {
                                         : null}
                         </table>
 
+                        <div className="pagination">
+                            {Array.from({ length: totalPages }).map((_, index) => (
+                                <button
+                                    key={index}
+                                    className={`page-btn ${index + 1 === currentPage ? "active" : ""
+                                        }`}
+                                    onClick={() => paginate(index + 1)}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
 
 
 
