@@ -35,8 +35,13 @@ function DashboardHeader() {
               <div>
                 <img
                   className="dashbord-header-avatar"
-          
-                  src={`https://storage.cloud.google.com/${currentUser.image}`}
+                  src={
+                    currentUser.image === null
+                      ? `https://cdn.discordapp.com/attachments/1076057192945434624/1179451262232707223/1665px-No-Image-Placeholder.png?ex=6579d496&is=65675f96&hm=c3fb9d7bd5f473ec49302f1dc8dd5c85a75d389366ccd692c00c550e6afaf699&`
+                      : currentUser.image.includes("placeholder")
+                      ? currentUser.image
+                      : `https://storage.cloud.google.com/${currentUser.image}`
+                  }
                   // src={!currentUser.image.startsWith("https") ? `https://stylish-shop.vercel.app/tmp/${currentUser.image}` : `${currentUser.image}`}
                   alt="Profile"
                 ></img>
