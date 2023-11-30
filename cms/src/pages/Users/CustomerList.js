@@ -5,7 +5,12 @@ import Swal from "sweetalert2";
 import sidebar_menu from "../../constants/sidebar-menu";
 import SideBar from "../../components/Sidebar/Sidebar";
 import "../styles.css";
-import { deleteUsers, getUsers, userSelectors,sortByRole } from "../../redux/userSlice";
+import {
+  deleteUsers,
+  getUsers,
+  userSelectors,
+  sortByRole,
+} from "../../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 import Loading from "../../helpers/Loading/Loading";
@@ -17,9 +22,9 @@ const CustomerList = () => {
   const users = useSelector(userSelectors.selectAll);
   const status = useSelector((state) => state.users.status);
   const error = useSelector((state) => state.users.error);
-  const [modalAdd, setModalAdd] = useState(false)
+  const [modalAdd, setModalAdd] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
-  const [userId, setUserId] = useState(0)
+  const [userId, setUserId] = useState(0);
   const toggleModalAdd = () => setModalAdd(!modalAdd);
   const toggleModalEdit = () => setModalEdit(!modalEdit);
   const [currentPage, setCurrentPage] = useState(1);
@@ -72,17 +77,21 @@ const CustomerList = () => {
             <div className="dashboard-content-container">
               <div className="dashboard-content-header">
                 <h2>User List</h2>
-                <button className="rows-btn" type="button" onClick={toggleModalAdd}>
+                <button
+                  className="rows-btn"
+                  type="button"
+                  onClick={toggleModalAdd}
+                >
                   Add Admin
                 </button>
               </div>
               <p>Role : </p>
               <div className="user-role">
                 <Link to={"/adminList"}>
-                <button className="user-btn">Admin</button>
+                  <button className="user-btn">Admin</button>
                 </Link>
                 <Link to={"/user"}>
-                <button className="user-btn">All User</button>
+                  <button className="user-btn">All User</button>
                 </Link>
               </div>
               {status === "loading" ? (
@@ -92,85 +101,107 @@ const CustomerList = () => {
               ) : status === "rejected" ? (
                 <p>{error}</p>
               ) : users.length !== 0 ? (
-                <><table>
-                      <thead>
-                        <th>No.</th>
-                        <th>NAME</th>
-                        <th>EMAIL</th>
-                        <th>IMAGE</th>
-                        <th>ROLE</th>
-                        <th>ADDRESS</th>
-                        <th>GENDER</th>
-                        <th>BIRTHDAY</th>
-                        <th>PHONE</th>
-                        <th>ACTION</th>
-                      </thead>
+                <>
+                  <table>
+                    <thead>
+                      <th>No.</th>
+                      <th>NAME</th>
+                      <th>EMAIL</th>
+                      <th>IMAGE</th>
+                      <th>ROLE</th>
+                      <th>ADDRESS</th>
+                      <th>GENDER</th>
+                      <th>BIRTHDAY</th>
+                      <th>PHONE</th>
+                      <th>ACTION</th>
+                    </thead>
 
-                      <tbody>
-                        {currentItems.map((admin, index) => (
-                          <tr key={admin.id}>
-                            <td>
-                              <span>{index + 1}</span>
-                            </td>
-                            <td>
-                              <span>{admin.name}</span>
-                            </td>
-                            <td>
-                              <span>{admin.email}</span>
-                            </td>
-                            <td>
-                              <span>
-                                <img
-                                  src={admin.image !== null ? `https://storage.cloud.google.com/${admin.image}` : `https://cdn.discordapp.com/attachments/1076057192945434624/1179451262232707223/1665px-No-Image-Placeholder.png?ex=6579d496&is=65675f96&hm=c3fb9d7bd5f473ec49302f1dc8dd5c85a75d389366ccd692c00c550e6afaf699&`}
-                                  style={{ width: "100px", height: "100px" }}
-                                  alt="User"
-                                ></img>
-
-                              </span>
-                            </td>
-                            <td>
-                              <span>{admin.role}</span>
-                            </td>
-                            <td>
-                              <span>{admin.address}</span>
-                            </td>
-                            <td>
-                              <span>{admin.gender === null ? "-" : admin.gender === 'man' ? 'Male' : 'Female'}</span>
-                            </td>
-                            <td>
-                              <span>{admin.birthday ? admin.birthday.slice(0, 10) : ""}</span>
-                            </td>
-                            <td>
-                              <span>{admin.phone_number}</span>
-                            </td>
-                            <td>
-                              <div>
-                                <button
-                                  onClick={() => deletes(admin.id)}
-                                  className="action-btn-delete"
-                                >
-                                  Delete
-                                </button>
-                                <button className="action-btn-update"
-                                  onClick={() => update(admin.id)}>
-                                  Update
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table><div className="pagination">
-                        {Array.from({ length: totalPages }).map((_, index) => (
-                          <button
-                            key={index}
-                            className={`page-btn ${index + 1 === currentPage ? "active" : ""}`}
-                            onClick={() => paginate(index + 1)}
-                          >
-                            {index + 1}
-                          </button>
-                        ))}
-                      </div></>
+                    <tbody>
+                      {currentItems.map((admin, index) => (
+                        <tr key={admin.id}>
+                          <td>
+                            <span>{index + 1}</span>
+                          </td>
+                          <td>
+                            <span>{admin.name}</span>
+                          </td>
+                          <td>
+                            <span>{admin.email}</span>
+                          </td>
+                          <td>
+                            <span>
+                              <img
+                                src={
+                                  admin.image === null
+                                    ? `https://cdn.discordapp.com/attachments/1076057192945434624/1179451262232707223/1665px-No-Image-Placeholder.png?ex=6579d496&is=65675f96&hm=c3fb9d7bd5f473ec49302f1dc8dd5c85a75d389366ccd692c00c550e6afaf699&`
+                                    : admin.image.includes("placeholder")
+                                    ? admin.image
+                                    : `https://storage.cloud.google.com/${admin.image}`
+                                }
+                                style={{ width: "100px", height: "100px" }}
+                                alt="User"
+                              ></img>
+                            </span>
+                          </td>
+                          <td>
+                            <span>{admin.role}</span>
+                          </td>
+                          <td>
+                            <span>{admin.address}</span>
+                          </td>
+                          <td>
+                            <span>
+                              {admin.gender === null
+                                ? "-"
+                                : admin.gender === "man"
+                                ? "Male"
+                                : "Female"}
+                            </span>
+                          </td>
+                          <td>
+                            <span>
+                              {admin.birthday
+                                ? admin.birthday.slice(0, 10)
+                                : ""}
+                            </span>
+                          </td>
+                          <td>
+                            <span>{admin.phone_number}</span>
+                          </td>
+                          <td>
+                            <div>
+                              <button
+                                onClick={() => deletes(admin.id)}
+                                className="action-btn-delete"
+                              >
+                                Delete
+                              </button>
+                              <button
+                                className="action-btn-update"
+                                onClick={() => update(admin.id)}
+                              >
+                                Update
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="pagination">
+                    {Array.from({ length: totalPages }).map((_, index) => (
+                      <button
+                        key={index}
+                        className={`page-btn ${
+                          index + 1 === currentPage ? "active" : ""
+                        }`}
+                        onClick={() => paginate(index + 1)}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                </>
               ) : (
                 <div className="empty">
                   <img src={empty} alt="" />
@@ -181,8 +212,10 @@ const CustomerList = () => {
           </div>
         </div>
       </div>
-      {modalAdd && <AddUser toggleModalAdd={toggleModalAdd}/>}
-      {modalEdit && <UpdateUser toggleModalEdit={toggleModalEdit} userId={userId}/>}
+      {modalAdd && <AddUser toggleModalAdd={toggleModalAdd} />}
+      {modalEdit && (
+        <UpdateUser toggleModalEdit={toggleModalEdit} userId={userId} />
+      )}
     </>
   );
 };
