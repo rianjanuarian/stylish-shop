@@ -176,12 +176,12 @@ class TransactionControllers {
       );
 
       //ini g tau bsa apa ga, tolong setel lah
-      if (transaction_status === "approve") {
+      if (statusOrder === "approve") {
         const userId = req.user.id;
         const carts = await cart.findAll({ where: { userId } });
 
         for (const cartItem of carts) {
-          const { productId, qty } = cartItem;
+          const { productId, qty } = cartItem.dataValues;
           const currentProduct = await product.findByPk(productId);
           if (currentProduct) {
             const updatedQty = currentProduct.qty - qty;
