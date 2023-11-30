@@ -34,8 +34,8 @@ class OrderOngoingController extends GetxController {
       );
       final List<dynamic> result = response.data;
       var arr = result.map((data) => Transaction.fromJson(data)).toList();
-      onGoing.value = arr.where((element) => element.status == Status.pending).toList();
-      onCompleted.value = arr.where((element) => element.status == Status.approve).toList();
+      onGoing.value = arr.where((element) => element.status == Status.pending).toList().reversed.toList();
+      onCompleted.value = arr.where((element) => element.status == Status.approve).toList().reversed.toList();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
@@ -59,7 +59,6 @@ class OrderOngoingController extends GetxController {
 
   void goToPayment(String midtransToken){
     try {
-      print(midtransToken);
       final paymentUrl = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/$midtransToken';
       Get.toNamed(AppPages.transactionWebView, arguments: paymentUrl);
     } catch (e) {
