@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       qty: { type: DataTypes.INTEGER, defaultValue: 1 },
       total_price: DataTypes.INTEGER,
       color: DataTypes.STRING,
+      status: {
+        type: DataTypes.ENUM("active", "inactive"),
+        defaultValue: "active",
+      }
     },
     {
       sequelize,

@@ -22,7 +22,7 @@ Cart _$CartFromJson(Map<String, dynamic> json) => Cart(
       product: json['product'] == null
           ? null
           : Product.fromJson(json['product'] as Map<String, dynamic>),
-    );
+    )..status = $enumDecodeNullable(_$StatusEnumMap, json['status']);
 
 Map<String, dynamic> _$CartToJson(Cart instance) => <String, dynamic>{
       'id': instance.id,
@@ -34,4 +34,10 @@ Map<String, dynamic> _$CartToJson(Cart instance) => <String, dynamic>{
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'product': instance.product,
+      'status': _$StatusEnumMap[instance.status],
     };
+
+const _$StatusEnumMap = {
+  Status.active: 'active',
+  Status.inactive: 'inactive',
+};
