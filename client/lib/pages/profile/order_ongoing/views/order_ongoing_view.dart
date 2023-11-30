@@ -1,13 +1,116 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import '../../../../services/api_service/transaction/transaction_model.dart';
+import '../../../../widgets/app_shimmer.dart';
 import '../controllers/order_ongoing_controller.dart';
 
 class OrderOngoingView extends GetView<OrderOngoingController> {
   const OrderOngoingView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    String getStatusString(Status? status) {
+      if (status == Status.approve) {
+        return 'approve';
+      } else if (status == Status.pending) {
+        return 'pending';
+      } else if (status == Status.reject) {
+        return 'reject';
+      } else {
+        return 'unknown';
+      }
+    }
+
+    Widget orderWidget(
+        {int id = 0,
+        String orderId = "no order id",
+        String courierName = 'no courier name',
+        String midtransToken = 'no midtrans token',
+        String status = ''}) {
+      return Container(
+        height: 100.h,
+        width: 1.sw,
+        margin: REdgeInsets.only(bottom: 20),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10).r,
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.black12, blurRadius: 5.0, offset: Offset(2, 3))
+            ]),
+        child: Material(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10).r,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10).r,
+            onTap: status == 'approve'
+                ? null
+                : () => controller.goToPayment(midtransToken),
+            child: Padding(
+              padding: REdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        minRadius: 20.r,
+                        child: Text(id.toString()),
+                      ),
+                      SizedBox(width: 15.w),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            orderId,
+                            style: const TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                          Text(
+                            courierName,
+                            style: const TextStyle(
+                                fontSize: 12, color: Color(0xFF8E8E8E)),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(
+                    status,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    Widget cardCart() {
+      return Card(
+        margin: REdgeInsets.only(bottom: 20),
+        child: Container(
+            height: 70.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10).r,
+            )),
+      );
+    }
+
+    Widget shimmerCardCart() {
+      return AppShimmer(
+        child: Column(
+          children: List.generate(5, (index) => cardCart()),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 80.w,
@@ -97,100 +200,59 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
             SizedBox(height: 20.h),
             Expanded(
               child: SingleChildScrollView(
-                child: Obx( () => Column(
-                    children: controller.isOngoing.isTrue
-                        ? controller.orderOnGoing
-                            .map((order) => _OrderWidget(
-                                  title: order['title'],
-                                  description: order['description'],
-                                  image: order['image'],
-                                  price: order['price'],
-                                ))
-                            .toList()
-                        : controller.orderCompleted
-                            .map((order) => _OrderWidget(
-                                  title: order['title'],
-                                  description: order['description'],
-                                  image: order['image'],
-                                  price: order['price'],
-                                ))
-                            .toList(),
-                  ),
+                child: Obx(
+                  () {
+                    if (controller.isLoading.isTrue) {
+                      return shimmerCardCart();
+                    }
+                    if (controller.isOngoing.isTrue) {
+                      return controller.onGoing.isEmpty
+                          ? Column(
+                              children: [
+                                Lottie.asset('assets/animations/empty.json',
+                                    height: 300.h, width: double.infinity),
+                                const Text('Try Purchasing something!')
+                              ],
+                            )
+                          : Column(
+                              children: controller.onGoing
+                                  .map((order) => orderWidget(
+                                      id: order.id ?? 0,
+                                      orderId: order.orderId ?? 'no order id',
+                                      courierName:
+                                          order.courier?.name ?? 'courier',
+                                      status: getStatusString(order.status),
+                                      midtransToken: order.midtranstoken ??
+                                          'no midtranstoken'))
+                                  .toList(),
+                            );
+                    } else {
+                      return controller.onCompleted.isEmpty
+                          ? Column(
+                              children: [
+                                Lottie.asset('assets/animations/empty.json',
+                                    height: 300.h, width: double.infinity),
+                                const Text('Try Purchasing something!')
+                              ],
+                            )
+                          : Column(
+                              children: controller.onCompleted
+                                  .map(
+                                    (order) => orderWidget(
+                                        id: order.id ?? 0,
+                                        orderId: order.orderId ?? 'no order id',
+                                        courierName:
+                                            order.courier?.name ?? 'courier',
+                                        status: getStatusString(order.status),
+                                        midtransToken: order.midtranstoken ??
+                                            'no midtranstoken'),
+                                  )
+                                  .toList(),
+                            );
+                    }
+                  },
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _OrderWidget extends StatelessWidget {
-  const _OrderWidget(
-      {required this.image,
-      required this.title,
-      required this.description,
-      required this.price});
-  final String image;
-  final String title;
-  final String description;
-  final int price;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100.h,
-      width: 1.sw,
-      margin: REdgeInsets.only(bottom: 20),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10).r,
-          boxShadow: const [
-            BoxShadow(
-                color: Colors.black12, blurRadius: 5.0, offset: Offset(2, 3))
-          ]),
-      child: Padding(
-        padding: REdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5).r,
-                  child: CachedNetworkImage(
-                    imageUrl: image,
-                    width: 80.w,
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
-                ),
-                SizedBox(width: 15.w),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      description,
-                      style: const TextStyle(
-                          fontSize: 12, color: Color(0xFF8E8E8E)),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            Text(
-              '\$$price.00',
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
           ],
         ),

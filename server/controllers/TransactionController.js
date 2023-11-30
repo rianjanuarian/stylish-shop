@@ -70,17 +70,16 @@ class TransactionControllers {
           .map((cart) => cart.dataValues.total_price)
           .reduce((a, b) => a + b, 0) + getCourier.price;
 
-      //klo gagal yamaap
-      const itemDetails = carts.flatMap((cartItem) => {
-        return cartItem.dataValues.products.map((productDetails) => {
-          return {
-            id: productDetails.dataValues.id,
-            price: productDetails.price,
-            name: productDetails.dataValues.name,
-            brand: productDetails.dataValues.brand,
-          };
-        });
-      });
+      // Untuk mempersingkat waktu, ini tidak usah dulu
+      // const itemDetails = carts.map((cartItem) => {
+      //   const productDetails = cartItem.product;
+      //   return {
+      //     id: productDetails.id,
+      //     price: productDetails.price,
+      //     name: productDetails.name,
+      //     quantity: cartItem.qty,
+      //   };
+      // });
 
       //Struktur Midtrands
       let snap = new midtransClient.Snap({
@@ -116,7 +115,8 @@ class TransactionControllers {
           email: `${req.user.email}`,
           phone: `${req.user.phone_number}`,
         },
-        item_details: itemDetails,
+        // Untuk mempersingkat waktu, ini tidak usah dulu
+        // item_details: itemDetails,
       };
 
       const transactions = await snap.createTransaction(parameter);
@@ -136,11 +136,14 @@ class TransactionControllers {
         status: "pending",
       });
       // fungsi hapus
-      // await cart.destroy({
-      //   where: {
-      //     userId: userId,
-      //   },
-      // });
+      await cart.update(
+        { status: "inactive" },
+        {
+          where: {
+            userId: userId,
+          },
+        }
+      );
 
       res
         .status(200)
@@ -176,15 +179,22 @@ class TransactionControllers {
       if (statusOrder === "approve") {
         const userId = req.user.id;
         const carts = await cart.findAll({ where: { userId } });
-      
+
         for (const cartItem of carts) {
-          const { productId, qty } = cartItem;
+          const { productId, qty } = cartItem.dataValues;
           const currentProduct = await product.findByPk(productId);
           if (currentProduct) {
-            const updatedQty = currentProduct.qty - qty;
-            await currentProduct.update({ qty: updatedQty });
+            const updatedQty = currentProduct.stock - qty;
+            await currentProduct.update({ stock: updatedQty });
           }
         }
+        await cart.destroy({
+          where: {
+            userId: userId,
+          },
+        });
+      } else {
+        next(createError(400, "cannot update stock!"));
       }
 
       res.status(201).json({
