@@ -22,7 +22,8 @@ const AdminList = () => {
   const [userId, setUserId] = useState(0)
   const toggleModalAdd = () => setModalAdd(!modalAdd);
   const toggleModalEdit = () => setModalEdit(!modalEdit);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
   useEffect(() => {
     dispatch(getUsers());
   }, [dispatch]);
@@ -48,6 +49,18 @@ const AdminList = () => {
     toggleModalEdit();
   };
   const adminRole = users.filter((user) => user.role === "admin");
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = adminRole.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(adminRole.length / itemsPerPage);
+
+  const paginate = (pageNumber) => {
+    const lastPageItemIndex = pageNumber * itemsPerPage;
+
+    const nextPage = Math.min(pageNumber, totalPages);
+    setCurrentPage(nextPage);
+  };
   return (
     <>
       <div className="dashboard-container">
@@ -79,74 +92,88 @@ const AdminList = () => {
               ) : status === "rejected" ? (
                 <p>{error}</p>
               ) : users.length !== 0 ? (
-                <table>
-                  <thead>
-                    <th>No.</th>
-                    <th>NAME</th>
-                    <th>EMAIL</th>
-                    <th>IMAGE</th>
-                    <th>ROLE</th>
-                    <th>ADDRESS</th>
-                    <th>GENDER</th>
-                    <th>BIRTHDAY</th>
-                    <th>PHONE</th>
-                    <th>ACTION</th>
-                  </thead>
+                <><table>
+                      <thead>
+                        <th>No.</th>
+                        <th>NAME</th>
+                        <th>EMAIL</th>
+                        <th>IMAGE</th>
+                        <th>ROLE</th>
+                        <th>ADDRESS</th>
+                        <th>GENDER</th>
+                        <th>BIRTHDAY</th>
+                        <th>PHONE</th>
+                        <th>ACTION</th>
+                      </thead>
 
-                  <tbody>
-                    {adminRole.map((e, index) => (
-                      <tr key={e.id}>
-                        <td>
-                          <span>{index + 1}</span>
-                        </td>
-                        <td>
-                          <span>{e.name}</span>
-                        </td>
-                        <td>
-                          <span>{e.email}</span>
-                        </td>
-                        <td>
-                        <span>
-                            <img
-                              src={`https://storage.cloud.google.com/${e.image}`}
-                              style={{ width: "100px", height: "100px" }}
-                              alt="Brand"
-                            ></img>
-                          </span>
-                        </td>
-                        <td>
-                          <span>{e.role}</span>
-                        </td>
-                        <td>
-                          <span>{e.address}</span>
-                        </td>
-                        <td>
-                           <span>{e.gender === null ? "-" : e.gender === 'man' ? 'Male': 'Female'}</span>
-                        </td>
-                        <td>
-                          <span>{e.birthday ? e.birthday.slice(0, 10) : ""}</span>
-                        </td>
-                        <td>
-                          <span>{e.phone_number}</span>
-                        </td>
-                        <td>
-                          <div>
-                            <button
-                            onClick={() => deletes(e.id)}
-                            className="action-btn-delete"
+                      <tbody>
+                        {currentItems.map((e, index) => (
+                          <tr key={e.id}>
+                            <td>
+                              <span>{index + 1 + itemsPerPage * (currentPage - 1)}</span>
+                            </td>
+                            <td>
+                              <span>{e.name}</span>
+                            </td>
+                            <td>
+                              <span>{e.email}</span>
+                            </td>
+                            <td>
+                              <span>
+                                <img
+                                  src={
+                                    e.image === null
+                                      ? `https://cdn.discordapp.com/attachments/1076057192945434624/1179451262232707223/1665px-No-Image-Placeholder.png?ex=6579d496&is=65675f96&hm=c3fb9d7bd5f473ec49302f1dc8dd5c85a75d389366ccd692c00c550e6afaf699&`
+                                      : `https://storage.cloud.google.com/${e.image}`
+                                  }
+                                  style={{ width: "100px", height: "100px" }}
+                                  alt="Admin"
+                                ></img>
+                              </span>
+                            </td>
+                            <td>
+                              <span>{e.role}</span>
+                            </td>
+                            <td>
+                              <span>{e.address}</span>
+                            </td>
+                            <td>
+                              <span>{e.gender === null ? "-" : e.gender === 'man' ? 'Male' : 'Female'}</span>
+                            </td>
+                            <td>
+                              <span>{e.birthday ? e.birthday.slice(0, 10) : ""}</span>
+                            </td>
+                            <td>
+                              <span>{e.phone_number}</span>
+                            </td>
+                            <td>
+                              <div>
+                                <button
+                                  onClick={() => deletes(e.id)}
+                                  className="action-btn-delete"
+                                >
+                                  Delete
+                                </button>
+                                <button className="action-btn-update"
+                                  onClick={() => update(e.id)}>
+                                  Update
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table><div className="pagination">
+                        {Array.from({ length: totalPages }).map((_, index) => (
+                          <button
+                            key={index}
+                            className={`page-btn ${index + 1 === currentPage ? "active" : ""}`}
+                            onClick={() => paginate(index + 1)}
                           >
-                            Delete
+                            {index + 1}
                           </button>
-                          <button className="action-btn-update" 
-                              onClick={() => update(e.id)}>
-                                Update
-                              </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                        ))}
+                      </div></>
               ) : (
                 <div className="empty">
                   <img src={empty} alt="" />
