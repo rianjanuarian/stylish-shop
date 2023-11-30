@@ -8,7 +8,6 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
   const OrderOngoingView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-
     String getStatusString(Status? status) {
       if (status == Status.approve) {
         return 'approve';
@@ -19,6 +18,61 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
       } else {
         return 'unknown';
       }
+    }
+
+    Widget orderWidget(
+       { int id=0, String orderId= "no order id", String courierName = 'no courier name', String status = ''}) {
+      return Container(
+        height: 100.h,
+        width: 1.sw,
+        margin: REdgeInsets.only(bottom: 20),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10).r,
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.black12, blurRadius: 5.0, offset: Offset(2, 3))
+            ]),
+        child: Padding(
+          padding: REdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    minRadius: 20.r,
+                    child: Text(id.toString()),
+                  ),
+                  SizedBox(width: 15.w),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        orderId,
+                        style: const TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        courierName,
+                        style: const TextStyle(
+                            fontSize: 12, color: Color(0xFF8E8E8E)),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              Text(
+                status,
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return Scaffold(
@@ -114,7 +168,7 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
                   () => Column(
                     children: controller.isOngoing.isTrue
                         ? controller.onGoing
-                            .map((order) => _OrderWidget(
+                            .map((order) => orderWidget(
                                   id: order.id ?? 0,
                                   orderId: order.orderId ?? 'no order id',
                                   courierName: order.courier?.name ?? 'courier',
@@ -122,7 +176,7 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
                                 ))
                             .toList()
                         : controller.onCompleted
-                            .map((order) => _OrderWidget(
+                            .map((order) => orderWidget(
                                   id: order.id ?? 0,
                                   orderId: order.orderId ?? 'no order id',
                                   courierName: order.courier?.name ?? 'courier',
@@ -132,72 +186,6 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _OrderWidget extends StatelessWidget {
-  const _OrderWidget(
-      {required this.id,
-      required this.orderId,
-      required this.courierName,
-      required this.status});
-  final int id;
-  final String orderId;
-  final String courierName;
-  final String status;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100.h,
-      width: 1.sw,
-      margin: REdgeInsets.only(bottom: 20),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10).r,
-          boxShadow: const [
-            BoxShadow(
-                color: Colors.black12, blurRadius: 5.0, offset: Offset(2, 3))
-          ]),
-      child: Padding(
-        padding: REdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  minRadius: 20.r,
-                  child: Text(id.toString()),
-                ),
-                SizedBox(width: 15.w),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      orderId,
-                      style: const TextStyle(
-                        fontSize: 15,
-                      ),
-                    ),
-                    Text(
-                      courierName,
-                      style: const TextStyle(
-                          fontSize: 12, color: Color(0xFF8E8E8E)),
-                    )
-                  ],
-                ),
-              ],
-            ),
-            Text(
-              status,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ],
         ),
