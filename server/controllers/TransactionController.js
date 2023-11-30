@@ -65,21 +65,19 @@ class TransactionControllers {
       const cartIds = carts.map((cart) => cart.dataValues.id);
       const getCourier = await courier.findByPk(idCourier);
 
-      const total_price =
-        carts
-          .map((cart) => cart.dataValues.total_price)
-          .reduce((a, b) => a + b, 0) + getCourier.price;
-
       const itemDetails = carts.map((cartItem) => {
         const productDetails = cartItem.product;
         return {
           id: productDetails.id,
           price: productDetails.price,
           name: productDetails.name,
-          // brand: productDetails.brand, //brand tidak bisa masuk, karena null dan di contoh tidak ada (https://docs.midtrans.com/docs/snap-advanced-feature)
           quantity: cartItem.qty,
         };
       });
+
+      const total_price =
+        itemDetails.reduce((a, item) => a + item.price * item.quantity, 0) +
+        getCourier.price;
 
       //Struktur Midtrands
       let snap = new midtransClient.Snap({
