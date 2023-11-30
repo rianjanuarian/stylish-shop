@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:client/widgets/app_shimmer.dart';
+import 'package:stylish_shop/widgets/app_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -74,8 +74,9 @@ class CartView extends GetView<CartController> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10).r,
                       ),
-                      disabledBackgroundColor:
-                          controller.isCartEmpty.isTrue ? Colors.grey.shade200 : null,
+                      disabledBackgroundColor: controller.isCartEmpty.isTrue
+                          ? Colors.grey.shade200
+                          : null,
                       minimumSize: Size.fromHeight(60.h),
                       backgroundColor: Colors.black,
                       foregroundColor: Colors.white),
@@ -347,13 +348,13 @@ class CartItem extends StatelessWidget {
                           onTap: () => (cart.qty ?? 0) > 1
                               ? controller.substractQuantity(cart.id ?? 0)
                               : null,
-                          child:  Icon(Icons.remove, size: 16.sp),
+                          child: Icon(Icons.remove, size: 16.sp),
                         ),
                       ),
                     ),
                     Text(
                       '${cart.qty ?? 0}',
-                      style:  TextStyle(fontSize: 14.sp),
+                      style: TextStyle(fontSize: 14.sp),
                     ),
                     Visibility(
                       visible: isUsed ?? false,
@@ -366,7 +367,7 @@ class CartItem extends StatelessWidget {
                               (cart.qty ?? 0) < (cart.product?.stock ?? 0)
                                   ? controller.addQuantity(cart.id ?? 0)
                                   : null,
-                          child:  Icon(Icons.add, size: 16.sp),
+                          child: Icon(Icons.add, size: 16.sp),
                         ),
                       ),
                     ),

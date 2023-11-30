@@ -232,7 +232,8 @@ class PlaceOrderView extends GetView<PlaceOrderController> {
             ),
             Obx(
               () => ElevatedButton(
-                onPressed: controller.selectedCourier.value == null
+                onPressed: controller.selectedCourier.value == null ||
+                        userController.user.value?.address == null
                     ? null
                     : () => controller.placeOrder(),
                 style: ElevatedButton.styleFrom(

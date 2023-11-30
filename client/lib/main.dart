@@ -1,11 +1,12 @@
-import 'package:client/routes/app_pages.dart';
-import 'package:client/services/storage_service/storage_service.dart';
-import 'package:client/themes/fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:stylish_shop/routes/app_pages.dart';
+import 'package:stylish_shop/themes/fonts.dart';
+
+import 'services/storage_service/storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

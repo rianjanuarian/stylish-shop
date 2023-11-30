@@ -1,4 +1,4 @@
-import 'package:client/routes/app_pages.dart';
+import 'package:stylish_shop/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

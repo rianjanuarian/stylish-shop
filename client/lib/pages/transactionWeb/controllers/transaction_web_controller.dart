@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-import 'package:client/services/keys/get_storage_key.dart';
+import 'package:stylish_shop/routes/app_pages.dart';
+import 'package:stylish_shop/services/keys/get_storage_key.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -23,7 +24,6 @@ class TransactionWebController extends GetxController {
         NavigationDelegate(
           onProgress: (int progress) {},
           onPageStarted: (String url) async {
-            print('url page start $url');
             if (url.contains('order_id') &&
                 url.contains('transaction_status=settlement')) {
               final Uri uri = Uri.parse(url);
@@ -43,6 +43,7 @@ class TransactionWebController extends GetxController {
                     });
                 Get.snackbar('Payment Success',
                     'Your transaction payment has been successfully received and ${res.data['message']}');
+                Get.offAllNamed(AppPages.mainTab);
               } catch (e) {
                 if (e is DioException) {
                   final errorResponse = e.response;
@@ -57,12 +58,10 @@ class TransactionWebController extends GetxController {
                     Get.snackbar('Error', e.toString());
                   }
                 }
-              } finally {
-                // Get.offAllNamed(AppPages.mainTab);
               }
             }
             // error gmana?
-            if (url.contains('status_code=202&transaction_status=deny')) {
+            if (url.contains('transaction_status=deny')) {
               Get.snackbar('Failed',
                   'Your transaction has been failed. Please try again');
             }

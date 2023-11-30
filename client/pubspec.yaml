@@ -1,4 +1,4 @@
-name: client
+name: stylish_shop
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -53,7 +53,6 @@ dependencies:
   image_picker: ^1.0.4
   lottie: ^2.7.0
   liquid_pull_to_refresh: ^3.0.1
-  url_launcher: ^6.2.1
   webview_flutter: ^4.4.2
 
 dev_dependencies:
@@ -68,6 +67,7 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   json_serializable: ^6.7.1
   build_runner: ^2.4.6
+  flutter_launcher_icons: ^0.13.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -125,3 +125,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path_android: "assets/logo/logo_dark.png"
+  image_path_ios: "assets/logo/logo_dark.png"

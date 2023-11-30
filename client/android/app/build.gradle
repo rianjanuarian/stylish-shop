@@ -63,6 +63,7 @@ android {
 
     buildTypes {
         release {
+            minifyEnabled true
             // Use env to detect if it's debug or release
             if (System.getenv("KEYSTOREALIAS") == null) {
                 signingConfig signingConfigs.debug

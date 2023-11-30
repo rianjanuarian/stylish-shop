@@ -1,5 +1,5 @@
-import 'package:client/routes/app_pages.dart';
-import 'package:client/services/api_service/category/category_model.dart';
+import 'package:stylish_shop/routes/app_pages.dart';
+import 'package:stylish_shop/services/api_service/category/category_model.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
@@ -14,8 +14,7 @@ class CategoriesController extends GetxController {
       final response = await Dio().get(url);
       if (response.statusCode == 200) {
         final List<dynamic> result = response.data;
-        categoriesList.value =
-            result.map((e) => Category.fromJson(e)).toList();
+        categoriesList.value = result.map((e) => Category.fromJson(e)).toList();
         isLoading.value = false;
         update();
       } else {
