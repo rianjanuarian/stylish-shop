@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://stylish-shop.vercel.app/"
+      "url": "https://stylish-shop.vercel.app"
     }
   ],
   "paths": {
@@ -1288,7 +1288,7 @@
         ]
       }
     },
-    "transactions/approve": {
+    "/transactions/approve": {
       "get": {
         "tags": ["Transactions"],
         "operationId": "Transactions_Approve",
@@ -1910,6 +1910,9 @@
           },
           "price": {
             "type": "number"
+          },
+          "image": {
+            "type": "string"
           },
           "createAt": {
             "type": "string"
