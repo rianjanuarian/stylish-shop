@@ -21,55 +21,68 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
     }
 
     Widget orderWidget(
-       { int id=0, String orderId= "no order id", String courierName = 'no courier name', String status = ''}) {
+        {int id = 0,
+        String orderId = "no order id",
+        String courierName = 'no courier name',
+        String midtransToken = 'no midtrans token',
+        String status = ''}) {
       return Container(
         height: 100.h,
         width: 1.sw,
         margin: REdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
-            color: Colors.white,
             borderRadius: BorderRadius.circular(10).r,
             boxShadow: const [
               BoxShadow(
                   color: Colors.black12, blurRadius: 5.0, offset: Offset(2, 3))
             ]),
-        child: Padding(
-          padding: REdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
+        child: Material(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10).r,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10).r,
+            onTap: status == 'approve'
+                ? null
+                : () => controller.goToPayment(midtransToken),
+            child: Padding(
+              padding: REdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CircleAvatar(
-                    minRadius: 20.r,
-                    child: Text(id.toString()),
-                  ),
-                  SizedBox(width: 15.w),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      Text(
-                        orderId,
-                        style: const TextStyle(
-                          fontSize: 15,
-                        ),
+                      CircleAvatar(
+                        minRadius: 20.r,
+                        child: Text(id.toString()),
                       ),
-                      Text(
-                        courierName,
-                        style: const TextStyle(
-                            fontSize: 12, color: Color(0xFF8E8E8E)),
-                      )
+                      SizedBox(width: 15.w),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            orderId,
+                            style: const TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                          Text(
+                            courierName,
+                            style: const TextStyle(
+                                fontSize: 12, color: Color(0xFF8E8E8E)),
+                          )
+                        ],
+                      ),
                     ],
+                  ),
+                  Text(
+                    status,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-              Text(
-                status,
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-            ],
+            ),
           ),
         ),
       );
@@ -169,19 +182,21 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
                     children: controller.isOngoing.isTrue
                         ? controller.onGoing
                             .map((order) => orderWidget(
-                                  id: order.id ?? 0,
-                                  orderId: order.orderId ?? 'no order id',
-                                  courierName: order.courier?.name ?? 'courier',
-                                  status: getStatusString(order.status),
-                                ))
+                                id: order.id ?? 0,
+                                orderId: order.orderId ?? 'no order id',
+                                courierName: order.courier?.name ?? 'courier',
+                                status: getStatusString(order.status),
+                                midtransToken:
+                                    order.midtranstoken ?? 'no midtranstoken'))
                             .toList()
                         : controller.onCompleted
                             .map((order) => orderWidget(
-                                  id: order.id ?? 0,
-                                  orderId: order.orderId ?? 'no order id',
-                                  courierName: order.courier?.name ?? 'courier',
-                                  status: getStatusString(order.status),
-                                ))
+                                id: order.id ?? 0,
+                                orderId: order.orderId ?? 'no order id',
+                                courierName: order.courier?.name ?? 'courier',
+                                status: getStatusString(order.status),
+                                midtransToken:
+                                    order.midtranstoken ?? 'no midtranstoken'))
                             .toList(),
                   ),
                 ),
