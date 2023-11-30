@@ -7,11 +7,9 @@ class TransactionWebView extends GetView<TransactionWebController> {
   const TransactionWebView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        controller.goBack();
-        return false;
-      },
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) => controller.goBack(),
       child: Scaffold(
         body: WebViewWidget(
           controller: controller.webController,
