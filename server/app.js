@@ -23,7 +23,7 @@ admin.initializeApp({
 const corsOptions = {
   allowedHeaders: "Content-Type, Authorization",
   origin: function (origin, callback) {
-    const allowedOrigins = ["https://stylish-shop-web.vercel.app"];
+    const allowedOrigins = ["https://stylish-shop-web.vercel.app","http://localhost:3001"];
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
