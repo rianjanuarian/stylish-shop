@@ -176,16 +176,16 @@ class TransactionControllers {
       );
 
       //ini g tau bsa apa ga, tolong setel lah
-      if (transaction_status === "approve") {
+      if (statusOrder === "approve") {
         const userId = req.user.id;
         const carts = await cart.findAll({ where: { userId } });
 
         for (const cartItem of carts) {
-          const { productId, qty } = cartItem;
+          const { productId, qty } = cartItem.dataValues;
           const currentProduct = await product.findByPk(productId);
           if (currentProduct) {
-            const updatedQty = currentProduct.qty - qty;
-            await currentProduct.update({ qty: updatedQty });
+            const updatedQty = currentProduct.stock - qty;
+            await currentProduct.update({ stock: updatedQty });
           }
         }
         await cart.destroy({
@@ -193,6 +193,8 @@ class TransactionControllers {
             userId: userId,
           },
         });
+      } else {
+        next(createError(400, "cannot update stock!"));
       }
 
       res.status(201).json({
