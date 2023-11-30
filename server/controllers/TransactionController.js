@@ -70,16 +70,15 @@ class TransactionControllers {
           .map((cart) => cart.dataValues.total_price)
           .reduce((a, b) => a + b, 0) + getCourier.price;
 
-      //klo gagal yamaap
-      const itemDetails = carts.flatMap((cartItem) => {
-        return cartItem.dataValues.products.map((productDetails) => {
-          return {
-            id: productDetails.dataValues.id,
-            price: productDetails.price,
-            name: productDetails.dataValues.name,
-            brand: productDetails.dataValues.brand,
-          };
-        });
+      const itemDetails = carts.map((cartItem) => {
+        const productDetails = cartItem.product;
+        return {
+          id: productDetails.id,
+          price: productDetails.price,
+          name: productDetails.name,
+          // brand: productDetails.brand, //brand tidak bisa masuk, karena null dan di contoh tidak ada (https://docs.midtrans.com/docs/snap-advanced-feature)
+          quantity: cartItem.qty,
+        };
       });
 
       //Struktur Midtrands
@@ -176,7 +175,7 @@ class TransactionControllers {
       if (statusOrder === "approve") {
         const userId = req.user.id;
         const carts = await cart.findAll({ where: { userId } });
-      
+
         for (const cartItem of carts) {
           const { productId, qty } = cartItem;
           const currentProduct = await product.findByPk(productId);
