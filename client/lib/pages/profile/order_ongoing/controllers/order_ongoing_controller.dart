@@ -59,7 +59,6 @@ class OrderOngoingController extends GetxController {
 
   void goToPayment(String midtransToken){
     try {
-      print(midtransToken);
       final paymentUrl = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/$midtransToken';
       Get.toNamed(AppPages.transactionWebView, arguments: paymentUrl);
     } catch (e) {

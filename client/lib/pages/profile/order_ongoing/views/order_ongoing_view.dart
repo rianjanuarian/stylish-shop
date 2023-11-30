@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import '../../../../services/api_service/transaction/transaction_model.dart';
+import '../../../../widgets/app_shimmer.dart';
 import '../controllers/order_ongoing_controller.dart';
 
 class OrderOngoingView extends GetView<OrderOngoingController> {
@@ -84,6 +86,27 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
               ),
             ),
           ),
+        ),
+      );
+    }
+
+    Widget cardCart() {
+      return Card(
+        margin: REdgeInsets.only(bottom: 20),
+        child: Container(
+            height: 70.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10).r,
+            )),
+      );
+    }
+
+    Widget shimmerCardCart() {
+      return AppShimmer(
+        child: Column(
+          children: List.generate(5, (index) => cardCart()),
         ),
       );
     }
@@ -178,27 +201,56 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
             Expanded(
               child: SingleChildScrollView(
                 child: Obx(
-                  () => Column(
-                    children: controller.isOngoing.isTrue
-                        ? controller.onGoing
-                            .map((order) => orderWidget(
-                                id: order.id ?? 0,
-                                orderId: order.orderId ?? 'no order id',
-                                courierName: order.courier?.name ?? 'courier',
-                                status: getStatusString(order.status),
-                                midtransToken:
-                                    order.midtranstoken ?? 'no midtranstoken'))
-                            .toList()
-                        : controller.onCompleted
-                            .map((order) => orderWidget(
-                                id: order.id ?? 0,
-                                orderId: order.orderId ?? 'no order id',
-                                courierName: order.courier?.name ?? 'courier',
-                                status: getStatusString(order.status),
-                                midtransToken:
-                                    order.midtranstoken ?? 'no midtranstoken'))
-                            .toList(),
-                  ),
+                  () {
+                    if (controller.isLoading.isTrue) {
+                      return shimmerCardCart();
+                    }
+                    if (controller.isOngoing.isTrue) {
+                      return controller.onGoing.isEmpty
+                          ? Column(
+                              children: [
+                                Lottie.asset('assets/animations/empty.json',
+                                    height: 300.h, width: double.infinity),
+                                const Text('Try Purchasing something!')
+                              ],
+                            )
+                          : Column(
+                              children: controller.onGoing
+                                  .map((order) => orderWidget(
+                                      id: order.id ?? 0,
+                                      orderId: order.orderId ?? 'no order id',
+                                      courierName:
+                                          order.courier?.name ?? 'courier',
+                                      status: getStatusString(order.status),
+                                      midtransToken: order.midtranstoken ??
+                                          'no midtranstoken'))
+                                  .toList(),
+                            );
+                    } else {
+                      return controller.onCompleted.isEmpty
+                          ? Column(
+                              children: [
+                                Lottie.asset('assets/animations/empty.json',
+                                    height: 300.h, width: double.infinity),
+                                const Text('Try Purchasing something!')
+                              ],
+                            )
+                          : Column(
+                              children: controller.onCompleted
+                                  .map(
+                                    (order) => orderWidget(
+                                        id: order.id ?? 0,
+                                        orderId: order.orderId ?? 'no order id',
+                                        courierName:
+                                            order.courier?.name ?? 'courier',
+                                        status: getStatusString(order.status),
+                                        midtransToken: order.midtranstoken ??
+                                            'no midtranstoken'),
+                                  )
+                                  .toList(),
+                            );
+                    }
+                  },
                 ),
               ),
             ),

@@ -60,6 +60,9 @@ class TransactionWebController extends GetxController {
                 }
               }
             }
+            if (url.contains('transaction_status=capture')) {
+              Get.offAllNamed(AppPages.mainTab);
+            }
             // error gmana?
             if (url.contains('transaction_status=deny')) {
               Get.snackbar('Failed',
