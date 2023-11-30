@@ -1,13 +1,26 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../services/api_service/transaction/transaction_model.dart';
 import '../controllers/order_ongoing_controller.dart';
 
 class OrderOngoingView extends GetView<OrderOngoingController> {
   const OrderOngoingView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+
+    String getStatusString(Status? status) {
+      if (status == Status.approve) {
+        return 'approve';
+      } else if (status == Status.pending) {
+        return 'pending';
+      } else if (status == Status.reject) {
+        return 'reject';
+      } else {
+        return 'unknown';
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 80.w,
@@ -97,22 +110,23 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
             SizedBox(height: 20.h),
             Expanded(
               child: SingleChildScrollView(
-                child: Obx( () => Column(
+                child: Obx(
+                  () => Column(
                     children: controller.isOngoing.isTrue
-                        ? controller.orderOnGoing
+                        ? controller.onGoing
                             .map((order) => _OrderWidget(
-                                  title: order['title'],
-                                  description: order['description'],
-                                  image: order['image'],
-                                  price: order['price'],
+                                  id: order.id ?? 0,
+                                  orderId: order.orderId ?? 'no order id',
+                                  courierName: order.courier?.name ?? 'courier',
+                                  status: getStatusString(order.status),
                                 ))
                             .toList()
-                        : controller.orderCompleted
+                        : controller.onCompleted
                             .map((order) => _OrderWidget(
-                                  title: order['title'],
-                                  description: order['description'],
-                                  image: order['image'],
-                                  price: order['price'],
+                                  id: order.id ?? 0,
+                                  orderId: order.orderId ?? 'no order id',
+                                  courierName: order.courier?.name ?? 'courier',
+                                  status: getStatusString(order.status),
                                 ))
                             .toList(),
                   ),
@@ -128,14 +142,14 @@ class OrderOngoingView extends GetView<OrderOngoingController> {
 
 class _OrderWidget extends StatelessWidget {
   const _OrderWidget(
-      {required this.image,
-      required this.title,
-      required this.description,
-      required this.price});
-  final String image;
-  final String title;
-  final String description;
-  final int price;
+      {required this.id,
+      required this.orderId,
+      required this.courierName,
+      required this.status});
+  final int id;
+  final String orderId;
+  final String courierName;
+  final String status;
 
   @override
   Widget build(BuildContext context) {
@@ -151,22 +165,15 @@ class _OrderWidget extends StatelessWidget {
                 color: Colors.black12, blurRadius: 5.0, offset: Offset(2, 3))
           ]),
       child: Padding(
-        padding: REdgeInsets.symmetric(horizontal: 10),
+        padding: REdgeInsets.symmetric(horizontal: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5).r,
-                  child: CachedNetworkImage(
-                    imageUrl: image,
-                    width: 80.w,
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
+                CircleAvatar(
+                  minRadius: 20.r,
+                  child: Text(id.toString()),
                 ),
                 SizedBox(width: 15.w),
                 Column(
@@ -174,13 +181,13 @@ class _OrderWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      orderId,
                       style: const TextStyle(
                         fontSize: 15,
                       ),
                     ),
                     Text(
-                      description,
+                      courierName,
                       style: const TextStyle(
                           fontSize: 12, color: Color(0xFF8E8E8E)),
                     )
@@ -189,8 +196,8 @@ class _OrderWidget extends StatelessWidget {
               ],
             ),
             Text(
-              '\$$price.00',
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              status,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
           ],
         ),
