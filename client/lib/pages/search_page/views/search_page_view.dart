@@ -17,6 +17,7 @@ class SearchPageView extends GetView<SearchPageController> {
         title: TextField(
           autofocus: true,
           controller: textController,
+          onTapOutside: (_) => FocusScope.of(context).unfocus(),
           onChanged: (text) {
             searchController.searchProducts(text);
           },

@@ -136,11 +136,11 @@ class TransactionControllers {
         status: "pending",
       });
       // fungsi hapus
-      // await cart.destroy({
-      //   where: {
-      //     userId: userId,
-      //   },
-      // });
+      await cart.destroy({
+        where: {
+          userId: userId,
+        },
+      });
 
       res
         .status(200)
@@ -173,7 +173,7 @@ class TransactionControllers {
       );
 
       //ini g tau bsa apa ga, tolong setel lah
-      if (statusOrder === "approve") {
+      if (transaction_status === "approve") {
         const userId = req.user.id;
         const carts = await cart.findAll({ where: { userId } });
 
