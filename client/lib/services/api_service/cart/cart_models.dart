@@ -13,6 +13,7 @@ class Cart {
   DateTime? createdAt;
   DateTime? updatedAt;
   Product? product;
+  Status? status;
 
   Cart({
     this.id,
@@ -30,3 +31,9 @@ class Cart {
 
   Map<String, dynamic> toJson() => _$CartToJson(this);
 }
+
+enum Status {
+  active,
+  inactive,
+}
+

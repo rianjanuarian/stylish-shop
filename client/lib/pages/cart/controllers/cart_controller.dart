@@ -24,7 +24,10 @@ class CartController extends GetxController {
             'Content-Type': 'application/json',
           }));
       final List<dynamic> result = res.data;
-      carts.value = result.map((e) => Cart.fromJson(e)).toList();
+      carts.value = result
+          .where((cart) => cart['status'] == 'active')
+          .map((e) => Cart.fromJson(e))
+          .toList();
       isCartEmpty.value = checkIsCartEmpty();
       isLoading.toggle();
     } catch (e) {

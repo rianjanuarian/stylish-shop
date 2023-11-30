@@ -98,108 +98,117 @@ const UserList = () => {
               ) : status === "rejected" ? (
                 <p>{error}</p>
               ) : users.length !== 0 ? (
-                <><table>
-                      <thead>
-                        <tr>
-                          <th>No.</th>
-                          <th>NAME</th>
-                          <th>EMAIL</th>
-                          <th>IMAGE</th>
-                          <th>ROLE</th>
-                          <th>ADDRESS</th>
-                          <th>GENDER</th>
-                          <th>BIRTHDAY</th>
-                          <th>PHONE</th>
-                          <th>ACTION</th>
+                <>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>No.</th>
+                        <th>NAME</th>
+                        <th>EMAIL</th>
+                        <th>IMAGE</th>
+                        <th>ROLE</th>
+                        <th>ADDRESS</th>
+                        <th>GENDER</th>
+                        <th>BIRTHDAY</th>
+                        <th>PHONE</th>
+                        <th>ACTION</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {currentItems.map((user, index) => (
+                        <tr key={user.id}>
+                          <td>
+                            <span>
+                              {index + 1 + itemsPerPage * (currentPage - 1)}
+                            </span>
+                          </td>
+                          <td>
+                            <span>{user.name}</span>
+                          </td>
+                          <td>
+                            <span>{user.email}</span>
+                          </td>
+                          <td>
+                            <span>
+                              {/* https://storage.cloud.google.com/stylish-shop/users/0aaeb9e729ebd4b12d1e3a400954f697 */}
+                              <img
+                                src={
+                                  user.image === null
+                                    ? `https://cdn.discordapp.com/attachments/1076057192945434624/1179451262232707223/1665px-No-Image-Placeholder.png?ex=6579d496&is=65675f96&hm=c3fb9d7bd5f473ec49302f1dc8dd5c85a75d389366ccd692c00c550e6afaf699&`
+                                    : user.image.includes("placeholder")
+                                    ? user.image
+                                    : `https://storage.cloud.google.com/${user.image}`
+                                }
+                                style={{ width: "100px", height: "100px" }}
+                                alt="user"
+                              ></img>
+                            </span>
+                          </td>
+                          <td>
+                            <span>{user.role}</span>
+                          </td>
+                          <td>
+                            <span>
+                              {user.address === null ? "-" : user.address}
+                            </span>
+                          </td>
+                          <td>
+                            <span>
+                              {user.gender === null
+                                ? "-"
+                                : user.gender === "man"
+                                ? "Male"
+                                : "Female"}
+                            </span>
+                          </td>
+                          <td>
+                            <span>
+                              {user.birthday ? user.birthday.slice(0, 10) : "-"}
+                            </span>
+                          </td>
+                          <td>
+                            <span>
+                              {user.phone_number === null
+                                ? "-"
+                                : user.phone_number}
+                            </span>
+                          </td>
+                          <td>
+                            <div>
+                              <button
+                                onClick={() => deletes(user.id)}
+                                className="action-btn-delete"
+                              >
+                                Delete
+                              </button>
+
+                              <button
+                                className="action-btn-update"
+                                onClick={() => update(user.id)}
+                              >
+                                Update
+                              </button>
+                            </div>
+                          </td>
                         </tr>
-                      </thead>
-
-                      <tbody>
-                        {currentItems.map((user, index) => (
-                          <tr key={user.id}>
-                            <td>
-                              <span>
-                                {index + 1 + itemsPerPage * (currentPage - 1)}
-                              </span>
-                            </td>
-                            <td>
-                              <span>{user.name}</span>
-                            </td>
-                            <td>
-                              <span>{user.email}</span>
-                            </td>
-                            <td>
-                              <span>
-                                {/* https://storage.cloud.google.com/stylish-shop/users/0aaeb9e729ebd4b12d1e3a400954f697 */}
-                                <img
-                                  src={user.image !== null
-                                    ? `https://storage.cloud.google.com/${user.image}`
-                                    : `https://cdn.discordapp.com/attachments/1076057192945434624/1179451262232707223/1665px-No-Image-Placeholder.png?ex=6579d496&is=65675f96&hm=c3fb9d7bd5f473ec49302f1dc8dd5c85a75d389366ccd692c00c550e6afaf699&`}
-                                  style={{ width: "100px", height: "100px" }}
-                                  alt="user"
-                                ></img>
-                              </span>
-                            </td>
-                            <td>
-                              <span>{user.role}</span>
-                            </td>
-                            <td>
-                              <span>
-                                {user.address === null ? "-" : user.address}
-                              </span>
-                            </td>
-                            <td>
-                              <span>
-                                {user.gender === null
-                                  ? "-"
-                                  : user.gender === "man"
-                                    ? "Male"
-                                    : "Female"}
-                              </span>
-                            </td>
-                            <td>
-                              <span>
-                                {user.birthday ? user.birthday.slice(0, 10) : "-"}
-                              </span>
-                            </td>
-                            <td>
-                              <span>
-                                {user.phone_number === null
-                                  ? "-"
-                                  : user.phone_number}
-                              </span>
-                            </td>
-                            <td>
-                              <div>
-                                <button
-                                  onClick={() => deletes(user.id)}
-                                  className="action-btn-delete"
-                                >
-                                  Delete
-                                </button>
-
-                                <button
-                                  className="action-btn-update"
-                                  onClick={() => update(user.id)}
-                                >
-                                  Update
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table><div className="pagination">
-                        {Array.from({ length: totalPages }).map((_, index) => (
-                          <button
-                            key={index}
-                            className={`page-btn ${index + 1 === currentPage ? "active" : ""}`}
-                            onClick={() => paginate(index + 1)}
-                          >
-                            {index + 1}
-                          </button>
-                        ))}
-                      </div></>
+                      ))}
+                    </tbody>
+                  </table>
+                  <div className="pagination">
+                    {Array.from({ length: totalPages }).map((_, index) => (
+                      <button
+                        key={index}
+                        className={`page-btn ${
+                          index + 1 === currentPage ? "active" : ""
+                        }`}
+                        onClick={() => paginate(index + 1)}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                </>
               ) : (
                 <div className="empty">
                   <img src={empty} alt="" />
