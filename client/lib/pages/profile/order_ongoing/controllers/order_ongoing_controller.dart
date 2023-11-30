@@ -1,35 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:stylish_shop/services/api_service/transaction/transaction_model.dart';
+
+import '../../../../services/keys/get_storage_key.dart';
 
 class OrderOngoingController extends GetxController {
   RxBool isLoading = RxBool(false);
   RxBool isOngoing = RxBool(true);
+  final dio = Dio();
+  final storage = GetStorage();
 
-  //dummy ongoing orders
-  final List orderOnGoing = [
-    {
-      'image': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'title': 'Adibas',
-      'description': 'Adibas good shoes',
-      'price': 150,
-    },
-    {
-      'image': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'title': 'Mike',
-      'description': 'Mike good shoes',
-      'price': 170,
-    }
-  ].obs;
-
-  //dummy completed orders
-  final List orderCompleted = [
-    {
-      'image': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      'title': 'Swallaw',
-      'description': 'Swallaw good sandals',
-      'price': 150,
-    }
-  ].obs;
+  RxList<Transaction> onGoing = <Transaction>[].obs;
+  RxList<Transaction> onCompleted = <Transaction>[].obs;
 
   void switchTo(bool value) {
     isOngoing.value = value;
@@ -39,17 +22,37 @@ class OrderOngoingController extends GetxController {
     try {
       isLoading.toggle();
       //fetch ongoing orders
+      final token = await storage.read(GetStorageKey.token);
+
+      final response = await dio.get(
+        'https://stylish-shop.vercel.app/transactions/transaction-user',
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        }),
+      );
+      final List<dynamic> result = response.data;
+      var arr = result.map((data) => Transaction.fromJson(data)).toList();
+      onGoing.value = arr.where((element) => element.status == Status.pending).toList();
+      onCompleted.value = arr.where((element) => element.status == Status.approve).toList();
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
         if (errorResponse != null) {
-          final errorMessage = errorResponse.data?['message'];
-          Get.snackbar('Error', errorMessage ?? 'Unknown error');
+          if (errorResponse.data is Map) {
+            final errorMessage = errorResponse.data['message'];
+            Get.snackbar('Error', errorMessage ?? 'Unknown error');
+          } else {
+            Get.snackbar('Error', e.toString());
+          }
         } else {
-          Get.snackbar('Error', 'Unknown error occurred');
+          Get.snackbar('Error', e.toString());
         }
-        isLoading.toggle();
+      } else {
+        Get.snackbar('Error', 'Unknown error occurred');
       }
+    } finally {
+      isLoading.toggle();
     }
   }
 
