@@ -65,19 +65,21 @@ class TransactionControllers {
       const cartIds = carts.map((cart) => cart.dataValues.id);
       const getCourier = await courier.findByPk(idCourier);
 
-      const itemDetails = carts.map((cartItem) => {
-        const productDetails = cartItem.product;
-        return {
-          id: productDetails.id,
-          price: productDetails.price,
-          name: productDetails.name,
-          quantity: cartItem.qty,
-        };
-      });
-
       const total_price =
-        itemDetails.reduce((a, item) => a + item.price * item.quantity, 0) +
-        getCourier.price;
+        carts
+          .map((cart) => cart.dataValues.total_price)
+          .reduce((a, b) => a + b, 0) + getCourier.price;
+
+      // Untuk mempersingkat waktu, ini tidak usah dulu
+      // const itemDetails = carts.map((cartItem) => {
+      //   const productDetails = cartItem.product;
+      //   return {
+      //     id: productDetails.id,
+      //     price: productDetails.price,
+      //     name: productDetails.name,
+      //     quantity: cartItem.qty,
+      //   };
+      // });
 
       //Struktur Midtrands
       let snap = new midtransClient.Snap({
@@ -113,7 +115,8 @@ class TransactionControllers {
           email: `${req.user.email}`,
           phone: `${req.user.phone_number}`,
         },
-        item_details: itemDetails,
+        // Untuk mempersingkat waktu, ini tidak usah dulu
+        // item_details: itemDetails,
       };
 
       const transactions = await snap.createTransaction(parameter);
