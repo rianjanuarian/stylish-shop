@@ -51,6 +51,7 @@ class BaseResponse<T> {
 
   String? message;
 
+  // ignore: deprecated_member_use
   @JsonKey(ignore: true)
   T? payload;
 
