@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/widgets.dart';
 import 'package:stylish_shop/routes/app_pages.dart';
 import 'package:stylish_shop/services/keys/get_storage_key.dart';
 import 'package:dio/dio.dart';
@@ -12,6 +13,10 @@ class TransactionWebController extends GetxController {
 
   final dio = Dio();
   final storage = GetStorage();
+
+  void goBack(){
+    Get.offAllNamed(AppPages.mainTab);
+  }
 
   @override
   void onInit() {
