@@ -136,11 +136,14 @@ class TransactionControllers {
         status: "pending",
       });
       // fungsi hapus
-      await cart.destroy({
-        where: {
-          userId: userId,
-        },
-      });
+      await cart.update(
+        { status: "inactive" },
+        {
+          where: {
+            userId: userId,
+          },
+        }
+      );
 
       res
         .status(200)
@@ -185,6 +188,11 @@ class TransactionControllers {
             await currentProduct.update({ qty: updatedQty });
           }
         }
+        await cart.destroy({
+          where: {
+            userId: userId,
+          },
+        });
       }
 
       res.status(201).json({
