@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:stylish_shop/services/api_service/transaction/transaction_model.dart';
 
+import '../../../../routes/app_pages.dart';
 import '../../../../services/keys/get_storage_key.dart';
 
 class OrderOngoingController extends GetxController {
@@ -53,6 +54,30 @@ class OrderOngoingController extends GetxController {
       }
     } finally {
       isLoading.toggle();
+    }
+  }
+
+  void goToPayment(String midtransToken){
+    try {
+      print(midtransToken);
+      final paymentUrl = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/$midtransToken';
+      Get.toNamed(AppPages.transactionWebView, arguments: paymentUrl);
+    } catch (e) {
+      if (e is DioException) {
+        final errorResponse = e.response;
+        if (errorResponse != null) {
+          if (errorResponse.data is Map) {
+            final errorMessage = errorResponse.data['message'];
+            Get.snackbar('Error', errorMessage ?? 'Unknown error');
+          } else {
+            Get.snackbar('Error', e.toString());
+          }
+        } else {
+          Get.snackbar('Error', e.toString());
+        }
+      } else {
+        Get.snackbar('Error', 'Unknown error occurred');
+      }
     }
   }
 
