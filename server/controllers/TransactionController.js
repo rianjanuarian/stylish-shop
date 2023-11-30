@@ -184,8 +184,8 @@ class TransactionControllers {
           const { productId, qty } = cartItem.dataValues;
           const currentProduct = await product.findByPk(productId);
           if (currentProduct) {
-            const updatedQty = currentProduct.qty - qty;
-            await currentProduct.update({ qty: updatedQty });
+            const updatedQty = currentProduct.stock - qty;
+            await currentProduct.update({ stock: updatedQty });
           }
         }
         await cart.destroy({
@@ -193,6 +193,8 @@ class TransactionControllers {
             userId: userId,
           },
         });
+      } else {
+        next(createError(400, "cannot update stock!"));
       }
 
       res.status(201).json({
