@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:stylish_shop/routes/app_pages.dart';
 import '../../../../services/api_service/product/product_model.dart';
 import '../../../../services/keys/get_storage_key.dart';
 
@@ -83,6 +84,10 @@ class DetailProductController extends GetxController {
       default:
         return 'white';
     }
+  }
+
+  void goToCart() {
+    Get.toNamed(AppPages.cart);
   }
 
   @override
