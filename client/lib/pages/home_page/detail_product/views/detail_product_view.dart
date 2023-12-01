@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:stylish_shop/pages/cart/controllers/cart_controller.dart';
-import 'package:stylish_shop/pages/cart/views/cart_view.dart';
 import 'package:stylish_shop/services/api_service/product/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,9 +50,7 @@ class DetailProductView extends GetView<DetailProductController> {
                     alignment: Alignment.topRight,
                     children: [
                       IconButton(
-                        onPressed: () {
-                          Get.to(() => const CartView());
-                        },
+                        onPressed: () => controller.goToCart(),
                         icon: const Icon(
                           Icons.shopping_basket_outlined,
                           color: Colors.black,
