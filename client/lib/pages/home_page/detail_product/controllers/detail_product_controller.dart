@@ -13,6 +13,7 @@ class DetailProductController extends GetxController {
   RxBool isLoading = RxBool(false);
   final dio = Dio();
   final storage = GetStorage();
+  RxInt cartquantity = 0.obs;
 
   void addQuantity() {
     quantity++;
@@ -21,6 +22,11 @@ class DetailProductController extends GetxController {
 
   void substractQuantity() {
     quantity--;
+    changePrice();
+  }
+
+  void addCart() {
+    cartquantity++;
     changePrice();
   }
 

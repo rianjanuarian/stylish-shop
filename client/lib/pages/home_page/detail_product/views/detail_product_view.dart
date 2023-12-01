@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:stylish_shop/pages/cart/controllers/cart_controller.dart';
+import 'package:stylish_shop/pages/cart/views/cart_view.dart';
 import 'package:stylish_shop/services/api_service/product/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +13,8 @@ class DetailProductView extends GetView<DetailProductController> {
   @override
   Widget build(BuildContext context) {
     final Product product = Get.arguments;
+    final controllerCart = Get.put(CartController());
+
     return Scaffold(
         body: Column(
       children: [
@@ -43,18 +47,59 @@ class DetailProductView extends GetView<DetailProductController> {
                     color: Colors.white,
                     style: IconButton.styleFrom(backgroundColor: Colors.black),
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.shopping_basket_outlined,
-                      color: Colors.black,
-                    ),
-                    color: Colors.white,
-                    style: IconButton.styleFrom(
+                  Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Get.to(() => const CartView());
+                        },
+                        icon: const Icon(
+                          Icons.shopping_basket_outlined,
+                          color: Colors.black,
+                        ),
+                        color: Colors.white,
                         iconSize: 20.sp,
-                        backgroundColor:
-                            const Color.fromARGB(255, 255, 255, 255)),
-                  ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: controllerCart.carts.isEmpty
+                            ? Container(
+                                padding: const EdgeInsets.all(4.0),
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Obx(
+                                  () => Text(
+                                    "${controller.cartquantity.value}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                ))
+                            : Container(
+                                padding: const EdgeInsets.all(4.0),
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Obx(
+                                  () => Text(
+                                    "${controllerCart.carts.length + controller.cartquantity.value}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                )),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
@@ -254,8 +299,10 @@ class DetailProductView extends GetView<DetailProductController> {
                                       ],
                                     ),
                                     ElevatedButton(
-                                      onPressed: () =>
-                                          controller.addToCart(product.id ?? 0),
+                                      onPressed: () {
+                                        controller.addToCart(product.id ?? 0);
+                                        controller.addCart();
+                                      },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.black),
                                       child: Row(
