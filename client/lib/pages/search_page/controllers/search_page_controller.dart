@@ -1,18 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-
+import 'package:stylish_shop/routes/app_pages.dart';
 import '../../../services/api_service/product/product_model.dart';
 
 class SearchPageController extends GetxController {
   var isLoading = true.obs;
-  var productName = <Product>[].obs;
+  var products = <Product>[].obs;
   Future<void> searchProducts(String name) async {
     String url = "https://stylish-shop.vercel.app/products/search?name=$name";
     try {
       final response = await Dio().get(url);
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
-        productName.value = data.map((item) => Product.fromJson(item)).toList();
+        products.value = data.map((item) => Product.fromJson(item)).toList();
         isLoading.value = false;
         update();
       } else {
@@ -34,5 +34,9 @@ class SearchPageController extends GetxController {
         Get.snackbar('Error', e.toString());
       }
     }
+  }
+
+  void goToDetail(Product product) {
+    Get.toNamed(AppPages.detail, arguments: product);
   }
 }

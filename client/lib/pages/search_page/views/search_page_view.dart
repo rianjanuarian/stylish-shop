@@ -41,7 +41,7 @@ class SearchPageView extends GetView<SearchPageController> {
               child: CircularProgressIndicator(),
             );
           }
-          if (searchController.productName.isEmpty) {
+          if (searchController.products.isEmpty) {
             return const Center(
               child: Text('No results found.'),
             );
@@ -60,15 +60,12 @@ class SearchPageView extends GetView<SearchPageController> {
                 crossAxisSpacing: 1,
                 mainAxisSpacing: 10,
               ),
-              itemCount: searchController.productName.length,
+              itemCount: searchController.products.length,
               itemBuilder: (context, index) {
-                final product = searchController.productName[index];
-
+                final product = searchController.products[index];
+                
                 return InkWell(
-                  onTap: () {
-                    Get.to(
-                        () => Get.toNamed(AppPages.detail, arguments: product));
-                  },
+                  onTap: () => controller.goToDetail(product),
                   child: Container(
                     alignment: Alignment.center,
                     decoration:
