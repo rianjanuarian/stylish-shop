@@ -10,7 +10,7 @@ class DetailProductController extends GetxController {
   RxInt quantity = 1.obs;
   RxInt price = 0.obs;
   Rx<Color> selectedColor = Colors.red.obs;
-  int initialProductPrice = 200000;
+  int initialProductPrice = 0;
   RxBool isLoading = RxBool(false);
   final dio = Dio();
   final storage = GetStorage();
@@ -94,6 +94,7 @@ class DetailProductController extends GetxController {
   void onInit() {
     super.onInit();
     final Product product = Get.arguments;
+    initialProductPrice = product.price ?? 0;
     setInitialPrice(product.price ?? 0);
   }
 }

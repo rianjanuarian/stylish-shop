@@ -57,7 +57,7 @@ class SettingController extends GetxController {
       await auth.signOut();
       await GetStorage().remove(GetStorageKey.token);
       await dio.get('https://stylish-shop.vercel.app/users/logout');
-      Get.offAllNamed(AppPages.login);
+      Get.offAllNamed(AppPages.auth);
     } catch (e) {
       if (e is DioException) {
         final errorResponse = e.response;
