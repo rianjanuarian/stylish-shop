@@ -166,6 +166,7 @@ class PlaceOrderView extends GetView<PlaceOrderController> {
                           imageUrl:
                               'https://storage.googleapis.com/${courier.image}',
                           width: 70.w,
+                          height: 55.h,
                           fit: BoxFit.cover,
                           placeholder: (context, url) =>
                               const Center(child: CircularProgressIndicator()),
